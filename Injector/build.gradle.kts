@@ -1,6 +1,6 @@
 @file:Suppress("UnstableApiUsage")
 
-version = "2.1.2"
+version = "2.3.0"
 
 aliucord {
     projectType.set(com.aliucord.gradle.ProjectType.INJECTOR)

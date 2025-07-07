@@ -1,0 +1,49 @@
+--- smali_original/com/discord/widgets/botuikit/ComponentStateMapper.smali
++++ smali/com/discord/widgets/botuikit/ComponentStateMapper.smali
+@@ -93,6 +93,12 @@ # virtual methods
+ .method public final createActionMessageComponent(Lcom/discord/api/botuikit/ActionComponent;ILcom/discord/widgets/botuikit/ComponentChatListState$ComponentStoreState;Lcom/discord/widgets/botuikit/ComponentExperiments;)Lcom/discord/models/botuikit/MessageComponent;
+     .locals 3
+ 
++        sget-object v0, Lcom/aliucord/injector/Logger;->INSTANCE:Lcom/aliucord/injector/Logger;
++
++        const-string v1, "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
++
++        invoke-virtual {v0, v1}, Lcom/aliucord/injector/Logger;->w(Ljava/lang/String;)V
++
+     const-string v0, "component"
+ 
+     invoke-static {p1, v0}, Ld0/z/d/m;->checkNotNullParameter(Ljava/lang/Object;Ljava/lang/String;)V
+@@ -271,32 +277,12 @@ .method public final createActionMessage
+ 
+     .line 13
+     :goto_8d
+-    instance-of v1, p1, Lcom/discord/api/botuikit/ButtonComponent;
+-
+-    if-eqz v1, :cond_98
+-
+-    check-cast p1, Lcom/discord/api/botuikit/ButtonComponent;
+-
+-    invoke-static {p1, p2, p4, p3}, Lcom/discord/models/botuikit/ButtonMessageComponentKt;->mergeToMessageComponent(Lcom/discord/api/botuikit/ButtonComponent;ILcom/discord/models/botuikit/ActionInteractionComponentState;Lcom/discord/widgets/botuikit/ComponentChatListState$ComponentStoreState;)Lcom/discord/models/botuikit/ButtonMessageComponent;
+-
+-    move-result-object v0
+-
+-    goto :goto_a2
+-
+-    .line 14
+-    :cond_98
+-    instance-of v1, p1, Lcom/discord/api/botuikit/SelectComponent;
+ 
+-    if-eqz v1, :cond_a2
+-
+-    check-cast p1, Lcom/discord/api/botuikit/SelectComponent;
+-
+-    invoke-static {p1, p2, p4, p3}, Lcom/discord/models/botuikit/SelectMessageComponentKt;->mergeToMessageComponent(Lcom/discord/api/botuikit/SelectComponent;ILcom/discord/models/botuikit/ActionInteractionComponentState;Lcom/discord/widgets/botuikit/ComponentChatListState$ComponentStoreState;)Lcom/discord/models/botuikit/SelectMessageComponent;
++    invoke-static {p1, p2, p4, p3}, Lcom/discord/models/botuikit/ApiToModelHelper;->convert(Lcom/discord/api/botuikit/ActionComponent;ILcom/discord/models/botuikit/ActionInteractionComponentState;Lcom/discord/widgets/botuikit/ComponentChatListState$ComponentStoreState;)Lcom/discord/models/botuikit/MessageComponent;
+ 
+     move-result-object v0
+ 
+     :cond_a2
+-    :goto_a2
+     return-object v0
+ .end method
+ 

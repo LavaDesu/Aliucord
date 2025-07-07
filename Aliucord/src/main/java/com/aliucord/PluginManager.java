@@ -241,6 +241,7 @@ public class PluginManager {
         CorePlugin[] corePlugins = {
             new ButtonsAPI(),
             new CommandHandler(),
+            new ComponentsV2(),
             new CoreCommands(),
             new DefaultStickers(),
             new ExperimentDefaults(),

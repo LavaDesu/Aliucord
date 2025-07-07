@@ -1,0 +1,100 @@
+--- smali_original/com/discord/api/botuikit/ComponentType.smali
++++ smali/com/discord/api/botuikit/ComponentType.smali
+@@ -84,9 +84,9 @@
+ 
+ # direct methods
+ .method public static constructor <clinit>()V
+-    .locals 5
++    .locals 6
+ 
+-    const/4 v0, 0x5
++    const/16 v0, 0x10
+ 
+     new-array v0, v0, [Lcom/discord/api/botuikit/ComponentType;
+ 
+@@ -165,6 +165,85 @@ .method public static constructor <clini
+ 
+     aput-object v1, v0, v4
+ 
++
++    new-instance v1, Lcom/discord/api/botuikit/ComponentType;
++    const-class v2, Lcom/discord/api/botuikit/UserSelectComponent;
++    const-string v3, "USER_SELECT"
++    const/4 v4, 0x5
++    invoke-direct {v1, v3, v4, v4, v2}, Lcom/discord/api/botuikit/ComponentType;-><init>(Ljava/lang/String;IILjava/lang/Class;)V
++    aput-object v1, v0, v4
++
++    new-instance v1, Lcom/discord/api/botuikit/ComponentType;
++    const-class v2, Lcom/discord/api/botuikit/RoleSelectComponent;
++    const-string v3, "ROLE_SELECT"
++    const/4 v4, 0x6
++    invoke-direct {v1, v3, v4, v4, v2}, Lcom/discord/api/botuikit/ComponentType;-><init>(Ljava/lang/String;IILjava/lang/Class;)V
++    aput-object v1, v0, v4
++
++    new-instance v1, Lcom/discord/api/botuikit/ComponentType;
++    const-class v2, Lcom/discord/api/botuikit/MentionableSelectComponent;
++    const-string v3, "MENTIONABLE_SELECT"
++    const/4 v4, 0x7
++    invoke-direct {v1, v3, v4, v4, v2}, Lcom/discord/api/botuikit/ComponentType;-><init>(Ljava/lang/String;IILjava/lang/Class;)V
++    aput-object v1, v0, v4
++
++    new-instance v1, Lcom/discord/api/botuikit/ComponentType;
++    const-class v2, Lcom/discord/api/botuikit/ChannelSelectComponent;
++    const-string v3, "CHANNEL_SELECT"
++    const/16 v4, 0x8
++    invoke-direct {v1, v3, v4, v4, v2}, Lcom/discord/api/botuikit/ComponentType;-><init>(Ljava/lang/String;IILjava/lang/Class;)V
++    aput-object v1, v0, v4
++
++    new-instance v1, Lcom/discord/api/botuikit/ComponentType;
++    const-class v2, Lcom/discord/api/botuikit/SectionComponent;
++    const-string v3, "SECTION"
++    const/16 v4, 0x9
++    invoke-direct {v1, v3, v4, v4, v2}, Lcom/discord/api/botuikit/ComponentType;-><init>(Ljava/lang/String;IILjava/lang/Class;)V
++    aput-object v1, v0, v4
++
++    new-instance v1, Lcom/discord/api/botuikit/ComponentType;
++    const-class v2, Lcom/discord/api/botuikit/TextDisplayComponent;
++    const-string v3, "TEXT_DISPLAY"
++    const/16 v4, 0xa
++    invoke-direct {v1, v3, v4, v4, v2}, Lcom/discord/api/botuikit/ComponentType;-><init>(Ljava/lang/String;IILjava/lang/Class;)V
++    aput-object v1, v0, v4
++
++    new-instance v1, Lcom/discord/api/botuikit/ComponentType;
++    const-class v2, Lcom/discord/api/botuikit/ThumbnailComponent;
++    const-string v3, "THUMBNAIL"
++    const/16 v4, 0xb
++    invoke-direct {v1, v3, v4, v4, v2}, Lcom/discord/api/botuikit/ComponentType;-><init>(Ljava/lang/String;IILjava/lang/Class;)V
++    aput-object v1, v0, v4
++
++    new-instance v1, Lcom/discord/api/botuikit/ComponentType;
++    const-class v2, Lcom/discord/api/botuikit/MediaGalleryComponent;
++    const-string v3, "MEDIA_GALLERY"
++    const/16 v4, 0xc
++    invoke-direct {v1, v3, v4, v4, v2}, Lcom/discord/api/botuikit/ComponentType;-><init>(Ljava/lang/String;IILjava/lang/Class;)V
++    aput-object v1, v0, v4
++
++    new-instance v1, Lcom/discord/api/botuikit/ComponentType;
++    const-class v2, Lcom/discord/api/botuikit/FileComponent;
++    const-string v3, "FILE"
++    const/16 v4, 0xd
++    invoke-direct {v1, v3, v4, v4, v2}, Lcom/discord/api/botuikit/ComponentType;-><init>(Ljava/lang/String;IILjava/lang/Class;)V
++    aput-object v1, v0, v4
++
++    new-instance v1, Lcom/discord/api/botuikit/ComponentType;
++    const-class v2, Lcom/discord/api/botuikit/SeparatorComponent;
++    const-string v3, "SEPARATOR"
++    const/16 v4, 0xe
++    invoke-direct {v1, v3, v4, v4, v2}, Lcom/discord/api/botuikit/ComponentType;-><init>(Ljava/lang/String;IILjava/lang/Class;)V
++    aput-object v1, v0, v4
++
++    new-instance v1, Lcom/discord/api/botuikit/ComponentType;
++    const-class v2, Lcom/discord/api/botuikit/ContainerComponent;
++    const-string v3, "CONTAINER"
++    const/16 v4, 0xf
++    const/16 v5, 0x11
++    invoke-direct {v1, v3, v4, v5, v2}, Lcom/discord/api/botuikit/ComponentType;-><init>(Ljava/lang/String;IILjava/lang/Class;)V
++    aput-object v1, v0, v4
++
+     sput-object v0, Lcom/discord/api/botuikit/ComponentType;->$VALUES:[Lcom/discord/api/botuikit/ComponentType;
+ 
+     return-void
