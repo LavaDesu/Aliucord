@@ -7,7 +7,7 @@ data class ThumbnailMessageComponent(
     private val type: ComponentType,
     private val index: Int,
 
-    val id: Int?,
+    val id: Int,
     val media: UnfurledMediaItem,
     val description: String?,
     val spoiler: Boolean,

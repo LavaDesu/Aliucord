@@ -1,7 +1,7 @@
 package com.discord.api.botuikit
 
 abstract class EntitySelectComponent : ActionComponent() {
-    abstract val id: Int?
+    abstract val id: Int
     abstract val customId: String
     abstract val placeholder: String
     abstract val defaultValues: List<EntityDefaultValue>

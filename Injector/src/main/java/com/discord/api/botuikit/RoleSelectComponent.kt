@@ -2,7 +2,7 @@ package com.discord.api.botuikit
 
 data class RoleSelectComponent(
     private val type: ComponentType,
-    override val id: Int?,
+    override val id: Int,
     @b.i.d.p.b("custom_id") override val customId: String,
     override val placeholder: String,
     override val defaultValues: List<EntityDefaultValue>,

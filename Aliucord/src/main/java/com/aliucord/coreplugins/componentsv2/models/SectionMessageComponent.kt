@@ -8,7 +8,7 @@ data class SectionMessageComponent(
     private val type: ComponentType,
     private val index: Int,
 
-    val id: Int?,
+    val id: Int,
     val components: List<MessageComponent>,
     val accessory: MessageComponent?,
 ) : MessageComponent {

@@ -8,7 +8,7 @@ data class TextDisplayMessageComponent(
     private val type: ComponentType,
     private val index: Int,
 
-    val id: Int?,
+    val id: Int,
     val content: String,
 ) : MessageComponent {
     override fun getType() = type
