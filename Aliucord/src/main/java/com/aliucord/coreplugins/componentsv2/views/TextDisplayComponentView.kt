@@ -40,12 +40,20 @@ class TextDisplayComponentView(val ctx: Context) : ConstraintLayout(ctx), Compon
             return
         }
 
-        render(component.index, component.content, item.adapter, entry)
+        render(component.id, component.content, item.adapter, entry)
     }
 
-    private fun render(index: Int, content: String, adapter: WidgetChatListAdapter, entry: BotUiComponentV2Entry) {
+    private fun render(id: Int, content: String, adapter: WidgetChatListAdapter, entry: BotUiComponentV2Entry) {
         val data = adapter.data
-        val spoilers = entry.state?.visibleSpoilerEmbedMap?.let { WidgetChatListAdapterItemEmbed.Companion.`access$getEmbedFieldVisibleIndices`(WidgetChatListAdapterItemEmbed.Companion, it, index, "comp") } as List<Int>?
+        @Suppress("UNCHECKED_CAST")
+        val spoilers = entry.state?.visibleSpoilerEmbedMap?.let {
+            WidgetChatListAdapterItemEmbed.Companion.`access$getEmbedFieldVisibleIndices`(
+                WidgetChatListAdapterItemEmbed.Companion,
+                it,
+                id,
+                "comp"
+            )
+        } as List<Int>?
         val processor = MessagePreprocessor(entry.meId, spoilers, null, false, 50)
         val nickOrUsernames = MessageUtils.getNickOrUsernames(entry.message, entry.channel, entry.guildMembers, entry.channel.q())
         val parseChannelMessage = DiscordParser.parseChannelMessage(
@@ -60,10 +68,10 @@ class TextDisplayComponentView(val ctx: Context) : ConstraintLayout(ctx), Compon
                 entry.guildRoles,
                 R.b.colorTextLink,
                 `WidgetChatListAdapterItemMessage$getMessageRenderContext$1`.INSTANCE,
-                { s: String -> adapter.eventHandler.onUrlLongClicked(s as String) },
+                { s: String -> adapter.eventHandler.onUrlLongClicked(s) },
                 ColorCompat.getThemedColor(context, R.b.theme_chat_spoiler_bg),
                 ColorCompat.getThemedColor(context, R.b.theme_chat_spoiler_bg_visible),
-                { node: SpoilerNode<*> -> StoreStream.getMessageState().revealSpoilerEmbedData(entry.message.id, index, "comp:${node.id}") },
+                { node: SpoilerNode<*> -> StoreStream.getMessageState().revealSpoilerEmbedData(entry.message.id, id, "comp:${node.id}") },
                 { l: Long -> adapter.eventHandler.onUserMentionClicked(l, data.channelId, data.guildId) },
                 `WidgetChatListAdapterItemMessage$getMessageRenderContext$4`(context)
             ),
