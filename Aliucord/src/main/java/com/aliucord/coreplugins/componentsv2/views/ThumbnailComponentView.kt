@@ -8,7 +8,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import com.aliucord.Logger
 import com.aliucord.coreplugins.componentsv2.BotUiComponentV2Entry
-import com.aliucord.coreplugins.componentsv2.ComponentTypeExtension
+import com.aliucord.coreplugins.componentsv2.ComponentV2Type
 import com.aliucord.coreplugins.componentsv2.models.ThumbnailMessageComponent
 import com.aliucord.utils.DimenUtils.dp
 import com.discord.utilities.color.ColorCompat
@@ -72,5 +72,5 @@ class ThumbnailComponentView(val ctx: Context) : ConstraintLayout(ctx), Componen
         }
     }
 
-    override fun type() = ComponentTypeExtension.THUMBNAIL
+    override fun type() = ComponentV2Type.THUMBNAIL
 }

@@ -3,7 +3,7 @@ package com.aliucord.coreplugins.componentsv2
 import com.discord.api.botuikit.ComponentType
 
 // Values added by smali patch
-object ComponentTypeExtension {
+object ComponentV2Type {
     val USER_SELECT = ComponentType.values()[5]
     val ROLE_SELECT = ComponentType.values()[6]
     val MENTIONABLE_SELECT = ComponentType.values()[7]

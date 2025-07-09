@@ -8,7 +8,7 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.FrameLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.PARENT_ID
-import com.aliucord.coreplugins.componentsv2.ComponentTypeExtension
+import com.aliucord.coreplugins.componentsv2.ComponentV2Type
 import com.aliucord.coreplugins.componentsv2.models.SectionMessageComponent
 import com.aliucord.widgets.LinearLayout
 import com.discord.widgets.botuikit.ComponentProvider
@@ -54,5 +54,5 @@ class SectionComponentView(val ctx: Context) : ConstraintLayout(ctx), ComponentV
         WidgetChatListAdapterItemBotComponentRowKt.replaceViews(accessoryView, listOf(accessoryComponent))
     }
 
-    override fun type() = ComponentTypeExtension.SEPARATOR
+    override fun type() = ComponentV2Type.SEPARATOR
 }

@@ -8,7 +8,7 @@ import androidx.appcompat.view.ContextThemeWrapper
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.aliucord.Logger
 import com.aliucord.coreplugins.componentsv2.BotUiComponentV2Entry
-import com.aliucord.coreplugins.componentsv2.ComponentTypeExtension
+import com.aliucord.coreplugins.componentsv2.ComponentV2Type
 import com.aliucord.coreplugins.componentsv2.models.TextDisplayMessageComponent
 import com.aliucord.utils.DimenUtils.dp
 import com.discord.stores.StoreStream
@@ -74,5 +74,5 @@ class TextDisplayComponentView(val ctx: Context) : ConstraintLayout(ctx), Compon
         textView.setDraweeSpanStringBuilder(parseChannelMessage);
     }
 
-    override fun type() = ComponentTypeExtension.TEXT_DISPLAY
+    override fun type() = ComponentV2Type.TEXT_DISPLAY
 }

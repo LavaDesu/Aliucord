@@ -4,7 +4,7 @@ import android.content.Context
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import com.aliucord.coreplugins.componentsv2.BotUiComponentV2Entry
-import com.aliucord.coreplugins.componentsv2.ComponentTypeExtension
+import com.aliucord.coreplugins.componentsv2.ComponentV2Type
 import com.aliucord.coreplugins.componentsv2.models.*
 import com.aliucord.coreplugins.componentsv2.views.*
 import com.aliucord.entities.CorePlugin
@@ -122,24 +122,24 @@ internal class ComponentsV2 : CorePlugin(Manifest("ComponentsV2")) {
                     ButtonComponentView.Companion!!.inflateComponent(this.context, viewGroup)
                 ComponentType.SELECT ->
                     SelectComponentView.Companion!!.inflateComponent(this.context, viewGroup)
-                ComponentTypeExtension.USER_SELECT,
-                ComponentTypeExtension.ROLE_SELECT,
-                ComponentTypeExtension.MENTIONABLE_SELECT,
-                ComponentTypeExtension.CHANNEL_SELECT ->
+                ComponentV2Type.USER_SELECT,
+                ComponentV2Type.ROLE_SELECT,
+                ComponentV2Type.MENTIONABLE_SELECT,
+                ComponentV2Type.CHANNEL_SELECT ->
                     null
-                ComponentTypeExtension.SECTION ->
+                ComponentV2Type.SECTION ->
                     SectionComponentView(this.context)
-                ComponentTypeExtension.TEXT_DISPLAY ->
+                ComponentV2Type.TEXT_DISPLAY ->
                     TextDisplayComponentView(this.context)
-                ComponentTypeExtension.THUMBNAIL ->
+                ComponentV2Type.THUMBNAIL ->
                     ThumbnailComponentView(this.context)
-                ComponentTypeExtension.MEDIA_GALLERY ->
+                ComponentV2Type.MEDIA_GALLERY ->
                     null
-                ComponentTypeExtension.FILE ->
+                ComponentV2Type.FILE ->
                     null
-                ComponentTypeExtension.SEPARATOR ->
+                ComponentV2Type.SEPARATOR ->
                     SeparatorComponentView(this.context)
-                ComponentTypeExtension.CONTAINER ->
+                ComponentV2Type.CONTAINER ->
                     null
                 else -> null
             }

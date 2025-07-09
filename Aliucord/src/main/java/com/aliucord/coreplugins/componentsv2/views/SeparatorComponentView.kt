@@ -6,7 +6,7 @@ import android.content.Context
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.aliucord.Logger
 import com.aliucord.coreplugins.componentsv2.BotUiComponentV2Entry
-import com.aliucord.coreplugins.componentsv2.ComponentTypeExtension
+import com.aliucord.coreplugins.componentsv2.ComponentV2Type
 import com.aliucord.coreplugins.componentsv2.models.SeparatorMessageComponent
 import com.aliucord.utils.DimenUtils.dp
 import com.aliucord.views.Divider
@@ -39,5 +39,5 @@ class SeparatorComponentView(val ctx: Context) : ConstraintLayout(ctx), Componen
         }
     }
 
-    override fun type() = ComponentTypeExtension.SEPARATOR
+    override fun type() = ComponentV2Type.SEPARATOR
 }
