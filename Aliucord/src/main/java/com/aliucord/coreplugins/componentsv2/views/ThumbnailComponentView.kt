@@ -29,7 +29,7 @@ import com.lytefast.flexinput.R
 import b.f.g.f.c as RoundingParams
 
 class ThumbnailComponentView(val ctx: Context) : ConstraintLayout(ctx), ComponentView<ThumbnailMessageComponent> {
-    private val embedThumbnailMaxSize = ctx.resources.getDimension(R.d.embed_thumbnail_max_size).toInt()
+    private val embedThumbnailMaxSize = (ctx.resources.getDimension(R.d.embed_thumbnail_max_size) * 1.5).toInt()
 
     private val view = SimpleDraweeView(ctx, null, 0, R.i.UiKit_ImageView).apply {
         hierarchy = hierarchy.apply {
