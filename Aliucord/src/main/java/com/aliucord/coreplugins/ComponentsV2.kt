@@ -2,12 +2,11 @@ package com.aliucord.coreplugins
 
 import android.content.Context
 import android.view.ViewGroup
+import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import com.aliucord.coreplugins.componentsv2.BotUiComponentV2Entry
 import com.aliucord.coreplugins.componentsv2.ComponentTypeExtension
-import com.aliucord.coreplugins.componentsv2.models.SeparatorMessageComponent
-import com.aliucord.coreplugins.componentsv2.models.TextDisplayMessageComponent
-import com.aliucord.coreplugins.componentsv2.views.SeparatorComponentView
-import com.aliucord.coreplugins.componentsv2.views.TextDisplayComponentView
+import com.aliucord.coreplugins.componentsv2.models.*
+import com.aliucord.coreplugins.componentsv2.views.*
 import com.aliucord.entities.CorePlugin
 import com.aliucord.patcher.*
 import com.aliucord.updater.ManagerBuild
@@ -26,6 +25,8 @@ import com.discord.widgets.botuikit.*
 import com.discord.widgets.botuikit.ComponentChatListState.ComponentStoreState
 import com.discord.widgets.botuikit.views.*
 import com.discord.widgets.botuikit.views.select.SelectComponentView
+import com.discord.widgets.chat.list.adapter.WidgetChatListAdapter
+import com.discord.widgets.chat.list.adapter.WidgetChatListAdapterItemBotComponentRow
 import com.discord.widgets.chat.list.entries.BotUiComponentEntry
 import com.discord.widgets.chat.list.entries.ChatListEntry
 import com.discord.widgets.chat.list.model.WidgetChatListModelMessages
@@ -53,11 +54,11 @@ internal class ComponentsV2 : CorePlugin(Manifest("ComponentsV2")) {
                 is ActionRowComponent ->
                     ActionRowMessageComponent(layout.type, index, components)
                 is SectionComponent ->
-                    ActionRowMessageComponent(layout.type, index, components)
+                    SectionMessageComponent.mergeToMessageComponent(layout, index, components)
                 is TextDisplayComponent ->
                     TextDisplayMessageComponent.mergeToMessageComponent(layout, index)
                 is ThumbnailComponent ->
-                    ActionRowMessageComponent(layout.type, index, components)
+                    ThumbnailMessageComponent.mergeToMessageComponent(layout, index)
                 is MediaGalleryComponent ->
                     ActionRowMessageComponent(layout.type, index, components)
                 is FileComponent ->
@@ -127,11 +128,11 @@ internal class ComponentsV2 : CorePlugin(Manifest("ComponentsV2")) {
                 ComponentTypeExtension.CHANNEL_SELECT ->
                     null
                 ComponentTypeExtension.SECTION ->
-                    null
+                    SectionComponentView(this.context)
                 ComponentTypeExtension.TEXT_DISPLAY ->
                     TextDisplayComponentView(this.context)
                 ComponentTypeExtension.THUMBNAIL ->
-                    null
+                    ThumbnailComponentView(this.context)
                 ComponentTypeExtension.MEDIA_GALLERY ->
                     null
                 ComponentTypeExtension.FILE ->
@@ -141,6 +142,13 @@ internal class ComponentsV2 : CorePlugin(Manifest("ComponentsV2")) {
                 ComponentTypeExtension.CONTAINER ->
                     null
                 else -> null
+            }
+        }
+
+        patcher.after<WidgetChatListAdapterItemBotComponentRow>(WidgetChatListAdapter::class.java)
+        {
+            itemView.layoutParams = itemView.layoutParams.apply {
+                width = WRAP_CONTENT
             }
         }
     }

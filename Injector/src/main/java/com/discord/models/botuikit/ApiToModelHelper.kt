@@ -3,9 +3,10 @@ package com.discord.models.botuikit
 import com.discord.api.botuikit.*
 import com.discord.widgets.botuikit.ComponentChatListState.ComponentStoreState
 
+@Suppress("UNUSED")
 object ApiToModelHelper {
     // Used by com.discord.widgets.botuikit.ComponentStateMapper.createActionMessage in smali patch
-    @Suppress("UNUSED")
+    // createActionMessage performs a lot of complicated logic, so a smali patch is easiest
     @JvmStatic
     fun convert(
         component: ActionComponent,
