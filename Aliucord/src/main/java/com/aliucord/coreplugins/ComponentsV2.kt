@@ -78,6 +78,7 @@ internal class ComponentsV2 : CorePlugin(Manifest("ComponentsV2")) {
         }
 
         // love
+        @Suppress("UNUSED_DESTRUCTURED_PARAMETER_ENTRY")
         patcher.patch(WidgetChatListModelMessages.Companion::class.java.declaredMethods.find { it.name == "getMessageItems" }!!)
         {(
             param,
