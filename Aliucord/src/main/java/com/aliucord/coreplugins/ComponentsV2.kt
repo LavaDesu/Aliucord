@@ -4,7 +4,9 @@ import android.content.Context
 import android.view.ViewGroup
 import com.aliucord.coreplugins.componentsv2.BotUiComponentV2Entry
 import com.aliucord.coreplugins.componentsv2.ComponentTypeExtension
+import com.aliucord.coreplugins.componentsv2.models.SeparatorMessageComponent
 import com.aliucord.coreplugins.componentsv2.models.TextDisplayMessageComponent
+import com.aliucord.coreplugins.componentsv2.views.SeparatorComponentView
 import com.aliucord.coreplugins.componentsv2.views.TextDisplayComponentView
 import com.aliucord.entities.CorePlugin
 import com.aliucord.patcher.*
@@ -61,7 +63,7 @@ internal class ComponentsV2 : CorePlugin(Manifest("ComponentsV2")) {
                 is FileComponent ->
                     ActionRowMessageComponent(layout.type, index, components)
                 is SeparatorComponent ->
-                    ActionRowMessageComponent(layout.type, index, components)
+                    SeparatorMessageComponent.mergeToMessageComponent(layout, index)
                 is ContainerComponent ->
                     ActionRowMessageComponent(layout.type, index, components)
                 else ->
@@ -135,7 +137,7 @@ internal class ComponentsV2 : CorePlugin(Manifest("ComponentsV2")) {
                 ComponentTypeExtension.FILE ->
                     null
                 ComponentTypeExtension.SEPARATOR ->
-                    null
+                    SeparatorComponentView(this.context)
                 ComponentTypeExtension.CONTAINER ->
                     null
                 else -> null
