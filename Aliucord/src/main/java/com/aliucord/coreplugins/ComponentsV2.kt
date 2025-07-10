@@ -66,7 +66,7 @@ internal class ComponentsV2 : CorePlugin(Manifest("ComponentsV2")) {
                 is SeparatorComponent ->
                     SeparatorMessageComponent.mergeToMessageComponent(layout, index)
                 is ContainerComponent ->
-                    ActionRowMessageComponent(layout.type, index, components)
+                    ContainerMessageComponent.mergeToMessageComponent(layout, index, components)
                 else ->
                     throw IllegalArgumentException("Unknown layout component ${layout::class.java.name} (${layout.type.type}:${layout.type.name})")
             }
@@ -141,7 +141,7 @@ internal class ComponentsV2 : CorePlugin(Manifest("ComponentsV2")) {
                 ComponentV2Type.SEPARATOR ->
                     SeparatorComponentView(this.context)
                 ComponentV2Type.CONTAINER ->
-                    null
+                    ContainerComponentView(this.context)
                 else -> null
             }
         }
