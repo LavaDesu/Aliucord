@@ -14,7 +14,6 @@ import com.aliucord.widgets.LinearLayout
 import com.discord.widgets.botuikit.ComponentProvider
 import com.discord.widgets.botuikit.views.ComponentActionListener
 import com.discord.widgets.botuikit.views.ComponentView
-import com.discord.widgets.chat.list.adapter.WidgetChatListAdapterItemBotComponentRow
 import com.discord.widgets.chat.list.adapter.WidgetChatListAdapterItemBotComponentRowKt
 import com.lytefast.flexinput.R
 
@@ -43,16 +42,14 @@ class SectionComponentView(val ctx: Context) : ConstraintLayout(ctx), ComponentV
     }
 
     override fun configure(component: SectionMessageComponent, provider: ComponentProvider, listener: ComponentActionListener) {
-        val item = listener as WidgetChatListAdapterItemBotComponentRow
-
         val configuredViews = component.components.mapIndexed { index, child ->
-            item.adapter.botUiComponentProvider.getConfiguredComponentView(listener, child, mainView, index)
+            provider.getConfiguredComponentView(listener, child, mainView, index)
         }
         WidgetChatListAdapterItemBotComponentRowKt.replaceViews(mainView, configuredViews)
 
-        val accessoryComponent = item.adapter.botUiComponentProvider.getConfiguredComponentView(listener, component.accessory, accessoryView, 0)
+        val accessoryComponent = provider.getConfiguredComponentView(listener, component.accessory, accessoryView, 0)
         WidgetChatListAdapterItemBotComponentRowKt.replaceViews(accessoryView, listOf(accessoryComponent))
     }
 
-    override fun type() = ComponentV2Type.SEPARATOR
+    override fun type() = ComponentV2Type.SECTION
 }

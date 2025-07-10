@@ -8,11 +8,11 @@ data class ContainerMessageComponent(
     private val type: ComponentType,
     private val index: Int,
 
-    val id: Int,
+    override val id: Int,
     val components: List<MessageComponent>,
     val accentColor: Int?,
-    val spoiler: Boolean,
-) : MessageComponent {
+    override val spoiler: Boolean,
+) : SpoilableMessageComponent {
     override fun getType() = type
     override fun getIndex() = index
 

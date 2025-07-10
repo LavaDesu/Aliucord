@@ -1,17 +1,16 @@
 package com.aliucord.coreplugins.componentsv2.models
 
 import com.discord.api.botuikit.*
-import com.discord.models.botuikit.MessageComponent
 
 data class ThumbnailMessageComponent(
     private val type: ComponentType,
     private val index: Int,
 
-    val id: Int,
+    override val id: Int,
     val media: UnfurledMediaItem,
     val description: String?,
-    val spoiler: Boolean,
-) : MessageComponent {
+    override val spoiler: Boolean,
+) : SpoilableMessageComponent {
     override fun getType() = type
     override fun getIndex() = index
 

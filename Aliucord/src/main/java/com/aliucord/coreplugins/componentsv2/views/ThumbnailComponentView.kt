@@ -3,66 +3,44 @@
 package com.aliucord.coreplugins.componentsv2.views
 
 import android.content.Context
-import android.graphics.drawable.ColorDrawable
-import android.view.Gravity
+import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.FrameLayout
-import android.widget.ImageView
-import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.PARENT_ID
-import androidx.core.content.ContextCompat
 import com.aliucord.Logger
 import com.aliucord.coreplugins.componentsv2.BotUiComponentV2Entry
 import com.aliucord.coreplugins.componentsv2.ComponentV2Type
 import com.aliucord.coreplugins.componentsv2.models.ThumbnailMessageComponent
 import com.aliucord.utils.DimenUtils.dp
-import com.discord.stores.StoreStream
 import com.discord.utilities.color.ColorCompat
 import com.discord.utilities.embed.EmbedResourceUtils
 import com.discord.utilities.images.MGImages
 import com.discord.widgets.botuikit.ComponentProvider
 import com.discord.widgets.botuikit.views.ComponentActionListener
-import com.discord.widgets.botuikit.views.ComponentView
 import com.discord.widgets.chat.list.adapter.WidgetChatListAdapterItemBotComponentRow
 import com.facebook.drawee.view.SimpleDraweeView
+import com.google.android.material.card.MaterialCardView
 import com.lytefast.flexinput.R
-import b.f.g.f.c as RoundingParams
 
-class ThumbnailComponentView(val ctx: Context) : ConstraintLayout(ctx), ComponentView<ThumbnailMessageComponent> {
+class ThumbnailComponentView(ctx: Context)
+    : SpoilableComponentView<ThumbnailMessageComponent>(ctx, 2) {
     private val embedThumbnailMaxSize = (ctx.resources.getDimension(R.d.embed_thumbnail_max_size) * 1.5).toInt()
 
-    private val view = SimpleDraweeView(ctx, null, 0, R.i.UiKit_ImageView).apply {
-        hierarchy = hierarchy.apply {
-            a(ColorDrawable(ColorCompat.getThemedColor(ctx, R.b.colorBackgroundPrimary))) // setPlaceholderImage
-            o(0, ContextCompat.getDrawable(ctx, R.e.drawable_overlay_image_square)) // setOverlayImage
-            s(RoundingParams.a(8.dp.toFloat())) // setRoundingParam(RoundingParams.fromCornerRadius(float))
+    private val imageView = SimpleDraweeView(ctx, null, 0, R.i.UiKit_ImageView).apply { }
+
+    init {
+        val view = MaterialCardView(ctx).apply {
+            radius = 8.dp.toFloat()
+            elevation = 0f
+            setCardBackgroundColor(ColorCompat.getThemedColor(ctx, R.b.colorBackgroundPrimary))
+            layoutParams = LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
+            addView(ConstraintLayout(ctx).apply {
+                layoutParams = FrameLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
+                addView(imageView)
+                addView(spoilerView)
+            })
         }
 
-        this@ThumbnailComponentView.addView(this)
-    }
-
-    private val spoilerView = CardView(ctx).apply {
-        visibility = GONE
-        setCardBackgroundColor(ColorCompat.getThemedColor(ctx, R.b.theme_chat_spoiler_bg))
-        radius = 8.dp.toFloat()
-        layoutParams = LayoutParams(0, 0).apply {
-            bottomToBottom = PARENT_ID
-            endToEnd = PARENT_ID
-            startToStart = PARENT_ID
-            topToTop = PARENT_ID
-        }
-        isClickable = true
-
-        val icon = ImageView(ctx).apply {
-            setImageResource(R.e.ic_spoiler)
-            val size = embedThumbnailMaxSize / 2
-            layoutParams = FrameLayout.LayoutParams(size, size).apply {
-                gravity = Gravity.CENTER
-            }
-        }
-        addView(icon)
-
-        this@ThumbnailComponentView.addView(this)
+        addView(view)
     }
 
     // Reference: WidgetChatListAdapterItemEmbed.configureEmbedThumbnail
@@ -82,7 +60,7 @@ class ThumbnailComponentView(val ctx: Context) : ConstraintLayout(ctx), Componen
             resources,
             0
         )
-        view.apply {
+        imageView.apply {
             if (layoutParams.width != width || layoutParams.height != height)
                 layoutParams = layoutParams.apply {
                     this.width = width
@@ -102,15 +80,7 @@ class ThumbnailComponentView(val ctx: Context) : ConstraintLayout(ctx), Componen
             )
         }
 
-        spoilerView.setOnClickListener {
-            spoilerView.animate()
-                .withEndAction {
-                    StoreStream.getMessageState().revealSpoilerEmbed(entry.message.id, component.id)
-                }
-                .alpha(0f)
-        }
-        val spoiled = entry.state?.visibleSpoilerEmbedMap?.containsKey(component.id) ?: false
-        spoilerView.visibility = if (component.spoiler && !spoiled) VISIBLE else GONE
+        configureSpoiler(entry, component)
     }
 
     override fun type() = ComponentV2Type.THUMBNAIL
