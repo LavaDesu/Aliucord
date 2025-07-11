@@ -3,6 +3,9 @@ package com.aliucord.coreplugins
 import android.content.Context
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+import android.widget.LinearLayout
+import androidx.constraintlayout.widget.ConstraintLayout
+import com.aliucord.Utils
 import com.aliucord.coreplugins.componentsv2.BotUiComponentV2Entry
 import com.aliucord.coreplugins.componentsv2.ComponentV2Type
 import com.aliucord.coreplugins.componentsv2.models.*
@@ -30,6 +33,7 @@ import com.discord.widgets.chat.list.adapter.WidgetChatListAdapterItemBotCompone
 import com.discord.widgets.chat.list.entries.BotUiComponentEntry
 import com.discord.widgets.chat.list.entries.ChatListEntry
 import com.discord.widgets.chat.list.model.WidgetChatListModelMessages
+import com.lytefast.flexinput.R
 
 internal class ComponentsV2 : CorePlugin(Manifest("ComponentsV2")) {
     override val isHidden: Boolean = true
@@ -150,6 +154,10 @@ internal class ComponentsV2 : CorePlugin(Manifest("ComponentsV2")) {
         {
             itemView.layoutParams = itemView.layoutParams.apply {
                 width = WRAP_CONTENT
+            }
+            val rootLayout = itemView.findViewById<LinearLayout>(Utils.getResId("chat_list_adapter_item_component_root", "id"))
+            rootLayout.layoutParams = (rootLayout.layoutParams as ConstraintLayout.LayoutParams).apply {
+                marginEnd = adapter.context.resources.getDimension(R.d.chat_cell_horizontal_spacing_padding).toInt()
             }
         }
     }

@@ -25,6 +25,9 @@ import com.lytefast.flexinput.R
 
 class ContainerComponentView(val ctx: Context)
     : SpoilableComponentView<ContainerMessageComponent>(ctx, 1) {
+    companion object {
+        private val accentDividerId = View.generateViewId()
+    }
     private val cardView = MaterialCardView(ctx).apply {
         radius = 8.dp.toFloat()
         elevation = 0f
@@ -34,7 +37,6 @@ class ContainerComponentView(val ctx: Context)
             bottomToBottom = PARENT_ID
             startToStart = PARENT_ID
             endToEnd = PARENT_ID
-            marginEnd = ctx.resources.getDimension(R.d.chat_cell_horizontal_spacing_padding).toInt()
         }
         this@ContainerComponentView.addView(this)
     }
@@ -44,9 +46,8 @@ class ContainerComponentView(val ctx: Context)
         cardView.addView(this)
     }
 
-    private val dividerId = View.generateViewId()
     private val accentDivider = View(ctx).apply {
-        id = dividerId
+        id = accentDividerId
         layoutParams = LayoutParams(3.dp, 0).apply {
             bottomToBottom = PARENT_ID
             startToStart = PARENT_ID
@@ -58,7 +59,7 @@ class ContainerComponentView(val ctx: Context)
     private val contentView = LinearLayout(ctx).apply {
         setPadding(8.dp, 8.dp, 8.dp, 8.dp)
         layoutParams = LayoutParams(WRAP_CONTENT, WRAP_CONTENT).apply {
-            startToEnd = dividerId
+            startToEnd = accentDividerId
             endToEnd = PARENT_ID
             topToTop = PARENT_ID
             constrainedWidth = true

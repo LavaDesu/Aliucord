@@ -10,15 +10,17 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.PARENT_ID
 import com.aliucord.coreplugins.componentsv2.ComponentV2Type
 import com.aliucord.coreplugins.componentsv2.models.SectionMessageComponent
+import com.aliucord.utils.DimenUtils.dp
 import com.aliucord.widgets.LinearLayout
 import com.discord.widgets.botuikit.ComponentProvider
 import com.discord.widgets.botuikit.views.ComponentActionListener
 import com.discord.widgets.botuikit.views.ComponentView
 import com.discord.widgets.chat.list.adapter.WidgetChatListAdapterItemBotComponentRowKt
-import com.lytefast.flexinput.R
 
 class SectionComponentView(val ctx: Context) : ConstraintLayout(ctx), ComponentView<SectionMessageComponent> {
-    private val accessoryViewId = View.generateViewId()
+    companion object {
+        private val accessoryViewId = View.generateViewId()
+    }
 
     private val mainView = LinearLayout(ctx).apply {
         layoutParams = LayoutParams(WRAP_CONTENT, WRAP_CONTENT).apply {
@@ -27,7 +29,7 @@ class SectionComponentView(val ctx: Context) : ConstraintLayout(ctx), ComponentV
             topToTop = PARENT_ID
             startToStart = PARENT_ID
             endToStart = accessoryViewId
-            marginEnd = ctx.resources.getDimension(R.d.chat_cell_horizontal_spacing_padding).toInt()
+            marginEnd = 16.dp
         }
         this@SectionComponentView.addView(this)
     }
@@ -36,7 +38,6 @@ class SectionComponentView(val ctx: Context) : ConstraintLayout(ctx), ComponentV
         layoutParams = LayoutParams(WRAP_CONTENT, WRAP_CONTENT).apply {
             topToTop = PARENT_ID
             endToEnd = PARENT_ID
-            marginEnd = ctx.resources.getDimension(R.d.chat_cell_horizontal_spacing_padding).toInt()
         }
         this@SectionComponentView.addView(this)
     }
