@@ -1,5 +1,6 @@
 package com.aliucord.coreplugins.componentsv2.views
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.*
@@ -9,20 +10,20 @@ import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.PARENT_ID
 import com.aliucord.coreplugins.componentsv2.BotUiComponentV2Entry
 import com.aliucord.coreplugins.componentsv2.models.SpoilableMessageComponent
 import com.aliucord.utils.DimenUtils.dp
+import com.discord.stores.StoreMessageState
 import com.discord.stores.StoreStream
 import com.discord.utilities.color.ColorCompat
-import com.discord.widgets.botuikit.views.ComponentView
 import com.lytefast.flexinput.R
 
 /**
- * A message component view that can be spoilered.
+ * A view that can be spoilered.
  *
  * @param ctx Context
  * @param type 1 for full (spoiler text and button), 2 for mini (eye icon)
  */
-abstract class SpoilableComponentView<T : SpoilableMessageComponent>(ctx: Context, type: Int)
-    : ConstraintLayout(ctx), ComponentView<T> {
-    protected val spoilerView = ConstraintLayout(ctx).apply {
+@SuppressLint("ViewConstructor")
+class SpoilerView(ctx: Context, type: Int) : ConstraintLayout(ctx) {
+    private val spoilerView = ConstraintLayout(ctx).apply {
         visibility = GONE
         setBackgroundColor(ColorCompat.getThemedColor(ctx, R.b.theme_chat_spoiler_bg))
         layoutParams = LayoutParams(0, 0).apply {
@@ -40,7 +41,7 @@ abstract class SpoilableComponentView<T : SpoilableMessageComponent>(ctx: Contex
                     setCardBackgroundColor(ColorCompat.getThemedColor(ctx, R.b.colorBackgroundFloating))
                     radius = 16.dp.toFloat()
 
-                    layoutParams = ConstraintLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT).apply {
+                    layoutParams = LayoutParams(WRAP_CONTENT, WRAP_CONTENT).apply {
                         startToStart = PARENT_ID
                         endToEnd = PARENT_ID
                         topToTop = PARENT_ID
@@ -63,7 +64,7 @@ abstract class SpoilableComponentView<T : SpoilableMessageComponent>(ctx: Contex
             2 -> {
                 ImageView(ctx).apply {
                     setImageResource(R.e.ic_spoiler)
-                    layoutParams = ConstraintLayout.LayoutParams(0, 0).apply {
+                    layoutParams = LayoutParams(0, 0).apply {
                         startToStart = PARENT_ID
                         endToEnd = PARENT_ID
                         topToTop = PARENT_ID
@@ -76,20 +77,37 @@ abstract class SpoilableComponentView<T : SpoilableMessageComponent>(ctx: Contex
             else -> throw IllegalArgumentException("Invalid spoiler view type")
         }
         addView(innerView)
+        this@SpoilerView.addView(this)
     }
 
-    protected fun configureSpoiler(entry: BotUiComponentV2Entry, component: T) {
-        val spoiled = entry.state?.visibleSpoilerEmbedMap?.containsKey(component.id) ?: false
+    fun configure(entry: BotUiComponentV2Entry, component: SpoilableMessageComponent, key: String? = null) {
+        configure(component.spoiler, entry.state, entry.message.id, Pair(component.id, key))
+    }
+
+    fun configure(
+        isSpoiler: Boolean,
+        state: StoreMessageState.State?,
+        messageId: Long,
+        key: Pair<Int, String?>,
+    ) {
+        val (id, strKey) = key
+        val spoiled = if (strKey != null)
+            state?.visibleSpoilerEmbedMap?.get(id)?.contains(strKey) ?: false
+        else
+            state?.visibleSpoilerEmbedMap?.containsKey(id) ?: false
 
         spoilerView.setOnClickListener {
             spoilerView.setOnClickListener(null)
             spoilerView.animate()
                 .withEndAction {
-                    StoreStream.getMessageState().revealSpoilerEmbed(entry.message.id, component.id)
+                    if (strKey != null)
+                        StoreStream.getMessageState().revealSpoilerEmbedData(messageId, id, strKey)
+                    else
+                        StoreStream.getMessageState().revealSpoilerEmbed(messageId, id)
                 }
                 .alpha(0f)
         }
-        spoilerView.visibility = if (component.spoiler && !spoiled) VISIBLE else GONE
+        spoilerView.visibility = if (isSpoiler && !spoiled) VISIBLE else GONE
         spoilerView.alpha = 1f
     }
 }

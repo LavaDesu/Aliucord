@@ -6,6 +6,7 @@ import android.content.Context
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.FrameLayout
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.PARENT_ID
 import com.aliucord.Logger
 import com.aliucord.coreplugins.componentsv2.BotUiComponentV2Entry
 import com.aliucord.coreplugins.componentsv2.ComponentV2Type
@@ -16,16 +17,25 @@ import com.discord.utilities.embed.EmbedResourceUtils
 import com.discord.utilities.images.MGImages
 import com.discord.widgets.botuikit.ComponentProvider
 import com.discord.widgets.botuikit.views.ComponentActionListener
+import com.discord.widgets.botuikit.views.ComponentView
 import com.discord.widgets.chat.list.adapter.WidgetChatListAdapterItemBotComponentRow
 import com.facebook.drawee.view.SimpleDraweeView
 import com.google.android.material.card.MaterialCardView
 import com.lytefast.flexinput.R
 
 class ThumbnailComponentView(ctx: Context)
-    : SpoilableComponentView<ThumbnailMessageComponent>(ctx, 2) {
+    : ConstraintLayout(ctx), ComponentView<ThumbnailMessageComponent> {
     private val embedThumbnailMaxSize = (ctx.resources.getDimension(R.d.embed_thumbnail_max_size) * 1.5).toInt()
 
     private val imageView = SimpleDraweeView(ctx, null, 0, R.i.UiKit_ImageView).apply { }
+    private val spoilerView = SpoilerView(ctx, 2).apply {
+        layoutParams = LayoutParams(0, 0).apply {
+            bottomToBottom = PARENT_ID
+            endToEnd = PARENT_ID
+            startToStart = PARENT_ID
+            topToTop = PARENT_ID
+        }
+    }
 
     init {
         val view = MaterialCardView(ctx).apply {
@@ -80,7 +90,7 @@ class ThumbnailComponentView(ctx: Context)
             )
         }
 
-        configureSpoiler(entry, component)
+        spoilerView.configure(entry, component)
     }
 
     override fun type() = ComponentV2Type.THUMBNAIL

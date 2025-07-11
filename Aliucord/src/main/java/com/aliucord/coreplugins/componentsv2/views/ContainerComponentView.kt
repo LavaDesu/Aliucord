@@ -18,15 +18,24 @@ import com.aliucord.widgets.LinearLayout
 import com.discord.utilities.color.ColorCompat
 import com.discord.widgets.botuikit.ComponentProvider
 import com.discord.widgets.botuikit.views.ComponentActionListener
+import com.discord.widgets.botuikit.views.ComponentView
 import com.discord.widgets.chat.list.adapter.WidgetChatListAdapterItemBotComponentRow
 import com.discord.widgets.chat.list.adapter.WidgetChatListAdapterItemBotComponentRowKt
 import com.google.android.material.card.MaterialCardView
 import com.lytefast.flexinput.R
 
 class ContainerComponentView(val ctx: Context)
-    : SpoilableComponentView<ContainerMessageComponent>(ctx, 1) {
+    : ConstraintLayout(ctx), ComponentView<ContainerMessageComponent> {
     companion object {
         private val accentDividerId = View.generateViewId()
+    }
+    private val spoilerView = SpoilerView(ctx, 1).apply {
+        layoutParams = LayoutParams(0, 0).apply {
+            bottomToBottom = PARENT_ID
+            endToEnd = PARENT_ID
+            startToStart = PARENT_ID
+            topToTop = PARENT_ID
+        }
     }
     private val cardView = MaterialCardView(ctx).apply {
         radius = 8.dp.toFloat()
@@ -88,7 +97,7 @@ class ContainerComponentView(val ctx: Context)
             ?: ColorCompat.getThemedColor(ctx, R.b.colorBackgroundModifierAccent)
         accentDivider.setBackgroundColor(color)
 
-        configureSpoiler(entry, component)
+        spoilerView.configure(entry, component)
     }
 
     override fun type() = ComponentV2Type.CONTAINER
