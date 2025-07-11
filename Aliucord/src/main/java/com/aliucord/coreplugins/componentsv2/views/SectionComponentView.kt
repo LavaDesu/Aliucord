@@ -44,11 +44,13 @@ class SectionComponentView(val ctx: Context) : ConstraintLayout(ctx), ComponentV
     override fun configure(component: SectionMessageComponent, provider: ComponentProvider, listener: ComponentActionListener) {
         val configuredViews = component.components.mapIndexed { index, child ->
             provider.getConfiguredComponentView(listener, child, mainView, index)
-        }
+        }.filterNotNull()
         WidgetChatListAdapterItemBotComponentRowKt.replaceViews(mainView, configuredViews)
 
         val accessoryComponent = provider.getConfiguredComponentView(listener, component.accessory, accessoryView, 0)
-        WidgetChatListAdapterItemBotComponentRowKt.replaceViews(accessoryView, listOf(accessoryComponent))
+        accessoryComponent?.let {
+            WidgetChatListAdapterItemBotComponentRowKt.replaceViews(accessoryView, listOf(accessoryComponent))
+        }
     }
 
     override fun type() = ComponentV2Type.SECTION

@@ -80,7 +80,7 @@ class ContainerComponentView(val ctx: Context)
 
         val configuredViews = component.components.mapIndexed { index, child ->
             provider.getConfiguredComponentView(listener, child, contentView, index)
-        }
+        }.filterNotNull()
         WidgetChatListAdapterItemBotComponentRowKt.replaceViews(contentView, configuredViews)
 
         val color = component.accentColor?.let { ColorUtils.setAlphaComponent(it, 255) }
