@@ -24,6 +24,7 @@ import com.discord.stores.StoreMessageReplies.MessageState
 import com.discord.stores.StoreMessageState
 import com.discord.stores.StoreThreadMessages
 import com.discord.utilities.embed.InviteEmbedModel
+import com.discord.utilities.view.extensions.ViewExtensions
 import com.discord.widgets.botuikit.*
 import com.discord.widgets.botuikit.ComponentChatListState.ComponentStoreState
 import com.discord.widgets.botuikit.views.*
@@ -158,6 +159,13 @@ internal class ComponentsV2 : CorePlugin(Manifest("ComponentsV2")) {
             val rootLayout = itemView.findViewById<LinearLayout>(Utils.getResId("chat_list_adapter_item_component_root", "id"))
             rootLayout.layoutParams = (rootLayout.layoutParams as ConstraintLayout.LayoutParams).apply {
                 marginEnd = adapter.context.resources.getDimension(R.d.chat_cell_horizontal_spacing_padding).toInt()
+            }
+
+            ViewExtensions.setOnLongClickListenerConsumeClick(itemView) {
+                adapter.eventHandler.onMessageLongClicked(entry.message, "", false)
+            }
+            itemView.setOnClickListener {
+                adapter.eventHandler.onMessageClicked(entry.message, false)
             }
         }
     }
