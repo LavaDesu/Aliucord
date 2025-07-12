@@ -23,7 +23,9 @@ import com.discord.widgets.botuikit.views.ComponentView
 import com.discord.widgets.chat.list.adapter.*
 import com.lytefast.flexinput.R
 
-class TextDisplayComponentView(val ctx: Context) : ConstraintLayout(ctx), ComponentView<TextDisplayMessageComponent> {
+class TextDisplayComponentView(ctx: Context) : ConstraintLayout(ctx), ComponentView<TextDisplayMessageComponent> {
+    override fun type() = ComponentV2Type.TEXT_DISPLAY
+
     private val textView = LinkifiedTextView(ContextThemeWrapper(ctx, R.i.UiKit_Chat_Text)).apply {
         layoutParams = LayoutParams(0, WRAP_CONTENT).apply {
             topMargin = 2.dp
@@ -81,6 +83,4 @@ class TextDisplayComponentView(val ctx: Context) : ConstraintLayout(ctx), Compon
         )
         textView.setDraweeSpanStringBuilder(parseChannelMessage);
     }
-
-    override fun type() = ComponentV2Type.TEXT_DISPLAY
 }

@@ -16,7 +16,9 @@ import com.discord.widgets.botuikit.views.ComponentView
 import com.discord.widgets.chat.list.adapter.WidgetChatListAdapterItemBotComponentRow
 import com.lytefast.flexinput.R
 
-class SeparatorComponentView(val ctx: Context) : ConstraintLayout(ctx), ComponentView<SeparatorMessageComponent> {
+class SeparatorComponentView(ctx: Context) : ConstraintLayout(ctx), ComponentView<SeparatorMessageComponent> {
+    override fun type() = ComponentV2Type.SEPARATOR
+
     private val divider = Divider(ctx).apply {
         layoutParams = LayoutParams(layoutParams).apply {
             marginEnd = ctx.resources.getDimension(R.d.chat_cell_horizontal_spacing_padding).toInt()
@@ -38,6 +40,4 @@ class SeparatorComponentView(val ctx: Context) : ConstraintLayout(ctx), Componen
             setPadding(paddingLeft, padding, paddingRight, padding)
         }
     }
-
-    override fun type() = ComponentV2Type.SEPARATOR
 }

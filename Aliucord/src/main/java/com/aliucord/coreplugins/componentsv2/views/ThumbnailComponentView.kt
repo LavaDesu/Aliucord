@@ -23,8 +23,9 @@ import com.facebook.drawee.view.SimpleDraweeView
 import com.google.android.material.card.MaterialCardView
 import com.lytefast.flexinput.R
 
-class ThumbnailComponentView(ctx: Context)
-    : ConstraintLayout(ctx), ComponentView<ThumbnailMessageComponent> {
+class ThumbnailComponentView(ctx: Context) : ConstraintLayout(ctx), ComponentView<ThumbnailMessageComponent> {
+    override fun type() = ComponentV2Type.THUMBNAIL
+
     private val embedThumbnailMaxSize = (ctx.resources.getDimension(R.d.embed_thumbnail_max_size) * 1.5).toInt()
 
     companion object {
@@ -92,6 +93,4 @@ class ThumbnailComponentView(ctx: Context)
 
         spoilerView.configure(entry, component)
     }
-
-    override fun type() = ComponentV2Type.THUMBNAIL
 }

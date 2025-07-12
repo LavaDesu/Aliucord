@@ -17,7 +17,9 @@ import com.discord.widgets.botuikit.views.ComponentActionListener
 import com.discord.widgets.botuikit.views.ComponentView
 import com.discord.widgets.chat.list.adapter.WidgetChatListAdapterItemBotComponentRowKt
 
-class SectionComponentView(val ctx: Context) : ConstraintLayout(ctx), ComponentView<SectionMessageComponent> {
+class SectionComponentView(ctx: Context) : ConstraintLayout(ctx), ComponentView<SectionMessageComponent> {
+    override fun type() = ComponentV2Type.SECTION
+
     companion object {
         private val accessoryViewId = View.generateViewId()
     }
@@ -53,6 +55,4 @@ class SectionComponentView(val ctx: Context) : ConstraintLayout(ctx), ComponentV
             WidgetChatListAdapterItemBotComponentRowKt.replaceViews(accessoryView, listOf(accessoryComponent))
         }
     }
-
-    override fun type() = ComponentV2Type.SECTION
 }

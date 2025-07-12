@@ -31,7 +31,9 @@ import com.discord.widgets.media.WidgetMedia
 import com.google.android.material.card.MaterialCardView
 import com.lytefast.flexinput.R
 
-class MediaGalleryComponentView(val ctx: Context) : ConstraintLayout(ctx), ComponentView<MediaGalleryMessageComponent> {
+class MediaGalleryComponentView(ctx: Context) : ConstraintLayout(ctx), ComponentView<MediaGalleryMessageComponent> {
+    override fun type() = ComponentV2Type.MEDIA_GALLERY
+
     companion object {
         private val mediaViewId = View.generateViewId()
         private val maxEmbedHeight = EmbedResourceUtils.INSTANCE.maX_IMAGE_VIEW_HEIGHT_PX
@@ -92,22 +94,22 @@ class MediaGalleryComponentView(val ctx: Context) : ConstraintLayout(ctx), Compo
                 attachment.height!!,
                 maxEmbedWidth,
                 maxEmbedHeight,
-                ctx.resources,
+                resources,
                 0,
             )
-            layout.addView(MaterialCardView(ctx).apply {
+            layout.addView(MaterialCardView(context).apply {
                 radius = 8.dp.toFloat()
                 elevation = 0f
-                setCardBackgroundColor(ColorCompat.getThemedColor(ctx, R.b.colorBackgroundPrimary))
+                setCardBackgroundColor(ColorCompat.getThemedColor(context, R.b.colorBackgroundPrimary))
                 layoutParams = LayoutParams(WRAP_CONTENT, WRAP_CONTENT).apply {
                     topMargin = 8.dp
                 }
-                addView(ConstraintLayout(ctx).apply {
+                addView(ConstraintLayout(context).apply {
                     layoutParams = FrameLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
-                    val mediaView = InlineMediaView(ctx).apply {
+                    val mediaView = InlineMediaView(context).apply {
                         radius = 8.dp.toFloat()
                         elevation = 0f
-                        setCardBackgroundColor(ColorCompat.getThemedColor(ctx, R.b.colorBackgroundPrimary))
+                        setCardBackgroundColor(ColorCompat.getThemedColor(context, R.b.colorBackgroundPrimary))
                         id = mediaViewId
                         layoutParams = LayoutParams(WRAP_CONTENT, WRAP_CONTENT).apply {
                             topToTop = PARENT_ID
@@ -118,7 +120,7 @@ class MediaGalleryComponentView(val ctx: Context) : ConstraintLayout(ctx), Compo
                         }
                         updateUIWithAttachment(attachment, width, height, true)
                     }
-                    val spoilerView = SpoilerView(ctx, 1).apply {
+                    val spoilerView = SpoilerView(context, 1).apply {
                         translationZ = 10f
                         layoutParams = SpoilerView.constraintLayoutParamsAround(mediaViewId)
                     }
@@ -131,6 +133,4 @@ class MediaGalleryComponentView(val ctx: Context) : ConstraintLayout(ctx), Compo
         }
         mediaViews = pendingViews.toList()
     }
-
-    override fun type() = ComponentV2Type.MEDIA_GALLERY
 }

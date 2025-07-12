@@ -24,8 +24,9 @@ import com.discord.widgets.chat.list.adapter.WidgetChatListAdapterItemBotCompone
 import com.google.android.material.card.MaterialCardView
 import com.lytefast.flexinput.R
 
-class ContainerComponentView(val ctx: Context)
-    : ConstraintLayout(ctx), ComponentView<ContainerMessageComponent> {
+class ContainerComponentView(ctx: Context) : ConstraintLayout(ctx), ComponentView<ContainerMessageComponent> {
+    override fun type() = ComponentV2Type.CONTAINER
+
     companion object {
         private val accentDividerId = View.generateViewId()
     }
@@ -92,11 +93,9 @@ class ContainerComponentView(val ctx: Context)
         WidgetChatListAdapterItemBotComponentRowKt.replaceViews(contentView, configuredViews)
 
         val color = component.accentColor?.let { ColorUtils.setAlphaComponent(it, 255) }
-            ?: ColorCompat.getThemedColor(ctx, R.b.colorBackgroundModifierAccent)
+            ?: ColorCompat.getThemedColor(context, R.b.colorBackgroundModifierAccent)
         accentDivider.setBackgroundColor(color)
 
         spoilerView.configure(entry, component)
     }
-
-    override fun type() = ComponentV2Type.CONTAINER
 }
