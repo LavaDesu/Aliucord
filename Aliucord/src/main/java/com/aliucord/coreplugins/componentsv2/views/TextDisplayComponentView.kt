@@ -11,6 +11,7 @@ import com.aliucord.coreplugins.componentsv2.BotUiComponentV2Entry
 import com.aliucord.coreplugins.componentsv2.ComponentV2Type
 import com.aliucord.coreplugins.componentsv2.models.TextDisplayMessageComponent
 import com.aliucord.utils.DimenUtils.dp
+import com.aliucord.utils.ViewUtils.addTo
 import com.discord.stores.StoreStream
 import com.discord.utilities.color.ColorCompat
 import com.discord.utilities.message.MessageUtils
@@ -26,12 +27,11 @@ import com.lytefast.flexinput.R
 class TextDisplayComponentView(ctx: Context) : ConstraintLayout(ctx), ComponentView<TextDisplayMessageComponent> {
     override fun type() = ComponentV2Type.TEXT_DISPLAY
 
-    private val textView = LinkifiedTextView(ContextThemeWrapper(ctx, R.i.UiKit_Chat_Text)).apply {
+    private val textView = LinkifiedTextView(ContextThemeWrapper(ctx, R.i.UiKit_Chat_Text)).addTo(this) {
         layoutParams = LayoutParams(0, WRAP_CONTENT).apply {
             topMargin = 2.dp
             bottomMargin = 2.dp
         }
-        this@TextDisplayComponentView.addView(this)
     }
 
     override fun configure(component: TextDisplayMessageComponent, provider: ComponentProvider, listener: ComponentActionListener) {

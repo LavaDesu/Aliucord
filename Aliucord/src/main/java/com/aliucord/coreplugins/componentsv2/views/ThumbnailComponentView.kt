@@ -12,6 +12,7 @@ import com.aliucord.coreplugins.componentsv2.BotUiComponentV2Entry
 import com.aliucord.coreplugins.componentsv2.ComponentV2Type
 import com.aliucord.coreplugins.componentsv2.models.ThumbnailMessageComponent
 import com.aliucord.utils.DimenUtils.dp
+import com.aliucord.utils.ViewUtils.addTo
 import com.discord.utilities.color.ColorCompat
 import com.discord.utilities.embed.EmbedResourceUtils
 import com.discord.utilities.images.MGImages
@@ -31,27 +32,25 @@ class ThumbnailComponentView(ctx: Context) : ConstraintLayout(ctx), ComponentVie
     companion object {
         private val imageViewId = View.generateViewId()
     }
-    private val imageView = SimpleDraweeView(ctx, null, 0, R.i.UiKit_ImageView).apply {
-        id = imageViewId
-    }
-    private val spoilerView = SpoilerView(ctx, 2).apply {
-        layoutParams = SpoilerView.constraintLayoutParamsAround(imageViewId)
-    }
+    private lateinit var imageView: SimpleDraweeView
+    private lateinit var spoilerView: SpoilerView
 
     init {
-        val view = MaterialCardView(ctx).apply {
+        MaterialCardView(ctx).addTo(this) {
             radius = 8.dp.toFloat()
             elevation = 0f
             setCardBackgroundColor(ColorCompat.getThemedColor(ctx, R.b.colorBackgroundPrimary))
             layoutParams = LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
-            addView(ConstraintLayout(ctx).apply {
+            ConstraintLayout(ctx).addTo(this) {
                 layoutParams = FrameLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
-                addView(imageView)
-                addView(spoilerView)
-            })
+                imageView = SimpleDraweeView(ctx, null, 0, R.i.UiKit_ImageView).addTo(this) {
+                    id = imageViewId
+                }
+                spoilerView = SpoilerView(ctx, 2).addTo(this) {
+                    layoutParams = SpoilerView.constraintLayoutParamsAround(imageViewId)
+                }
+            }
         }
-
-        addView(view)
     }
 
     // Reference: WidgetChatListAdapterItemEmbed.configureEmbedThumbnail

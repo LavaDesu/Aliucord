@@ -11,6 +11,7 @@ import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.PARENT_ID
 import com.aliucord.coreplugins.componentsv2.ComponentV2Type
 import com.aliucord.coreplugins.componentsv2.models.SectionMessageComponent
 import com.aliucord.utils.DimenUtils.dp
+import com.aliucord.utils.ViewUtils.addTo
 import com.aliucord.widgets.LinearLayout
 import com.discord.widgets.botuikit.ComponentProvider
 import com.discord.widgets.botuikit.views.ComponentActionListener
@@ -24,7 +25,7 @@ class SectionComponentView(ctx: Context) : ConstraintLayout(ctx), ComponentView<
         private val accessoryViewId = View.generateViewId()
     }
 
-    private val mainView = LinearLayout(ctx).apply {
+    private val mainView = LinearLayout(ctx).addTo(this) {
         layoutParams = LayoutParams(WRAP_CONTENT, WRAP_CONTENT).apply {
             constrainedWidth = true
             horizontalBias = 0f
@@ -33,15 +34,13 @@ class SectionComponentView(ctx: Context) : ConstraintLayout(ctx), ComponentView<
             endToStart = accessoryViewId
             marginEnd = 16.dp
         }
-        this@SectionComponentView.addView(this)
     }
-    private var accessoryView = FrameLayout(ctx).apply {
+    private var accessoryView = FrameLayout(ctx).addTo(this) {
         id = accessoryViewId
         layoutParams = LayoutParams(WRAP_CONTENT, WRAP_CONTENT).apply {
             topToTop = PARENT_ID
             endToEnd = PARENT_ID
         }
-        this@SectionComponentView.addView(this)
     }
 
     override fun configure(component: SectionMessageComponent, provider: ComponentProvider, listener: ComponentActionListener) {

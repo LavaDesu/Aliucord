@@ -10,6 +10,7 @@ import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.PARENT_ID
 import com.aliucord.coreplugins.componentsv2.BotUiComponentV2Entry
 import com.aliucord.coreplugins.componentsv2.models.SpoilableMessageComponent
 import com.aliucord.utils.DimenUtils.dp
+import com.aliucord.utils.ViewUtils.addTo
 import com.discord.stores.StoreMessageState
 import com.discord.stores.StoreStream
 import com.discord.utilities.color.ColorCompat
@@ -33,7 +34,7 @@ internal class SpoilerView(ctx: Context, type: Int) : ConstraintLayout(ctx) {
             }
     }
 
-    private val spoilerView = ConstraintLayout(ctx).apply {
+    private val spoilerView = ConstraintLayout(ctx).addTo(this) {
         visibility = GONE
         setBackgroundColor(ColorCompat.getThemedColor(ctx, R.b.theme_chat_spoiler_bg))
         layoutParams = LayoutParams(0, 0).apply {
@@ -44,9 +45,9 @@ internal class SpoilerView(ctx: Context, type: Int) : ConstraintLayout(ctx) {
         }
         isClickable = true
 
-        val innerView = when (type) {
+        when (type) {
             1 -> {
-                CardView(ctx).apply {
+                CardView(ctx).addTo(this) {
                     elevation = ctx.resources.getDimension(R.d.app_elevation)
                     setCardBackgroundColor(ColorCompat.getThemedColor(ctx, R.b.colorBackgroundFloating))
                     radius = 16.dp.toFloat()
@@ -58,7 +59,7 @@ internal class SpoilerView(ctx: Context, type: Int) : ConstraintLayout(ctx) {
                         bottomToBottom = PARENT_ID
                     }
 
-                    val textView = TextView(ctx, null, 0, R.i.UiKit_TextView_H2).apply {
+                    TextView(ctx, null, 0, R.i.UiKit_TextView_H2).addTo(this) {
                         setText(R.h.spoiler)
                         isAllCaps = true
                         setPadding(8.dp, 4.dp, 8.dp, 4.dp)
@@ -68,11 +69,10 @@ internal class SpoilerView(ctx: Context, type: Int) : ConstraintLayout(ctx) {
                             marginEnd = 4.dp
                         }
                     }
-                    addView(textView)
                 }
             }
             2 -> {
-                ImageView(ctx).apply {
+                ImageView(ctx).addTo(this) {
                     setImageResource(R.e.ic_spoiler)
                     layoutParams = LayoutParams(0, 0).apply {
                         startToStart = PARENT_ID
@@ -86,8 +86,6 @@ internal class SpoilerView(ctx: Context, type: Int) : ConstraintLayout(ctx) {
             }
             else -> throw IllegalArgumentException("Invalid spoiler view type")
         }
-        addView(innerView)
-        this@SpoilerView.addView(this)
     }
 
     fun configure(entry: BotUiComponentV2Entry, component: SpoilableMessageComponent, key: String? = null) {

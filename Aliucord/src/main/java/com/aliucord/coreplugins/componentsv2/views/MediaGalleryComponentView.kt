@@ -14,6 +14,7 @@ import com.aliucord.coreplugins.componentsv2.BotUiComponentV2Entry
 import com.aliucord.coreplugins.componentsv2.ComponentV2Type
 import com.aliucord.coreplugins.componentsv2.models.MediaGalleryMessageComponent
 import com.aliucord.utils.DimenUtils.dp
+import com.aliucord.utils.ViewUtils.addTo
 import com.aliucord.widgets.LinearLayout
 import com.aliucord.wrappers.messages.AttachmentWrapper
 import com.aliucord.wrappers.messages.AttachmentWrapper.Companion.height
@@ -38,14 +39,13 @@ class MediaGalleryComponentView(ctx: Context) : ConstraintLayout(ctx), Component
         private val mediaViewId = View.generateViewId()
         private val maxEmbedHeight = EmbedResourceUtils.INSTANCE.maX_IMAGE_VIEW_HEIGHT_PX
     }
-    private val layout = LinearLayout(ctx).apply {
+
+    private val layout = LinearLayout(ctx).addTo(this) {
         layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT).apply {
             topToTop = PARENT_ID
             startToStart = PARENT_ID
             endToEnd = PARENT_ID
         }
-
-        this@MediaGalleryComponentView.addView(this)
     }
     private var mediaViews: List<Pair<MessageAttachment, InlineMediaView>>? = null
 
@@ -69,7 +69,7 @@ class MediaGalleryComponentView(ctx: Context) : ConstraintLayout(ctx), Component
         val item = listener as WidgetChatListAdapterItemBotComponentRow
         val entry = item.entry
         if (entry !is BotUiComponentV2Entry) {
-            Logger("ComponentsV2").warn("configured separator with non-v2 entry")
+            Logger("ComponentsV2").warn("configured media gallery with non-v2 entry")
             return
         }
 
@@ -97,16 +97,16 @@ class MediaGalleryComponentView(ctx: Context) : ConstraintLayout(ctx), Component
                 resources,
                 0,
             )
-            layout.addView(MaterialCardView(context).apply {
+            MaterialCardView(context).addTo(layout) {
                 radius = 8.dp.toFloat()
                 elevation = 0f
                 setCardBackgroundColor(ColorCompat.getThemedColor(context, R.b.colorBackgroundPrimary))
                 layoutParams = LayoutParams(WRAP_CONTENT, WRAP_CONTENT).apply {
                     topMargin = 8.dp
                 }
-                addView(ConstraintLayout(context).apply {
+                ConstraintLayout(context).addTo(this) {
                     layoutParams = FrameLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
-                    val mediaView = InlineMediaView(context).apply {
+                    val mediaView = InlineMediaView(context).addTo(this) {
                         radius = 8.dp.toFloat()
                         elevation = 0f
                         setCardBackgroundColor(ColorCompat.getThemedColor(context, R.b.colorBackgroundPrimary))
@@ -120,16 +120,14 @@ class MediaGalleryComponentView(ctx: Context) : ConstraintLayout(ctx), Component
                         }
                         updateUIWithAttachment(attachment, width, height, true)
                     }
-                    val spoilerView = SpoilerView(context, 1).apply {
+                    val spoilerView = SpoilerView(context, 1).addTo(this) {
                         translationZ = 10f
                         layoutParams = SpoilerView.constraintLayoutParamsAround(mediaViewId)
                     }
                     pendingViews.add(attachment to mediaView)
-                    addView(mediaView)
-                    addView(spoilerView)
                     spoilerView.configure(it.spoiler, entry.state, entry.message.id, Pair(component.id, "media:$index"))
-                })
-            })
+                }
+            }
         }
         mediaViews = pendingViews.toList()
     }

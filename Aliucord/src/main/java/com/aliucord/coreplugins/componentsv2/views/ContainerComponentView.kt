@@ -14,6 +14,7 @@ import com.aliucord.coreplugins.componentsv2.BotUiComponentV2Entry
 import com.aliucord.coreplugins.componentsv2.ComponentV2Type
 import com.aliucord.coreplugins.componentsv2.models.ContainerMessageComponent
 import com.aliucord.utils.DimenUtils.dp
+import com.aliucord.utils.ViewUtils.addTo
 import com.aliucord.widgets.LinearLayout
 import com.discord.utilities.color.ColorCompat
 import com.discord.widgets.botuikit.ComponentProvider
@@ -30,50 +31,46 @@ class ContainerComponentView(ctx: Context) : ConstraintLayout(ctx), ComponentVie
     companion object {
         private val accentDividerId = View.generateViewId()
     }
-    private val spoilerView = SpoilerView(ctx, 1).apply {
-        layoutParams = SpoilerView.constraintLayoutParamsAround(PARENT_ID)
-    }
-    private val cardView = MaterialCardView(ctx).apply {
-        radius = 8.dp.toFloat()
-        elevation = 0f
-        setCardBackgroundColor(ColorCompat.getThemedColor(ctx, R.b.colorBackgroundSecondary))
-        layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT).apply {
-            topToTop = PARENT_ID
-            bottomToBottom = PARENT_ID
-            startToStart = PARENT_ID
-            endToEnd = PARENT_ID
-        }
-        this@ContainerComponentView.addView(this)
-    }
 
-    private val innerCardView = ConstraintLayout(ctx).apply {
-        layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
-        cardView.addView(this)
-    }
-
-    private val accentDivider = View(ctx).apply {
-        id = accentDividerId
-        layoutParams = LayoutParams(3.dp, 0).apply {
-            bottomToBottom = PARENT_ID
-            startToStart = PARENT_ID
-            topToTop = PARENT_ID
-        }
-        innerCardView.addView(this)
-    }
-
-    private val contentView = LinearLayout(ctx).apply {
-        setPadding(8.dp, 8.dp, 8.dp, 8.dp)
-        layoutParams = LayoutParams(WRAP_CONTENT, WRAP_CONTENT).apply {
-            startToEnd = accentDividerId
-            endToEnd = PARENT_ID
-            topToTop = PARENT_ID
-            constrainedWidth = true
-        }
-        innerCardView.addView(this)
-    }
+    private lateinit var accentDivider: View
+    private lateinit var contentView: LinearLayout
+    private lateinit var spoilerView: SpoilerView
 
     init {
-        innerCardView.addView(spoilerView)
+        MaterialCardView(ctx).addTo(this) {
+            radius = 8.dp.toFloat()
+            elevation = 0f
+            setCardBackgroundColor(ColorCompat.getThemedColor(ctx, R.b.colorBackgroundSecondary))
+            layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT).apply {
+                topToTop = PARENT_ID
+                bottomToBottom = PARENT_ID
+                startToStart = PARENT_ID
+                endToEnd = PARENT_ID
+            }
+            ConstraintLayout(ctx).addTo(this) {
+                layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
+                accentDivider = View(ctx).addTo(this) {
+                    id = accentDividerId
+                    layoutParams = LayoutParams(3.dp, 0).apply {
+                        bottomToBottom = PARENT_ID
+                        startToStart = PARENT_ID
+                        topToTop = PARENT_ID
+                    }
+                }
+                contentView = LinearLayout(ctx).addTo(this) {
+                    setPadding(8.dp, 8.dp, 8.dp, 8.dp)
+                    layoutParams = LayoutParams(WRAP_CONTENT, WRAP_CONTENT).apply {
+                        startToEnd = accentDividerId
+                        endToEnd = PARENT_ID
+                        topToTop = PARENT_ID
+                        constrainedWidth = true
+                    }
+                }
+                spoilerView = SpoilerView(ctx, 1).addTo(this) {
+                    layoutParams = SpoilerView.constraintLayoutParamsAround(PARENT_ID)
+                }
+            }
+        }
     }
 
     override fun configure(component: ContainerMessageComponent, provider: ComponentProvider, listener: ComponentActionListener) {
