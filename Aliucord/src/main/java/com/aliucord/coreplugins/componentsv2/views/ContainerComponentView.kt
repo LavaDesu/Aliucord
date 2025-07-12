@@ -30,12 +30,7 @@ class ContainerComponentView(val ctx: Context)
         private val accentDividerId = View.generateViewId()
     }
     private val spoilerView = SpoilerView(ctx, 1).apply {
-        layoutParams = LayoutParams(0, 0).apply {
-            bottomToBottom = PARENT_ID
-            endToEnd = PARENT_ID
-            startToStart = PARENT_ID
-            topToTop = PARENT_ID
-        }
+        layoutParams = SpoilerView.constraintLayoutParamsAround(PARENT_ID)
     }
     private val cardView = MaterialCardView(ctx).apply {
         radius = 8.dp.toFloat()

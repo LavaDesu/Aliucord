@@ -3,10 +3,10 @@
 package com.aliucord.coreplugins.componentsv2.views
 
 import android.content.Context
+import android.view.View
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.FrameLayout
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.PARENT_ID
 import com.aliucord.Logger
 import com.aliucord.coreplugins.componentsv2.BotUiComponentV2Entry
 import com.aliucord.coreplugins.componentsv2.ComponentV2Type
@@ -27,14 +27,14 @@ class ThumbnailComponentView(ctx: Context)
     : ConstraintLayout(ctx), ComponentView<ThumbnailMessageComponent> {
     private val embedThumbnailMaxSize = (ctx.resources.getDimension(R.d.embed_thumbnail_max_size) * 1.5).toInt()
 
-    private val imageView = SimpleDraweeView(ctx, null, 0, R.i.UiKit_ImageView).apply { }
+    companion object {
+        private val imageViewId = View.generateViewId()
+    }
+    private val imageView = SimpleDraweeView(ctx, null, 0, R.i.UiKit_ImageView).apply {
+        id = imageViewId
+    }
     private val spoilerView = SpoilerView(ctx, 2).apply {
-        layoutParams = LayoutParams(0, 0).apply {
-            bottomToBottom = PARENT_ID
-            endToEnd = PARENT_ID
-            startToStart = PARENT_ID
-            topToTop = PARENT_ID
-        }
+        layoutParams = SpoilerView.constraintLayoutParamsAround(imageViewId)
     }
 
     init {

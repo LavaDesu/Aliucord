@@ -22,7 +22,17 @@ import com.lytefast.flexinput.R
  * @param type 1 for full (spoiler text and button), 2 for mini (eye icon)
  */
 @SuppressLint("ViewConstructor")
-class SpoilerView(ctx: Context, type: Int) : ConstraintLayout(ctx) {
+internal class SpoilerView(ctx: Context, type: Int) : ConstraintLayout(ctx) {
+    companion object {
+        fun constraintLayoutParamsAround(viewId: Int) =
+            LayoutParams(0, 0).apply {
+                topToTop = viewId
+                bottomToBottom = viewId
+                startToStart = viewId
+                endToEnd = viewId
+            }
+    }
+
     private val spoilerView = ConstraintLayout(ctx).apply {
         visibility = GONE
         setBackgroundColor(ColorCompat.getThemedColor(ctx, R.b.theme_chat_spoiler_bg))
