@@ -83,31 +83,31 @@ internal class ComponentsV2 : CorePlugin(Manifest("ComponentsV2")) {
         }
 
         // love
-        @Suppress("UNUSED_DESTRUCTURED_PARAMETER_ENTRY")
+        @Suppress("UNUSED_DESTRUCTURED_PARAMETER_ENTRY", "LocalVariableName")
         patcher.patch(WidgetChatListModelMessages.Companion::class.java.declaredMethods.find { it.name == "getMessageItems" }!!)
         {(
             param,
             channel: Channel,
             guildMembers: Map<Long, GuildMember>,
             guildRoles: Map<Long, GuildRole>,
-            blockedRelationships: Map<Long, Int>?,
-            referencedChannel: Channel?,
-            threadStoreState: StoreThreadMessages.ThreadState?,
-            message: Message,
+            _blockedRelationships: Map<Long, Int>?,
+            _referencedChannel: Channel?,
+            _threadStoreState: StoreThreadMessages.ThreadState?,
+            _message: Message,
             state: StoreMessageState.State?,
-            repliedMessages: Map<Long, MessageState>?,
-            isBlockedExpanded: Boolean,
-            isMinimal: Boolean,
-            permissions: Long?,
-            allowAnimatedEmojis: Boolean,
-            autoPlayGifs: Boolean,
-            isRenderEmbedEnabled: Boolean,
+            _repliedMessages: Map<Long, MessageState>?,
+            _isBlockedExpanded: Boolean,
+            _isMinimal: Boolean,
+            _permissions: Long?,
+            _allowAnimatedEmojis: Boolean,
+            _autoPlayGifs: Boolean,
+            _isRenderEmbedEnabled: Boolean,
             meId: Long,
-            isRenderComponentEnabled: Boolean,
-            componentStoreState: Map<Long, ComponentStoreState>,
-            inviteEmbedModel: InviteEmbedModel?,
-            isThreadStarterMessage: Boolean,
-            canGuildSeePurchaseFeedbackLoopSystemMessages: Boolean
+            _isRenderComponentEnabled: Boolean,
+            _componentStoreState: Map<Long, ComponentStoreState>,
+            _inviteEmbedModel: InviteEmbedModel?,
+            _isThreadStarterMessage: Boolean,
+            _canGuildSeePurchaseFeedbackLoopSystemMessages: Boolean
         ) ->
             @Suppress("UNCHECKED_CAST")
             val result = (param.result as MutableList<ChatListEntry>)
