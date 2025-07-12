@@ -13,6 +13,7 @@ import com.aliucord.Logger
 import com.aliucord.coreplugins.componentsv2.BotUiComponentV2Entry
 import com.aliucord.coreplugins.componentsv2.ComponentV2Type
 import com.aliucord.coreplugins.componentsv2.models.ContainerMessageComponent
+import com.aliucord.coreplugins.componentsv2.models.MediaGalleryMessageComponent
 import com.aliucord.utils.DimenUtils.dp
 import com.aliucord.utils.ViewUtils.addTo
 import com.aliucord.widgets.LinearLayout
@@ -82,10 +83,9 @@ class ContainerComponentView(ctx: Context) : ConstraintLayout(ctx), ComponentVie
         }
 
         val configuredViews = component.components.mapIndexed { index, child ->
-            val view = provider.getConfiguredComponentView(listener, child, contentView, index)
-            if (view is MediaGalleryComponentView)
-                view.contained = true
-            view
+            if (child is MediaGalleryMessageComponent)
+                child.markedContained = true
+            provider.getConfiguredComponentView(listener, child, contentView, index)
         }.filterNotNull()
         WidgetChatListAdapterItemBotComponentRowKt.replaceViews(contentView, configuredViews)
 

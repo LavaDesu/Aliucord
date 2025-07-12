@@ -49,11 +49,8 @@ class MediaGalleryComponentView(ctx: Context) : ConstraintLayout(ctx), Component
     }
     private var mediaViews: List<Pair<MessageAttachment, InlineMediaView>>? = null
 
-    // Set by ContainerComponentView to limit max width
-    var contained = false
-
     // This isn't pretty, but Discord actually does this in their code (EmbedResourceUtils.computeMaximumImageWidthPx)
-    private fun calculateMaxWidth(): Int {
+    private fun calculateMaxWidth(contained: Boolean): Int {
         var maxPossibleWidth = DisplayUtils.getScreenSize(context).width() -
             resources.getDimensionPixelSize(R.d.uikit_guideline_chat) -
             resources.getDimensionPixelSize(R.d.chat_cell_horizontal_spacing_total)
@@ -73,7 +70,7 @@ class MediaGalleryComponentView(ctx: Context) : ConstraintLayout(ctx), Component
             return
         }
 
-        val maxEmbedWidth = calculateMaxWidth()
+        val maxEmbedWidth = calculateMaxWidth(component.markedContained)
         layout.removeAllViews()
         val pendingViews = mutableListOf<Pair<MessageAttachment, InlineMediaView>>()
         component.items.forEachIndexed { index, it ->

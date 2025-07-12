@@ -9,6 +9,8 @@ data class MediaGalleryMessageComponent(
 
     val id: Int,
     val items: List<MediaGalleryItem>,
+    // Set by ContainerComponentView to tell MediaGalleryComponentView it is contained
+    var markedContained: Boolean = false,
 ) : MessageComponent {
     override fun getType() = type
     override fun getIndex() = index
