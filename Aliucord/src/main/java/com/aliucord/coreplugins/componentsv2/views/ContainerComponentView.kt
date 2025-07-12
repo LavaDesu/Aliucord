@@ -84,7 +84,10 @@ class ContainerComponentView(val ctx: Context)
         }
 
         val configuredViews = component.components.mapIndexed { index, child ->
-            provider.getConfiguredComponentView(listener, child, contentView, index)
+            val view = provider.getConfiguredComponentView(listener, child, contentView, index)
+            if (view is MediaGalleryComponentView)
+                view.contained = true
+            view
         }.filterNotNull()
         WidgetChatListAdapterItemBotComponentRowKt.replaceViews(contentView, configuredViews)
 

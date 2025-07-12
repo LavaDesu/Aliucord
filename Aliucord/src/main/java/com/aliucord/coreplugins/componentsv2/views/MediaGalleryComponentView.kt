@@ -1,0 +1,136 @@
+@file:Suppress("MISSING_DEPENDENCY_CLASS", "MISSING_DEPENDENCY_SUPERCLASS")
+
+package com.aliucord.coreplugins.componentsv2.views
+
+import android.content.Context
+import android.view.View
+import android.view.ViewGroup.LayoutParams.MATCH_PARENT
+import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+import android.widget.FrameLayout
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.PARENT_ID
+import com.aliucord.Logger
+import com.aliucord.coreplugins.componentsv2.BotUiComponentV2Entry
+import com.aliucord.coreplugins.componentsv2.ComponentV2Type
+import com.aliucord.coreplugins.componentsv2.models.MediaGalleryMessageComponent
+import com.aliucord.utils.DimenUtils.dp
+import com.aliucord.widgets.LinearLayout
+import com.aliucord.wrappers.messages.AttachmentWrapper
+import com.aliucord.wrappers.messages.AttachmentWrapper.Companion.height
+import com.aliucord.wrappers.messages.AttachmentWrapper.Companion.width
+import com.discord.api.message.attachment.MessageAttachment
+import com.discord.utilities.color.ColorCompat
+import com.discord.utilities.display.DisplayUtils
+import com.discord.utilities.embed.EmbedResourceUtils
+import com.discord.widgets.botuikit.ComponentProvider
+import com.discord.widgets.botuikit.views.ComponentActionListener
+import com.discord.widgets.botuikit.views.ComponentView
+import com.discord.widgets.chat.list.InlineMediaView
+import com.discord.widgets.chat.list.adapter.WidgetChatListAdapterItemBotComponentRow
+import com.discord.widgets.media.WidgetMedia
+import com.google.android.material.card.MaterialCardView
+import com.lytefast.flexinput.R
+
+class MediaGalleryComponentView(val ctx: Context) : ConstraintLayout(ctx), ComponentView<MediaGalleryMessageComponent> {
+    companion object {
+        private val mediaViewId = View.generateViewId()
+        private val maxEmbedHeight = EmbedResourceUtils.INSTANCE.maX_IMAGE_VIEW_HEIGHT_PX
+    }
+    private val layout = LinearLayout(ctx).apply {
+        layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT).apply {
+            topToTop = PARENT_ID
+            startToStart = PARENT_ID
+            endToEnd = PARENT_ID
+        }
+
+        this@MediaGalleryComponentView.addView(this)
+    }
+    private var mediaViews: List<Pair<MessageAttachment, InlineMediaView>>? = null
+
+    // Set by ContainerComponentView to limit max width
+    var contained = false
+
+    // This isn't pretty, but Discord actually does this in their code (EmbedResourceUtils.computeMaximumImageWidthPx)
+    private fun calculateMaxWidth(): Int {
+        var maxPossibleWidth = DisplayUtils.getScreenSize(context).width() -
+            resources.getDimensionPixelSize(R.d.uikit_guideline_chat) -
+            resources.getDimensionPixelSize(R.d.chat_cell_horizontal_spacing_total)
+
+        if (contained)
+            maxPossibleWidth -= 15.dp
+
+        return maxPossibleWidth.coerceAtMost(1440)
+    }
+
+    // Reference: WidgetChatListAdapterItemAttachment.configureUI
+    override fun configure(component: MediaGalleryMessageComponent, provider: ComponentProvider, listener: ComponentActionListener) {
+        val item = listener as WidgetChatListAdapterItemBotComponentRow
+        val entry = item.entry
+        if (entry !is BotUiComponentV2Entry) {
+            Logger("ComponentsV2").warn("configured separator with non-v2 entry")
+            return
+        }
+
+        val maxEmbedWidth = calculateMaxWidth()
+        layout.removeAllViews()
+        val pendingViews = mutableListOf<Pair<MessageAttachment, InlineMediaView>>()
+        component.items.forEachIndexed { index, it ->
+            val media = it.media
+            // TODO: there's probably a utility to extract filename from url
+            val name = media.url.split("/").last().split("?").first()
+            val attachment = AttachmentWrapper.create(
+                name,
+                0,
+                media.proxyUrl,
+                media.url,
+                media.width,
+                media.height,
+            )
+
+            val (width, height) = EmbedResourceUtils.INSTANCE.calculateScaledSize(
+                attachment.width!!,
+                attachment.height!!,
+                maxEmbedWidth,
+                maxEmbedHeight,
+                ctx.resources,
+                0,
+            )
+            layout.addView(MaterialCardView(ctx).apply {
+                radius = 8.dp.toFloat()
+                elevation = 0f
+                setCardBackgroundColor(ColorCompat.getThemedColor(ctx, R.b.colorBackgroundPrimary))
+                layoutParams = LayoutParams(WRAP_CONTENT, WRAP_CONTENT).apply {
+                    topMargin = 8.dp
+                }
+                addView(ConstraintLayout(ctx).apply {
+                    layoutParams = FrameLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
+                    val mediaView = InlineMediaView(ctx).apply {
+                        radius = 8.dp.toFloat()
+                        elevation = 0f
+                        setCardBackgroundColor(ColorCompat.getThemedColor(ctx, R.b.colorBackgroundPrimary))
+                        id = mediaViewId
+                        layoutParams = LayoutParams(WRAP_CONTENT, WRAP_CONTENT).apply {
+                            topToTop = PARENT_ID
+                            startToStart = PARENT_ID
+                        }
+                        setOnClickListener {
+                            WidgetMedia.Companion!!.launch(context, attachment);
+                        }
+                        updateUIWithAttachment(attachment, width, height, true)
+                    }
+                    val spoilerView = SpoilerView(ctx, 1).apply {
+                        translationZ = 10f
+                        layoutParams = SpoilerView.constraintLayoutParamsAround(mediaViewId)
+                    }
+                    pendingViews.add(attachment to mediaView)
+                    addView(mediaView)
+                    addView(spoilerView)
+                    spoilerView.configure(it.spoiler, entry.state, entry.message.id, Pair(component.id, "media:$index"))
+                })
+            })
+        }
+        mediaViews = pendingViews.toList()
+    }
+
+    override fun type() = ComponentV2Type.MEDIA_GALLERY
+}
