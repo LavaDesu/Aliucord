@@ -22,6 +22,10 @@ data class ContainerMessageComponent(
             index: Int,
             components: List<MessageComponent>,
         ): ContainerMessageComponent {
+            components.forEach {
+                if (it is MediaGalleryMessageComponent)
+                    it.markedContained = true
+            }
             return component.run {
                 ContainerMessageComponent(
                     type,
