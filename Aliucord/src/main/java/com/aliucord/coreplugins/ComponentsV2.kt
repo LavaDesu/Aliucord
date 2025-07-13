@@ -112,7 +112,7 @@ internal class ComponentsV2 : CorePlugin(Manifest("ComponentsV2")) {
             @Suppress("UNCHECKED_CAST")
             val result = (param.result as MutableList<ChatListEntry>)
             result.forEachIndexed { index, entry ->
-                if (entry is BotUiComponentEntry && ((entry.message.flags shr 15) == 1L)) {
+                if (entry is BotUiComponentEntry && ((entry.message.flags shr 15) and 1 == 1L)) {
                     val fields = BotUiComponentV2Entry.V2Fields(state, meId, channel, guildMembers, guildRoles)
                     result[index] = BotUiComponentV2Entry.fromV1(entry, fields)
                 }
