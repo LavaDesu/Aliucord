@@ -11,6 +11,7 @@ import com.aliucord.coreplugins.componentsv2.models.SeparatorMessageComponent
 import com.aliucord.utils.DimenUtils.dp
 import com.aliucord.utils.ViewUtils.addTo
 import com.aliucord.views.Divider
+import com.discord.utilities.color.ColorCompat
 import com.discord.widgets.botuikit.ComponentProvider
 import com.discord.widgets.botuikit.views.ComponentActionListener
 import com.discord.widgets.botuikit.views.ComponentView
@@ -21,9 +22,7 @@ class SeparatorComponentView(ctx: Context) : ConstraintLayout(ctx), ComponentVie
     override fun type() = ComponentV2Type.SEPARATOR
 
     private val divider = Divider(ctx).addTo(this) {
-        layoutParams = LayoutParams(layoutParams).apply {
-            marginEnd = ctx.resources.getDimension(R.d.chat_cell_horizontal_spacing_padding).toInt()
-        }
+        setBackgroundColor(ColorCompat.getThemedColor(context, R.b.colorTextMuted));
     }
 
     override fun configure(component: SeparatorMessageComponent, provider: ComponentProvider, listener: ComponentActionListener) {
