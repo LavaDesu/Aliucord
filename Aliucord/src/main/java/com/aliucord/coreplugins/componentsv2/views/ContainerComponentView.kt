@@ -4,7 +4,6 @@ package com.aliucord.coreplugins.componentsv2.views
 
 import android.content.Context
 import android.view.View
-import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.PARENT_ID
@@ -41,14 +40,12 @@ class ContainerComponentView(ctx: Context) : ConstraintLayout(ctx), ComponentVie
             radius = 8.dp.toFloat()
             elevation = 0f
             setCardBackgroundColor(ColorCompat.getThemedColor(ctx, R.b.colorBackgroundSecondary))
-            layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT).apply {
+            layoutParams = LayoutParams(WRAP_CONTENT, WRAP_CONTENT).apply {
                 topToTop = PARENT_ID
                 bottomToBottom = PARENT_ID
                 startToStart = PARENT_ID
-                endToEnd = PARENT_ID
             }
             ConstraintLayout(ctx).addTo(this) {
-                layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
                 accentDivider = View(ctx).addTo(this) {
                     id = accentDividerId
                     layoutParams = LayoutParams(3.dp, 0).apply {

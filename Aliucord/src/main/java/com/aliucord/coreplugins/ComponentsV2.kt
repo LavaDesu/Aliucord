@@ -2,7 +2,6 @@ package com.aliucord.coreplugins
 
 import android.content.Context
 import android.view.ViewGroup
-import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.aliucord.Utils
@@ -83,7 +82,7 @@ internal class ComponentsV2 : CorePlugin(Manifest("ComponentsV2")) {
         }
 
         // love
-        @Suppress("UNUSED_DESTRUCTURED_PARAMETER_ENTRY", "LocalVariableName")
+        @Suppress("UNUSED_DESTRUCTURED_PARAMETER_ENTRY", "LocalVariableName", "UnusedVariable")
         patcher.patch(WidgetChatListModelMessages.Companion::class.java.declaredMethods.find { it.name == "getMessageItems" }!!)
         {(
             param,
@@ -153,9 +152,6 @@ internal class ComponentsV2 : CorePlugin(Manifest("ComponentsV2")) {
 
         patcher.after<WidgetChatListAdapterItemBotComponentRow>(WidgetChatListAdapter::class.java)
         {
-            itemView.layoutParams = itemView.layoutParams.apply {
-                width = WRAP_CONTENT
-            }
             val rootLayout = itemView.findViewById<LinearLayout>(Utils.getResId("chat_list_adapter_item_component_root", "id"))
             rootLayout.layoutParams = (rootLayout.layoutParams as ConstraintLayout.LayoutParams).apply {
                 marginEnd = adapter.context.resources.getDimension(R.d.chat_cell_horizontal_spacing_padding).toInt()
