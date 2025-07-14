@@ -1,9 +1,10 @@
-package com.discord.models.botuikit
+package com.aliucord.coreplugins.componentsv2.models
 
 import com.discord.api.botuikit.*
+import com.discord.models.botuikit.ActionInteractionComponentState
+import com.discord.models.botuikit.ActionMessageComponent
 import com.discord.widgets.botuikit.ComponentChatListState
 
-// This needs to be accessed by ApiToModelHelper, so it also needs to be part of injector
 data class SelectV2MessageComponent(
     private val type: ComponentType,
     private val index: Int,

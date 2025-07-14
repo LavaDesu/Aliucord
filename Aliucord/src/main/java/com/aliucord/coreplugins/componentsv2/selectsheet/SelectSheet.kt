@@ -10,8 +10,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.aliucord.Utils
 import com.aliucord.coreplugins.componentsv2.BotUiComponentV2Entry
+import com.aliucord.coreplugins.componentsv2.models.SelectV2MessageComponent
 import com.discord.app.AppBottomSheet
-import com.discord.models.botuikit.SelectV2MessageComponent
 import com.discord.utilities.view.extensions.ViewExtensions
 import com.discord.utilities.view.recycler.MaxHeightRecyclerView
 import com.discord.widgets.botuikit.views.select.`SelectComponentBottomSheet$binding$2`

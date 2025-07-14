@@ -5,8 +5,8 @@ package com.aliucord.coreplugins.componentsv2.selectsheet
 import androidx.lifecycle.ViewModel
 import com.aliucord.coreplugins.componentsv2.BotUiComponentV2Entry
 import com.aliucord.coreplugins.componentsv2.ComponentV2Type
+import com.aliucord.coreplugins.componentsv2.models.SelectV2MessageComponent
 import com.aliucord.wrappers.ChannelWrapper.Companion.id
-import com.discord.models.botuikit.SelectV2MessageComponent
 import com.discord.stores.StoreStream
 
 const val ENTRY_LIMIT = 15
@@ -53,8 +53,9 @@ internal class SelectSheetViewModel() : ViewModel() {
                 items.add(SelectSheetItem.RoleSelectItem(isDefault, role))
             }
         }
-        if (component.type == ComponentV2Type.CHANNEL_SELECT) {
-            val channels = StoreStream.getChannels().getChannelsForGuild(entry.guildId)!!
+        // TODO: is the guildID check needed? as in, can server side allow this component?
+        if (component.type == ComponentV2Type.CHANNEL_SELECT && entry.guildId != null) {
+            val channels = StoreStream.getChannels().getChannelsForGuild(entry.guildId!!)!!
             for (channel in channels.values) {
                 entryCount += 1
                 if (entryCount > ENTRY_LIMIT)

@@ -15,10 +15,10 @@ import com.aliucord.updater.ManagerBuild
 import com.discord.api.botuikit.*
 import com.discord.api.channel.Channel
 import com.discord.api.role.GuildRole
-import com.discord.models.botuikit.ActionRowMessageComponent
-import com.discord.models.botuikit.MessageComponent
+import com.discord.models.botuikit.*
 import com.discord.models.member.GuildMember
 import com.discord.models.message.Message
+import com.discord.stores.StoreApplicationInteractions.InteractionSendState
 import com.discord.stores.StoreMessageReplies.MessageState
 import com.discord.stores.StoreMessageState
 import com.discord.stores.StoreThreadMessages
@@ -44,8 +44,6 @@ internal class ComponentsV2 : CorePlugin(Manifest("ComponentsV2")) {
             logger.warn("Base app outdated, cannot enable ComponentsV2")
             return
         }
-
-        patcher.instead<BotComponentExperiments>("isEnabled", ComponentType::class.java) { true }
 
         patcher.instead<ComponentStateMapper>(
             "toMessageLayoutComponent",
@@ -162,6 +160,40 @@ internal class ComponentsV2 : CorePlugin(Manifest("ComponentsV2")) {
             }
             itemView.setOnClickListener {
                 adapter.eventHandler.onMessageClicked(entry.message, false)
+            }
+        }
+
+        patcher.instead<ComponentStateMapper>(
+            "createActionMessageComponent",
+            ActionComponent::class.java,
+            Int::class.javaPrimitiveType!!,
+            ComponentStoreState::class.java,
+            ComponentExperiments::class.java,
+        ) { (
+            _,
+            actionComponent: ActionComponent,
+            index: Int,
+            componentStoreState: ComponentStoreState,
+        ) ->
+            val interactionState: Map<Int, InteractionSendState>? = componentStoreState.interactionState;
+            val num = interactionState?.entries?.find { it.value is InteractionSendState.Loading }?.key
+
+            val state = interactionState?.get(index)
+            val comState: ActionInteractionComponentState = when {
+                state is InteractionSendState.Failed -> ActionInteractionComponentState.Failed(state.errorMessage)
+                num == null -> ActionInteractionComponentState.Enabled.INSTANCE
+                num == index -> ActionInteractionComponentState.Loading.INSTANCE
+                else -> ActionInteractionComponentState.Disabled.INSTANCE
+            }
+
+            when (actionComponent) {
+                is ButtonComponent ->
+                    ButtonMessageComponentKt.mergeToMessageComponent(actionComponent, index, comState, componentStoreState)
+                is SelectComponent ->
+                    SelectMessageComponentKt.mergeToMessageComponent(actionComponent, index, comState, componentStoreState)
+                is SelectV2Component ->
+                    SelectV2MessageComponent.mergeToMessageComponent(actionComponent, index, comState, componentStoreState)
+                else -> null
             }
         }
     }

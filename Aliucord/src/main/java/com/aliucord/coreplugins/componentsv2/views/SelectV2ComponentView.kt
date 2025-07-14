@@ -8,11 +8,11 @@ import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.aliucord.Logger
 import com.aliucord.coreplugins.componentsv2.BotUiComponentV2Entry
+import com.aliucord.coreplugins.componentsv2.models.SelectV2MessageComponent
 import com.aliucord.coreplugins.componentsv2.selectsheet.SelectSheet
 import com.aliucord.utils.ViewUtils.addTo
 import com.discord.api.botuikit.ComponentType
 import com.discord.models.botuikit.SelectMessageComponent
-import com.discord.models.botuikit.SelectV2MessageComponent
 import com.discord.views.typing.TypingDots
 import com.discord.widgets.botuikit.ComponentProvider
 import com.discord.widgets.botuikit.views.ComponentActionListener
@@ -39,7 +39,7 @@ internal class SelectV2ComponentView(context: Context, private val type: Compone
         val view = SelectComponentView.Companion!!.inflateComponent(context, this).addTo(this) { }
         layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
         maxWidth = view.maxWidth
-        b.a.i.b5.a(view).run {
+    b.a.i.b5.a(view).run {
             componentView = a
             chevron = b
             loadingDots = c
