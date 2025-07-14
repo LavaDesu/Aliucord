@@ -98,7 +98,7 @@ class MediaGalleryComponentView(ctx: Context) : ConstraintLayout(ctx), Component
                 radius = 8.dp.toFloat()
                 elevation = 0f
                 setCardBackgroundColor(ColorCompat.getThemedColor(context, R.b.colorBackgroundPrimary))
-                layoutParams = LayoutParams(WRAP_CONTENT, WRAP_CONTENT).apply {
+                layoutParams = android.widget.LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT).apply {
                     topMargin = 8.dp
                 }
                 ConstraintLayout(context).addTo(this) {
