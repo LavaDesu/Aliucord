@@ -17,7 +17,7 @@ object ApiToModelHelper {
         return when (component) {
             is ButtonComponent -> ButtonMessageComponentKt.mergeToMessageComponent(component, index, defaultState, componentStoreState)
             is SelectComponent -> SelectMessageComponentKt.mergeToMessageComponent(component, index, defaultState, componentStoreState)
-            is EntitySelectComponent -> EntitySelectMessageComponent.mergeToMessageComponent(component, index, defaultState, componentStoreState)
+            is SelectV2Component -> SelectV2MessageComponent.mergeToMessageComponent(component, index, defaultState, componentStoreState)
             else -> null
         }
     }

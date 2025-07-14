@@ -11,8 +11,8 @@ import com.aliucord.coreplugins.componentsv2.BotUiComponentV2Entry
 import com.aliucord.coreplugins.componentsv2.selectsheet.SelectSheet
 import com.aliucord.utils.ViewUtils.addTo
 import com.discord.api.botuikit.ComponentType
-import com.discord.models.botuikit.EntitySelectMessageComponent
 import com.discord.models.botuikit.SelectMessageComponent
+import com.discord.models.botuikit.SelectV2MessageComponent
 import com.discord.views.typing.TypingDots
 import com.discord.widgets.botuikit.ComponentProvider
 import com.discord.widgets.botuikit.views.ComponentActionListener
@@ -24,8 +24,8 @@ import com.google.android.flexbox.FlexboxLayout
 import com.google.android.material.textview.MaterialTextView
 
 @SuppressLint("ViewConstructor")
-internal class EntitySelectComponentView(context: Context, private val type: ComponentType)
-    : ConstraintLayout(context), ComponentView<EntitySelectMessageComponent> {
+internal class SelectV2ComponentView(context: Context, private val type: ComponentType)
+    : ConstraintLayout(context), ComponentView<SelectV2MessageComponent> {
     override fun type(): ComponentType = type
 
     private val componentView: SelectComponentView
@@ -50,7 +50,7 @@ internal class EntitySelectComponentView(context: Context, private val type: Com
     }
 
     override fun configure(
-        component: EntitySelectMessageComponent,
+        component: SelectV2MessageComponent,
         provider: ComponentProvider,
         listener: ComponentActionListener,
     ) {

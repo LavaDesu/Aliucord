@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.aliucord.coreplugins.componentsv2.BotUiComponentV2Entry
 import com.aliucord.coreplugins.componentsv2.ComponentV2Type
 import com.aliucord.wrappers.ChannelWrapper.Companion.id
-import com.discord.models.botuikit.EntitySelectMessageComponent
+import com.discord.models.botuikit.SelectV2MessageComponent
 import com.discord.stores.StoreStream
 
 const val ENTRY_LIMIT = 15
@@ -30,7 +30,7 @@ internal class SelectSheetViewModel() : ViewModel() {
             value?.let { onUpdate?.invoke(it) }
         }
 
-    fun configure(entry: BotUiComponentV2Entry, component: EntitySelectMessageComponent) {
+    fun configure(entry: BotUiComponentV2Entry, component: SelectV2MessageComponent) {
         var entryCount = 0
         val items = mutableListOf<SelectSheetItem>()
         val users = StoreStream.getUsers().users

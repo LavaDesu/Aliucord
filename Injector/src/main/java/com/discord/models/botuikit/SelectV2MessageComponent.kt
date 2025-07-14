@@ -4,7 +4,7 @@ import com.discord.api.botuikit.*
 import com.discord.widgets.botuikit.ComponentChatListState
 
 // This needs to be accessed by ApiToModelHelper, so it also needs to be part of injector
-data class EntitySelectMessageComponent(
+data class SelectV2MessageComponent(
     private val type: ComponentType,
     private val index: Int,
     private val stateInteraction: ActionInteractionComponentState,
@@ -14,7 +14,7 @@ data class EntitySelectMessageComponent(
     val placeholder: String,
     val minValues: Int,
     val maxValues: Int,
-    val defaultValues: List<EntityDefaultValue>,
+    val defaultValues: List<SelectV2DefaultValue>,
     val emojiAnimationsEnabled: Boolean,
 ) : ActionMessageComponent() {
     override fun getType() = type
@@ -23,13 +23,13 @@ data class EntitySelectMessageComponent(
 
     companion object {
         fun mergeToMessageComponent(
-            selectComponent: EntitySelectComponent,
+            selectComponent: SelectV2Component,
             index: Int,
             stateInteraction: ActionInteractionComponentState,
             componentStoreState: ComponentChatListState.ComponentStoreState
-        ): EntitySelectMessageComponent {
+        ): SelectV2MessageComponent {
             return selectComponent.run {
-                EntitySelectMessageComponent(
+                SelectV2MessageComponent(
                     type,
                     index,
                     stateInteraction,

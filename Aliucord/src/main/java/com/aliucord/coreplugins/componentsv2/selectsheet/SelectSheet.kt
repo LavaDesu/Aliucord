@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import com.aliucord.Utils
 import com.aliucord.coreplugins.componentsv2.BotUiComponentV2Entry
 import com.discord.app.AppBottomSheet
-import com.discord.models.botuikit.EntitySelectMessageComponent
+import com.discord.models.botuikit.SelectV2MessageComponent
 import com.discord.utilities.view.extensions.ViewExtensions
 import com.discord.utilities.view.recycler.MaxHeightRecyclerView
 import com.discord.widgets.botuikit.views.select.`SelectComponentBottomSheet$binding$2`
@@ -19,7 +19,7 @@ import com.lytefast.flexinput.R
 
 internal class SelectSheet : AppBottomSheet {
     val entry: BotUiComponentV2Entry?
-    val component: EntitySelectMessageComponent?
+    val component: SelectV2MessageComponent?
 
     private lateinit var header: ConstraintLayout
     private lateinit var placeholder: TextView
@@ -29,7 +29,7 @@ internal class SelectSheet : AppBottomSheet {
 
     private lateinit var adapter: SelectSheetAdapter
 
-    constructor(entry: BotUiComponentV2Entry, component: EntitySelectMessageComponent) {
+    constructor(entry: BotUiComponentV2Entry, component: SelectV2MessageComponent) {
         this.entry = entry
         this.component = component
     }
