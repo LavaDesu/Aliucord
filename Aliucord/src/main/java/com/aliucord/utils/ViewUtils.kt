@@ -14,7 +14,7 @@ object ViewUtils {
      * @param block A scoped function, with the View as its receiver
      * @return The View
      */
-    fun <T : View> T.addTo(group: ViewGroup, block: (T.() -> Unit)? = null): T = apply { block?.invoke(this); group.addView(this) }
+    fun <T : View> T.addTo(group: ViewGroup, block: (T.() -> Unit)? = null): T = apply { group.addView(this); block?.invoke(this) }
 
     /**
      * Shorthand extension function to add a View into a ViewGroup at specified
@@ -25,7 +25,7 @@ object ViewUtils {
      * @param block A scoped function, with the View as its receiver
      * @return The View
      */
-    fun <T : View> T.addTo(group: ViewGroup, index: Int, block: (T.() -> Unit)? = null): T = apply { block?.invoke(this); group.addView(this, index) }
+    fun <T : View> T.addTo(group: ViewGroup, index: Int, block: (T.() -> Unit)? = null): T = apply { group.addView(this, index); block?.invoke(this) }
 
     /** Main layout of the setting */
     val CheckedSetting.layout get() = l.b() as ConstraintLayout
