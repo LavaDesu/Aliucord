@@ -5,7 +5,7 @@ data class MentionableSelectComponent(
     override val id: Int,
     @b.i.d.p.b("custom_id") override val customId: String,
     override val placeholder: String,
-    override val defaultValues: List<EntityDefaultValue>,
+    override val defaultValues: List<EntityDefaultValue>?,
     override val minValues: Int,
     override val maxValues: Int,
     override val disabled: Boolean,

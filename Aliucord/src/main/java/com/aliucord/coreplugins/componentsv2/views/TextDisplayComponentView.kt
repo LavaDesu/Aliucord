@@ -38,7 +38,7 @@ class TextDisplayComponentView(ctx: Context) : ConstraintLayout(ctx), ComponentV
         val item = listener as WidgetChatListAdapterItemBotComponentRow
         val entry = item.entry
         if (entry !is BotUiComponentV2Entry) {
-            Logger("ComponentsV2").warn("configured text_display with non-v2 entry")
+            Logger("ComponentsV2").warn("configured text display with non-v2 entry")
             return
         }
 

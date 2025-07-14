@@ -131,7 +131,7 @@ internal class ComponentsV2 : CorePlugin(Manifest("ComponentsV2")) {
                 ComponentV2Type.ROLE_SELECT,
                 ComponentV2Type.MENTIONABLE_SELECT,
                 ComponentV2Type.CHANNEL_SELECT ->
-                    null
+                    EntitySelectComponentView(this.context, type)
                 ComponentV2Type.SECTION ->
                     SectionComponentView(this.context)
                 ComponentV2Type.TEXT_DISPLAY ->

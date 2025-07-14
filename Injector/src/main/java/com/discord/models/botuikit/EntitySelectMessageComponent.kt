@@ -15,7 +15,6 @@ data class EntitySelectMessageComponent(
     val minValues: Int,
     val maxValues: Int,
     val defaultValues: List<EntityDefaultValue>,
-    // val selectedValues: String,
     val emojiAnimationsEnabled: Boolean,
 ) : ActionMessageComponent() {
     override fun getType() = type
@@ -39,7 +38,7 @@ data class EntitySelectMessageComponent(
                     placeholder,
                     minValues,
                     maxValues,
-                    defaultValues,
+                    defaultValues ?: listOf(),
                     componentStoreState.animateEmojis
                 )
             }
