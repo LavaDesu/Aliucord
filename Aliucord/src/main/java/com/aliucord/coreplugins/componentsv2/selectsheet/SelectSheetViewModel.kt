@@ -102,7 +102,7 @@ internal class SelectSheetViewModel() : ViewModel() {
         )
     }
 
-    fun toggle(item: SelectSheetItem) {
+    fun onItemSelect(item: SelectSheetItem) {
         val state = state ?: return
         var checkedCount = 0
         var newItems = state.items.map {
@@ -122,16 +122,19 @@ internal class SelectSheetViewModel() : ViewModel() {
             items = newItems,
             isValidSelection = checkedCount in state.minSelections..state.maxSelections
         )
+
+        if (!state.isMultiSelect)
+            submit()
     }
 
     fun submit() {
         // val companion = StoreStream.Companion
         // companion.localActionComponentState.setSelectComponentSelection(this.componentContext.getMessageId(), this.componentIndex, u.toList(set))
-        if (state == null || submissionData == null)
-            return
+        val state = state ?: return
+        val submissionData = submissionData ?: return
 
-        val selected = state!!.items.filter { it.checked }.map { it.id.toString() }
-        submissionData!!.run {
+        val selected = state.items.filter { it.checked }.map { it.id.toString() }
+        submissionData.run {
             StoreStream.getInteractions().sendComponentInteraction(
                 applicationId,
                 guildId,

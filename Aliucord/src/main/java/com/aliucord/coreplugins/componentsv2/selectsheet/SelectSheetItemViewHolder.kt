@@ -2,6 +2,8 @@ package com.aliucord.coreplugins.componentsv2.selectsheet
 
 import android.annotation.SuppressLint
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.aliucord.Utils
 import com.aliucord.utils.DimenUtils.dp
@@ -61,6 +63,7 @@ internal class SelectSheetItemViewHolder(adapter: SelectSheetAdapter)
         super.onConfigure(viewType, item)
 
         description.visibility = View.GONE
+        checkbox.visibility = if (adapter.viewModel.state?.isMultiSelect == true) VISIBLE else GONE
         checkbox.isChecked = item.checked
         title.setPadding(0, 12.dp, 0, 12.dp)
 
@@ -69,7 +72,7 @@ internal class SelectSheetItemViewHolder(adapter: SelectSheetAdapter)
             is SelectSheetItem.RoleSelectItem -> configureRole(item)
             is SelectSheetItem.UserSelectItem -> configureUser(item)
         }
-        itemView.setOnClickListener { adapter.viewModel.toggle(item) }
+        itemView.setOnClickListener { adapter.viewModel.onItemSelect(item) }
         ViewExtensions.setEnabledAlpha(itemView, !item.disabled, 0.3f);
         itemView.isEnabled = !item.disabled
     }
