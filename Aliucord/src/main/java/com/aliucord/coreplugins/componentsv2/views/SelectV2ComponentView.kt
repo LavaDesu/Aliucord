@@ -36,10 +36,10 @@ internal class SelectV2ComponentView(context: Context, private val type: Compone
     private val selectionsRoot: FlexboxLayout
 
     init {
-        val view = SelectComponentView.Companion!!.inflateComponent(context, this).addTo(this) { }
+        val view = SelectComponentView.Companion!!.inflateComponent(context, this).addTo(this)
         layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
         maxWidth = view.maxWidth
-    b.a.i.b5.a(view).run {
+        b.a.i.b5.a(view).run {
             componentView = a
             chevron = b
             loadingDots = c

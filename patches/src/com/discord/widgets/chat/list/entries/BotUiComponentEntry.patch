@@ -1,8 +1,0 @@
---- smali_original/com/discord/widgets/chat/list/entries/BotUiComponentEntry.smali
-+++ smali/com/discord/widgets/chat/list/entries/BotUiComponentEntry.smali
-@@ -1,4 +1,4 @@
--.class public final Lcom/discord/widgets/chat/list/entries/BotUiComponentEntry;
-+.class public Lcom/discord/widgets/chat/list/entries/BotUiComponentEntry;
- .super Lcom/discord/widgets/chat/list/entries/ChatListEntry;
- .source "BotUiComponentEntry.kt"
- 

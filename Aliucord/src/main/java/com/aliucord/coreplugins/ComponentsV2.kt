@@ -5,24 +5,16 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.aliucord.Utils
-import com.aliucord.coreplugins.componentsv2.BotUiComponentV2Entry
 import com.aliucord.coreplugins.componentsv2.ComponentV2Type
 import com.aliucord.coreplugins.componentsv2.models.*
+import com.aliucord.coreplugins.componentsv2.patchMessageItems
 import com.aliucord.coreplugins.componentsv2.views.*
 import com.aliucord.entities.CorePlugin
 import com.aliucord.patcher.*
 import com.aliucord.updater.ManagerBuild
 import com.discord.api.botuikit.*
-import com.discord.api.channel.Channel
-import com.discord.api.role.GuildRole
 import com.discord.models.botuikit.*
-import com.discord.models.member.GuildMember
-import com.discord.models.message.Message
 import com.discord.stores.StoreApplicationInteractions.InteractionSendState
-import com.discord.stores.StoreMessageReplies.MessageState
-import com.discord.stores.StoreMessageState
-import com.discord.stores.StoreThreadMessages
-import com.discord.utilities.embed.InviteEmbedModel
 import com.discord.utilities.view.extensions.ViewExtensions
 import com.discord.widgets.botuikit.*
 import com.discord.widgets.botuikit.ComponentChatListState.ComponentStoreState
@@ -31,9 +23,8 @@ import com.discord.widgets.botuikit.views.select.SelectComponentView
 import com.discord.widgets.chat.list.adapter.WidgetChatListAdapter
 import com.discord.widgets.chat.list.adapter.WidgetChatListAdapterItemBotComponentRow
 import com.discord.widgets.chat.list.entries.BotUiComponentEntry
-import com.discord.widgets.chat.list.entries.ChatListEntry
-import com.discord.widgets.chat.list.model.WidgetChatListModelMessages
 import com.lytefast.flexinput.R
+import de.robv.android.xposed.XposedBridge
 
 internal class ComponentsV2 : CorePlugin(Manifest("ComponentsV2")) {
     override val isHidden: Boolean = true
@@ -44,6 +35,10 @@ internal class ComponentsV2 : CorePlugin(Manifest("ComponentsV2")) {
             logger.warn("Base app outdated, cannot enable ComponentsV2")
             return
         }
+
+        XposedBridge.makeClassInheritable(BotUiComponentEntry::class.java)
+        // https://github.com/LSPosed/LSPlant/issues/41
+        patchMessageItems(patcher)
 
         patcher.instead<ComponentStateMapper>(
             "toMessageLayoutComponent",
@@ -77,43 +72,6 @@ internal class ComponentsV2 : CorePlugin(Manifest("ComponentsV2")) {
         patcher.instead<ComponentProvider>("configureView", ComponentActionListener::class.java, MessageComponent::class.java, ComponentView::class.java)
         { (_, listener: ComponentActionListener, component: MessageComponent, view: ComponentView<MessageComponent>?) ->
             view?.configure(component, this, listener)
-        }
-
-        // love
-        @Suppress("UNUSED_DESTRUCTURED_PARAMETER_ENTRY", "LocalVariableName", "UnusedVariable")
-        patcher.patch(WidgetChatListModelMessages.Companion::class.java.declaredMethods.find { it.name == "getMessageItems" }!!)
-        {(
-            param,
-            channel: Channel,
-            guildMembers: Map<Long, GuildMember>,
-            guildRoles: Map<Long, GuildRole>,
-            _blockedRelationships: Map<Long, Int>?,
-            _referencedChannel: Channel?,
-            _threadStoreState: StoreThreadMessages.ThreadState?,
-            _message: Message,
-            state: StoreMessageState.State?,
-            _repliedMessages: Map<Long, MessageState>?,
-            _isBlockedExpanded: Boolean,
-            _isMinimal: Boolean,
-            _permissions: Long?,
-            _allowAnimatedEmojis: Boolean,
-            _autoPlayGifs: Boolean,
-            _isRenderEmbedEnabled: Boolean,
-            meId: Long,
-            _isRenderComponentEnabled: Boolean,
-            _componentStoreState: Map<Long, ComponentStoreState>,
-            _inviteEmbedModel: InviteEmbedModel?,
-            _isThreadStarterMessage: Boolean,
-            _canGuildSeePurchaseFeedbackLoopSystemMessages: Boolean
-        ) ->
-            @Suppress("UNCHECKED_CAST")
-            val result = (param.result as MutableList<ChatListEntry>)
-            result.forEachIndexed { index, entry ->
-                if (entry is BotUiComponentEntry && ((entry.message.flags shr 15) and 1 == 1L)) {
-                    val fields = BotUiComponentV2Entry.V2Fields(state, meId, channel, guildMembers, guildRoles)
-                    result[index] = BotUiComponentV2Entry.fromV1(entry, fields)
-                }
-            }
         }
 
         patcher.instead<ComponentInflater>("inflateComponent", ComponentType::class.java, ViewGroup::class.java)
