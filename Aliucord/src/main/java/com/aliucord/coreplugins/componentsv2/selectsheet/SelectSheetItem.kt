@@ -15,27 +15,31 @@ sealed class SelectSheetItem(
     override fun getType() = type
 
     abstract val checked: Boolean
-    abstract fun copy(checked: Boolean = this.checked) : SelectSheetItem
+    abstract val disabled: Boolean
+    abstract fun copy(checked: Boolean = this.checked, disabled: Boolean = this.disabled) : SelectSheetItem
 
     internal data class UserSelectItem(
-        override val checked: Boolean,
         val user: User,
         val member: GuildMember,
+        override val checked: Boolean,
+        override val disabled: Boolean = false,
     ) : SelectSheetItem(1, user.id) {
-        override fun copy(checked: Boolean): SelectSheetItem = copy(checked = checked, user = user)
+        override fun copy(checked: Boolean, disabled: Boolean): SelectSheetItem = copy(checked = checked, disabled = disabled, user = user)
     }
 
     internal data class RoleSelectItem(
-        override val checked: Boolean,
         val role: GuildRole,
+        override val checked: Boolean,
+        override val disabled: Boolean = false,
     ) : SelectSheetItem(2, role.id) {
-        override fun copy(checked: Boolean): SelectSheetItem = copy(checked = checked, role = role)
+        override fun copy(checked: Boolean, disabled: Boolean): SelectSheetItem = copy(checked = checked, disabled = disabled, role = role)
     }
 
     internal data class ChannelSelectItem(
-        override val checked: Boolean,
         val channel: Channel,
+        override val checked: Boolean,
+        override val disabled: Boolean = false,
     ) : SelectSheetItem(3, channel.id) {
-        override fun copy(checked: Boolean): SelectSheetItem = copy(checked = checked, channel = channel)
+        override fun copy(checked: Boolean, disabled: Boolean): SelectSheetItem = copy(checked = checked, disabled = disabled, channel = channel)
     }
 }

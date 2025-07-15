@@ -15,7 +15,6 @@ internal class SelectSheetViewModel() : ViewModel() {
     data class ViewState(
         val placeholder: String,
         val items: List<SelectSheetItem>,
-        val showSelectButton: Boolean,
         val isMultiSelect: Boolean,
         val minSelections: Int,
         val maxSelections: Int,
@@ -41,7 +40,7 @@ internal class SelectSheetViewModel() : ViewModel() {
                     break
                 val user = users[member.userId]!!
                 val isDefault = component.defaultValues.any { it.id == member.userId }
-                items.add(SelectSheetItem.UserSelectItem(isDefault, user, member))
+                items.add(SelectSheetItem.UserSelectItem(user, member, isDefault))
             }
         }
         if (component.type in listOf(ComponentV2Type.ROLE_SELECT, ComponentV2Type.MENTIONABLE_SELECT)) {
@@ -50,7 +49,7 @@ internal class SelectSheetViewModel() : ViewModel() {
                 if (entryCount > ENTRY_LIMIT)
                     break
                 val isDefault = component.defaultValues.any { it.id == role.id }
-                items.add(SelectSheetItem.RoleSelectItem(isDefault, role))
+                items.add(SelectSheetItem.RoleSelectItem(role, isDefault))
             }
         }
         // TODO: is the guildID check needed? as in, can server side allow this component?
@@ -61,32 +60,41 @@ internal class SelectSheetViewModel() : ViewModel() {
                 if (entryCount > ENTRY_LIMIT)
                     break
                 val isDefault = component.defaultValues.any { it.id == channel.id }
-                items.add(SelectSheetItem.ChannelSelectItem(isDefault, channel))
+                items.add(SelectSheetItem.ChannelSelectItem(channel, isDefault))
             }
         }
 
         val min = component.minValues
         val max = component.maxValues
-        val isValidSelection = true
         state = ViewState(
             component.placeholder,
             items,
-            showSelectButton = max > 1,
             isMultiSelect = max > 1,
             minSelections = min,
             maxSelections = max,
-            isValidSelection,
+            isValidSelection = false,
         )
     }
 
     fun toggle(item: SelectSheetItem) {
         val state = state ?: return
-        val newItems = state.items.map {
-            if (it == item)
+        var checkedCount = 0
+        var newItems = state.items.map {
+            val res = if (it == item)
                 item.copy(checked = !item.checked)
             else
                 it
+            if (res.checked)
+                checkedCount += 1
+            res
         }
-        this.state = state.copy(items = newItems)
+        val isMaxed = checkedCount == state.maxSelections
+        newItems = newItems.map {
+            it.copy(disabled = isMaxed && !it.checked)
+        }
+        this.state = state.copy(
+            items = newItems,
+            isValidSelection = checkedCount in state.minSelections..state.maxSelections
+        )
     }
 }

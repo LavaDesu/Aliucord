@@ -17,6 +17,7 @@ import com.discord.utilities.icon.IconUtils
 import com.discord.utilities.images.MGImages
 import com.discord.utilities.mg_recycler.MGRecyclerViewHolder
 import com.discord.utilities.user.UserUtils
+import com.discord.utilities.view.extensions.ViewExtensions
 import com.facebook.drawee.view.SimpleDraweeView
 import com.google.android.material.checkbox.MaterialCheckBox
 import com.google.android.material.textview.MaterialTextView
@@ -69,6 +70,8 @@ internal class SelectSheetItemViewHolder(adapter: SelectSheetAdapter)
             is SelectSheetItem.UserSelectItem -> configureUser(item)
         }
         itemView.setOnClickListener { adapter.viewModel.toggle(item) }
+        ViewExtensions.setEnabledAlpha(itemView, !item.disabled, 0.3f);
+        itemView.isEnabled = !item.disabled
     }
 
     private fun configureChannel(item: SelectSheetItem.ChannelSelectItem) {

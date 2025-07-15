@@ -77,7 +77,7 @@ internal class SelectSheet : AppBottomSheet {
                     4
                 )
         }
-        select.visibility = if (state.showSelectButton) View.VISIBLE else View.INVISIBLE
+        select.visibility = if (state.isMultiSelect) View.VISIBLE else View.INVISIBLE
         select.isClickable = state.isValidSelection
         ViewExtensions.setEnabledAlpha(select, state.isValidSelection, 0.3f)
         adapter.setData(state.items)
