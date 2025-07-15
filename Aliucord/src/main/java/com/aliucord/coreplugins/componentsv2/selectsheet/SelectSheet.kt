@@ -56,7 +56,9 @@ internal class SelectSheet : AppBottomSheet {
         recycler.adapter = adapter
         (recycler.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
 
+        select.setOnClickListener { viewModel.submit() }
         viewModel.onUpdate = ::configureUI
+        viewModel.onRequestDismiss = ::dismiss
         if (entry != null && component != null)
             viewModel.configure(entry, component)
         else
@@ -81,6 +83,5 @@ internal class SelectSheet : AppBottomSheet {
         select.isClickable = state.isValidSelection
         ViewExtensions.setEnabledAlpha(select, state.isValidSelection, 0.3f)
         adapter.setData(state.items)
-        // select.setOnClickListener(`SelectComponentBottomSheet$configureUI$1`(this))
     }
 }
