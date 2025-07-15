@@ -1,6 +1,7 @@
 package com.aliucord.coreplugins.componentsv2
 
 import com.aliucord.api.PatcherAPI
+import com.aliucord.coreplugins.isComponentV2
 import com.aliucord.patcher.*
 import com.discord.api.channel.Channel
 import com.discord.api.role.GuildRole
@@ -45,7 +46,7 @@ fun patchMessageItems(patcher: PatcherAPI) {
         @Suppress("UNCHECKED_CAST")
         val result = (param.result as MutableList<ChatListEntry>)
         result.forEachIndexed { index, entry ->
-            if (entry is BotUiComponentEntry && ((entry.message.flags shr 15) and 1 == 1L)) {
+            if (entry is BotUiComponentEntry && entry.message.isComponentV2) {
                 val fields = BotUiComponentV2Entry.V2Fields(state, meId, channel, guildMembers, guildRoles)
                 result[index] = BotUiComponentV2Entry.fromV1(entry, fields)
             }
