@@ -2,6 +2,7 @@ pluginManagement {
     repositories {
         google()
         gradlePluginPortal()
+        mavenLocal()
         maven {
             name = "aliucord"
             url = uri("https://maven.aliucord.com/releases")

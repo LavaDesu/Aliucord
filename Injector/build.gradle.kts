@@ -21,7 +21,7 @@ android {
     }
 
     androidResources {
-        enable = false
+//        enable = false
     }
 
     buildFeatures {

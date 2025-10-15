@@ -1,7 +1,7 @@
 [versions]
 aliucord-gradle = "2.0.0"
 aliuhook = "1.1.4"
-android-gradle = "8.13.0"
+android-gradle = "8.12.0"
 discord = "126021"
 dokka = "1.8.10"
 kotlin = "2.2.0"
@@ -30,3 +30,4 @@ android-library = { id = "com.android.library", version.ref = "android-gradle" }
 aliucord-core = { id = "com.aliucord.core", version.ref = "aliucord-gradle" }
 aliucord-injector = { id = "com.aliucord.injector", version.ref = "aliucord-gradle" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }

@@ -10,6 +10,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.AssetManager;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.*;
@@ -67,6 +68,7 @@ import java.sql.Timestamp;
 import java.util.*;
 
 import dalvik.system.PathClassLoader;
+import kotlin.Suppress;
 import kotlin.io.FilesKt;
 
 public final class Main {
@@ -426,6 +428,7 @@ public final class Main {
     }
 
     private static void loadAllPlugins(Context context) {
+        ResourceLoader.INSTANCE.yes(context);
         File dir = new File(Constants.PLUGINS_PATH);
         if (!dir.exists()) {
             boolean res = dir.mkdirs();

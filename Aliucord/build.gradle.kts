@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.dokka)
     alias(libs.plugins.kotlin)
+    alias(libs.plugins.compose.compiler)
 }
 
 group = "com.aliucord"
@@ -22,7 +23,6 @@ android {
             isMinifyEnabled = false
         }
     }
-
     defaultConfig {
         buildConfigField("String", "VERSION", "\"$version\"")
         buildConfigField("boolean", "RELEASE", System.getenv("RELEASE") ?: "false")
@@ -32,6 +32,7 @@ android {
     buildFeatures {
         viewBinding = true
         buildConfig = true
+        compose = true
     }
 
     publishing {
@@ -55,6 +56,7 @@ kotlin {
     }
 }
 
+
 dependencies {
     compileOnly(libs.aliuhook)
     compileOnly(libs.appcompat)
@@ -63,6 +65,16 @@ dependencies {
     compileOnly(libs.kotlin.stdlib)
     compileOnly(libs.material)
     compileOnly(project(":Injector")) // Needed to access certain stubs
+
+    val composeBom = platform("androidx.compose:compose-bom:2025.05.00")
+    implementation(composeBom)
+
+    implementation("androidx.compose.runtime:runtime-android")
+    implementation("androidx.compose.ui:ui-android")
+    implementation("androidx.compose.material:material")
+    implementation("androidx.activity:activity-compose:1.10.1")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.9.2")
+    implementation(libs.kotlin.stdlib)
 }
 
 afterEvaluate {

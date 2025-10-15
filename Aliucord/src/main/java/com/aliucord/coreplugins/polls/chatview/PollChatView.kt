@@ -3,6 +3,9 @@ package com.aliucord.coreplugins.polls.chatview
 import android.content.Context
 import android.view.ContextThemeWrapper
 import android.widget.TextView
+import androidx.compose.material.Text
+import androidx.compose.ui.platform.ComposeView
+import com.aliucord.R.drawable.baseline_poll_24
 import com.aliucord.coreplugins.polls.details.PollDetailsScreen
 import com.aliucord.utils.DimenUtils
 import com.aliucord.utils.ViewUtils.addTo
@@ -14,6 +17,13 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
 import com.lytefast.flexinput.R
 import java.util.Calendar
+import kotlin.Boolean
+import kotlin.ExperimentalStdlibApi
+import kotlin.Int
+import kotlin.Long
+import kotlin.OptIn
+import kotlin.String
+import kotlin.apply
 
 internal class PollChatView(private val ctx: Context) : MaterialCardView(ctx) {
     internal enum class State {
@@ -139,6 +149,18 @@ internal class PollChatView(private val ctx: Context) : MaterialCardView(ctx) {
             }
             infoText = TextView(ctx, null, 0, R.i.UiKit_Settings_Item_SubText).addTo(this) {
                 setPadding(p, p / 2, p, p)
+            }
+            TextView(ctx, null, 0, R.i.UiKit_Settings_Item_SubText).addTo(this) {
+                text = baseline_poll_24.toString()
+                background = ctx.resources.getDrawable(baseline_poll_24, null)
+            }
+            // TextView(ctx, null, 0, R.i.UiKit_Settings_Item_SubText).addTo(this) {
+            //     text = Utils.getResId("baseline_poll_24", "drawable").toString()
+            // }
+            ComposeView(ctx).addTo(this) {
+                setContent {
+                    Text("Hii :3")
+                }
             }
         }
 
