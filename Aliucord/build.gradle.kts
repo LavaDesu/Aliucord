@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "com.aliucord"
-version = "2.2.1"
+version = "2.5.0"
 
 aliucord {
     projectType.set(com.aliucord.gradle.ProjectType.CORE)
@@ -47,27 +47,6 @@ tasks {
             named("main") {
                 noAndroidSdkLink.set(false)
                 includeNonPublic.set(false)
-            }
-        }
-    }
-
-    create("pushDebuggable") {
-        group = "aliucord"
-
-        val aliucordPath = "/storage/emulated/0/Aliucord/"
-
-        doLast {
-            exec {
-                commandLine(android.adbExecutable, "shell", "touch", "$aliucordPath.debuggable")
-            }
-
-            exec {
-                commandLine(
-                    android.adbExecutable,
-                    "push",
-                    rootProject.file(".assets/AndroidManifest-debuggable.xml"),
-                    "${aliucordPath}AndroidManifest.xml"
-                )
             }
         }
     }

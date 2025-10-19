@@ -1,6 +1,7 @@
 name: Build
 
 on:
+  workflow_dispatch:
   push:
     paths-ignore:
       - "**.md"
@@ -84,9 +85,6 @@ jobs:
         run: |
           # Flatten downloaded artifacts
           find $GITHUB_WORKSPACE/artifacts -type f -exec mv -t $GITHUB_WORKSPACE/artifacts '{}' +
-
-          # Legacy Installer support for now
-          cp $GITHUB_WORKSPACE/src/.assets/AndroidManifest.xml $GITHUB_WORKSPACE/builds
 
           # Extract component versions
           coreVersion=$(cat $GITHUB_WORKSPACE/src/Aliucord/build.gradle.kts | grep -E 'version = "' | cut -d \" -f 2)
