@@ -2,10 +2,10 @@
 +++ smali/com/discord/api/botuikit/gson/ComponentTypeTypeAdapter.smali
 @@ -73,7 +73,7 @@ .method public read(Lcom/google/gson/str
      const/4 v2, 0x0
- 
+
      :goto_f
 -    const/4 v3, 0x5
-+    const/16 v3, 0x10
- 
++    const/16 v3, 0x12
+
      if-ge v2, v3, :cond_2a
- 
+

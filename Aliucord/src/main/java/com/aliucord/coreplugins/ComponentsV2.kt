@@ -34,7 +34,7 @@ internal class ComponentsV2 : CorePlugin(Manifest("ComponentsV2")) {
     override val isRequired: Boolean = true
 
     override fun start(context: Context) {
-        if (!ManagerBuild.hasInjector("2.3.0") || !ManagerBuild.hasPatches("1.3.0")) {
+        if (!ManagerBuild.hasInjector("2.4.0") || !ManagerBuild.hasPatches("1.4.0")) {
             logger.warn("Base app outdated, cannot enable ComponentsV2")
             return
         }

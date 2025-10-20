@@ -1,11 +1,11 @@
 --- smali_original/com/discord/api/botuikit/gson/ComponentRuntimeTypeAdapter.smali
 +++ smali/com/discord/api/botuikit/gson/ComponentRuntimeTypeAdapter.smali
 @@ -80,7 +80,7 @@ .method public static constructor <clini
- 
+
      move-result-object v0
- 
+
 -    const/4 v1, 0x5
-+    const/16 v1, 0x10
- 
++    const/16 v1, 0x12
+
      const/4 v3, 0x0
- 
+
