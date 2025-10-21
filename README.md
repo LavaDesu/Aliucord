@@ -1,3 +1,19 @@
+## Cilly's Aliucord/next branch
+
+Includes some WIP goodies:
+
+- feat/fluff: user decoration coreplugin (https://github.com/Aliucord/Aliucord/pull/593)
+    - feat/fluff_guildtags: guild tag support (https://github.com/Aliucord/Aliucord/pull/594)
+    - feat/fluff_displayname: display name styles support (WIP)
+        - todo: other effects
+        - todo: settings to disable font, effect, or colour individually
+        - bugs: chat username not themed properly, sometimes
+        - bugs: profile header view gradient lighter than intended
+        - bugs: textview gets cut off when font is set late (fetch required)
+        - note: should probably only theme profile header
+
+## begin original readme
+
 <div align="center">
     <img src=".github/assets/aliucord.svg" alt="Aliucord Logo" width="200" />
     <h1>Aliucord</h1>
