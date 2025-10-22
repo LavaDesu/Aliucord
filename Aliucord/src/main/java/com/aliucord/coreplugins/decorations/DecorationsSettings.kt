@@ -19,6 +19,8 @@ internal object DecorationsSettings {
     val enableDisplayNames by enableDisplayNamesDelegate
     private val enableGuildTagsDelegate = settings.delegate("enableGuildTags", true)
     val enableGuildTags by enableGuildTagsDelegate
+    private val enableNameplatesDelegate = settings.delegate("enableNameplates", true)
+    val enableNameplates by enableNameplatesDelegate
 
     @Suppress("MISSING_DEPENDENCY_CLASS", "MISSING_DEPENDENCY_SUPERCLASS")
     class Sheet : BottomSheet() {
@@ -27,6 +29,7 @@ internal object DecorationsSettings {
 
             createSetting("Show avatar decorations", enableAvatarDecorationDelegate)
             createSetting("Show display names", enableDisplayNamesDelegate).addTo(linearLayout)
+            createSetting("Show nameplates", enableNameplatesDelegate).addTo(linearLayout)
             createSetting("Show server tags", enableGuildTagsDelegate).addTo(linearLayout)
         }
 
