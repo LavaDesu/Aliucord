@@ -11,6 +11,7 @@ import android.content.res.AssetManager
 import android.content.res.Resources
 import com.aliucord.Utils.appContext
 import com.aliucord.coreplugins.*
+import com.aliucord.coreplugins.badges.DiscordBadges
 import com.aliucord.coreplugins.badges.SupporterBadges
 import com.aliucord.coreplugins.plugindownloader.PluginDownloader
 import com.aliucord.coreplugins.rn.RNAPI
@@ -273,11 +274,13 @@ object PluginManager {
     fun loadCorePlugins(context: Context) {
         val corePlugins = arrayOf(
             AlignThreads(),
+            AppBarFix(),
             ButtonsAPI(),
             CommandHandler(),
             CoreCommands(),
             Decorations(),
             DefaultStickers(),
+            DiscordBadges(),
             ExperimentDefaults(),
             ForwardedMessages(),
             GifPreviewFix(),
