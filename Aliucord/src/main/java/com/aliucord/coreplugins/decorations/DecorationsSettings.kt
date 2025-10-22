@@ -27,7 +27,7 @@ internal object DecorationsSettings {
         override fun onViewCreated(view: View, bundle: Bundle?) {
             super.onViewCreated(view, bundle)
 
-            createSetting("Show avatar decorations", enableAvatarDecorationDelegate)
+            createSetting("Show avatar decorations", enableAvatarDecorationDelegate).addTo(linearLayout)
             createSetting("Show display names", enableDisplayNamesDelegate).addTo(linearLayout)
             createSetting("Show nameplates", enableNameplatesDelegate).addTo(linearLayout)
             createSetting("Show server tags", enableGuildTagsDelegate).addTo(linearLayout)
