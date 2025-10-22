@@ -13,16 +13,19 @@ import com.discord.views.CheckedSetting
 internal object DecorationsSettings {
     private val settings = SettingsAPI("Decorations")
 
-    private val enableGuildTagsDelegate = settings.delegate("enableGuildTags", true)
-    val enableGuildTags by enableGuildTagsDelegate
+    private val enableAvatarDecorationDelegate = settings.delegate("enableAvatarDecorations", true)
+    val enableAvatarDecoration by enableAvatarDecorationDelegate
     private val enableDisplayNamesDelegate = settings.delegate("enableDisplayNames", true)
     val enableDisplayNames by enableDisplayNamesDelegate
+    private val enableGuildTagsDelegate = settings.delegate("enableGuildTags", true)
+    val enableGuildTags by enableGuildTagsDelegate
 
     @Suppress("MISSING_DEPENDENCY_CLASS", "MISSING_DEPENDENCY_SUPERCLASS")
     class Sheet : BottomSheet() {
         override fun onViewCreated(view: View, bundle: Bundle?) {
             super.onViewCreated(view, bundle)
 
+            createSetting("Show avatar decorations", enableAvatarDecorationDelegate)
             createSetting("Show display names", enableDisplayNamesDelegate).addTo(linearLayout)
             createSetting("Show server tags", enableGuildTagsDelegate).addTo(linearLayout)
         }
@@ -37,6 +40,7 @@ internal object DecorationsSettings {
                 var setting by delegate
                 isChecked = setting
                 setOnCheckedListener { setting = !setting }
+                Utils.promptRestart()
             }
         }
     }
