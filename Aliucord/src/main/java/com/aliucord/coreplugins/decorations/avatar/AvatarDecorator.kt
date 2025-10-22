@@ -208,9 +208,9 @@ internal class AvatarDecorator() : Decorator() {
             }
         }
 
-        // Lower the header by 4.dp from the padding we removed from the container, but also add 2.dp to
+        // Lower the header by 4.dp from the padding we removed from the container, but also add a bit more to
         // compensate for the extra bottom margin from looking "off"
-        itemHeader.topPadding -= (messageAuthorSpacing - 2).dp
+        itemHeader.topPadding += (messageAuthorSpacing + 2).dp
 
         // Removes the reply's bottom margin, since the spacing is already applied by the header
         replyHolder.layoutParams = (replyHolder.layoutParams as ConstraintLayout.LayoutParams).apply {
