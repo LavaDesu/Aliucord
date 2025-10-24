@@ -3,6 +3,7 @@ package com.aliucord.coreplugins.decorations.nameplate
 import android.content.Context
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.UNSET
 import com.aliucord.coreplugins.decorations.Decorator
 import com.aliucord.utils.DimenUtils.dp
 import com.aliucord.utils.ViewUtils.addTo
@@ -81,6 +82,9 @@ internal class NameplateDecorator() : Decorator() {
         val layout = binding.a
         val avatarView = binding.b
         val boostedIndicator = binding.c
+        val ownerIndicator = binding.e
+        val usernameView = binding.f
+        val rpcIconView = binding.h
 
         // Clear the layout's padding and add our own
         layout.leftPadding = 0
@@ -88,8 +92,29 @@ internal class NameplateDecorator() : Decorator() {
         avatarView.layoutParams = (avatarView.layoutParams as ConstraintLayout.LayoutParams).apply {
             marginStart = 16.dp
         }
+
+        // Move the boosted and owner indicators so they don't block nameplates
+        ownerIndicator.layoutParams = (ownerIndicator.layoutParams as ConstraintLayout.LayoutParams).apply {
+            topToTop = usernameView.id
+            bottomToBottom = usernameView.id
+            startToEnd = usernameView.id
+        }
         boostedIndicator.layoutParams = (boostedIndicator.layoutParams as ConstraintLayout.LayoutParams).apply {
-            marginEnd = 16.dp
+            topToTop = usernameView.id
+            bottomToBottom = usernameView.id
+            startToEnd = ownerIndicator.id
+            endToEnd = UNSET
+            rightToRight = UNSET
+        }
+
+        // Fixup username and rpc icon's constraints (Thanks Discord, these were completely unnecessary)
+        usernameView.layoutParams = (usernameView.layoutParams as ConstraintLayout.LayoutParams).apply {
+            rightToRight = UNSET
+            endToStart = UNSET
+        }
+        rpcIconView.layoutParams = (rpcIconView.layoutParams as ConstraintLayout.LayoutParams).apply {
+            rightToLeft = UNSET
+            endToStart = UNSET
         }
 
         // Add the nameplate view

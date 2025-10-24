@@ -117,20 +117,21 @@ internal class AvatarDecorator() : Decorator() {
     ) {
         val layout = holder.binding.a
         val avatarView = holder.binding.c
+        val size = layout.resources.getDimensionPixelSize(R.d.avatar_size_standard) + (memberListSpacing * 2).dp
 
         // Removes padding from layout to make space for deco
         layout.padding -= memberListSpacing.dp
 
         // Re-add left padding to avatar view, that was removed above
         avatarView.layoutParams = (avatarView.layoutParams as RelativeLayout.LayoutParams).apply {
-            marginStart = (8 + memberListSpacing).dp
+            marginStart += memberListSpacing.dp
         }
 
         createDecoView(layout.context, false).addTo(layout, layout.indexOfChild(avatarView) + 1) {
             layoutParams = RelativeLayout.LayoutParams(0, 0).apply {
-                height = resources.getDimension(R.d.avatar_size_standard).toInt() + (memberListSpacing * 2).dp
-                width = resources.getDimension(R.d.avatar_size_standard).toInt() + (memberListSpacing * 2).dp
-                marginStart = (8 - memberListSpacing).dp
+                height = size
+                width = size
+                marginStart = memberListSpacing.dp
             }
         }
     }
@@ -149,6 +150,7 @@ internal class AvatarDecorator() : Decorator() {
     ) {
         val layout = binding.a
         val avatarView = binding.b
+        val size = layout.resources.getDimensionPixelSize(R.d.avatar_size_standard) + (memberListSpacing * 2).dp
 
         // Remove the container left padding, and add it in avatar instead
         // This allows space for the deco
@@ -160,8 +162,8 @@ internal class AvatarDecorator() : Decorator() {
         // The index is added to allow the status icons higher priority
         createDecoView(layout.context, false).addTo(layout, layout.indexOfChild(avatarView) + 1) {
             layoutParams = ConstraintLayout.LayoutParams(0, 0).apply {
-                height = resources.getDimension(R.d.avatar_size_standard).toInt() + (memberListSpacing * 2).dp
-                width = resources.getDimension(R.d.avatar_size_standard).toInt() + (memberListSpacing * 2).dp
+                height = size
+                width = size
                 startToStart = ConstraintLayout.LayoutParams.PARENT_ID
                 topToTop = ConstraintLayout.LayoutParams.PARENT_ID
                 bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID
@@ -188,7 +190,7 @@ internal class AvatarDecorator() : Decorator() {
         adapter: WidgetChatListAdapter
     ) {
         val view = holder.itemView as ViewGroup
-        val size = view.resources.getDimension(R.d.avatar_size_chat).toInt()
+        val size = view.resources.getDimensionPixelSize(R.d.avatar_size_chat)
 
         val itemAvatar = holder.itemAvatar ?: return
         val replyHolder = holder.replyHolder ?: return
@@ -203,8 +205,11 @@ internal class AvatarDecorator() : Decorator() {
         // stays the same (since padding), and allows us to align our decorations from there
         itemAvatar.run {
             topPadding += messageAuthorSpacing.dp
+            leftPadding += messageAuthorSpacing.dp
             layoutParams = (layoutParams as ConstraintLayout.LayoutParams).apply {
                 height = size + messageAuthorSpacing.dp
+                width = size + messageAuthorSpacing.dp
+                marginStart -= messageAuthorSpacing.dp
             }
         }
 
@@ -224,9 +229,8 @@ internal class AvatarDecorator() : Decorator() {
             layoutParams = ConstraintLayout.LayoutParams(0, 0).apply {
                 height = size + (messageAuthorSpacing * 2).dp
                 width = size + (messageAuthorSpacing * 2).dp
-                startToStart = ConstraintLayout.LayoutParams.PARENT_ID
+                startToStart = itemAvatar.id
                 topToTop = itemAvatar.id
-                marginStart = (8 - messageAuthorSpacing).dp
             }
         }
     }
@@ -240,7 +244,7 @@ internal class AvatarDecorator() : Decorator() {
     }
 
     override fun onProfileHeaderInit(view: UserProfileHeaderView) {
-        val spacedSize = view.resources.getDimension(R.d.avatar_wrap_size_xxlarge).toInt() + profileHeaderSpacing.dp
+        val spacedSize = view.resources.getDimensionPixelSize(R.d.avatar_wrap_size_xxlarge) + profileHeaderSpacing.dp
 
         val binding = UserProfileHeaderView.`access$getBinding$p`(view)
         val avatarView = binding.f

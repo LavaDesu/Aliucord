@@ -12,12 +12,14 @@ import com.aliucord.entities.CorePlugin
 import com.aliucord.patcher.*
 import com.aliucord.updater.ManagerBuild
 import com.aliucord.wrappers.users.*
+import com.discord.api.presence.Presence
 import com.discord.api.user.User
 import com.discord.databinding.WidgetChannelMembersListItemUserBinding
 import com.discord.models.member.GuildMember
 import com.discord.models.user.CoreUser
 import com.discord.models.user.MeUser
 import com.discord.stores.StoreGuilds
+import com.discord.stores.StoreStream
 import com.discord.widgets.channels.list.WidgetChannelsListAdapter
 import com.discord.widgets.channels.list.items.ChannelListItem
 import com.discord.widgets.channels.list.items.ChannelListItemPrivate
@@ -62,6 +64,25 @@ internal class Decorations : CorePlugin(Manifest().apply {
     }
 
     private fun patchFields() {
+        // Presence updates may include partial users. Nameplates and display name styles are known to not
+        // be included in the user field.
+        patcher.before<StoreStream>(
+            "handlePresenceUpdate",
+            Long::class.javaPrimitiveType!!,
+            Presence::class.java
+        ) { (_, guildId: Int, pres: Presence) ->
+            val new = pres.f()
+            val old = StoreStream.getUsers().users[new.id]
+                ?: return@before
+
+            new.run {
+                avatarDecorationData = avatarDecorationData ?: old.avatarDecorationData
+                collectibles = collectibles ?: old.collectibles
+                displayNameStyles = displayNameStyles ?: old.displayNameStyles
+                primaryGuild = primaryGuild ?: old.primaryGuild
+            }
+        }
+
         patcher.after<CoreUser>(User::class.java) { (_, api: User) ->
             avatarDecorationData = api.avatarDecorationData
             collectibles = api.collectibles
