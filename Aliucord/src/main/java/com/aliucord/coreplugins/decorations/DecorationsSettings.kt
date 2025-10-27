@@ -22,7 +22,6 @@ internal object DecorationsSettings {
     private val enableNameplatesDelegate = settings.delegate("enableNameplates", true)
     val enableNameplates by enableNameplatesDelegate
 
-    @Suppress("MISSING_DEPENDENCY_CLASS", "MISSING_DEPENDENCY_SUPERCLASS")
     class Sheet : BottomSheet() {
         override fun onViewCreated(view: View, bundle: Bundle?) {
             super.onViewCreated(view, bundle)
