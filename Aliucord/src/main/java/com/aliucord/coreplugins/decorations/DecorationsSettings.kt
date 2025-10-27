@@ -16,7 +16,6 @@ internal object DecorationsSettings {
     private val enableAvatarDecorationDelegate = settings.delegate("enableAvatarDecorations", true)
     val enableAvatarDecoration by enableAvatarDecorationDelegate
 
-    @Suppress("MISSING_DEPENDENCY_CLASS", "MISSING_DEPENDENCY_SUPERCLASS")
     class Sheet : BottomSheet() {
         override fun onViewCreated(view: View, bundle: Bundle?) {
             super.onViewCreated(view, bundle)
