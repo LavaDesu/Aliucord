@@ -6,6 +6,7 @@ pluginManagement {
             name = "aliucord"
             url = uri("https://maven.aliucord.com/releases")
         }
+        mavenLocal()
     }
 }
 

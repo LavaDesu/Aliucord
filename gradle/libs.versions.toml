@@ -1,7 +1,9 @@
 [versions]
-aliucord-gradle = "2.1.1"
+#aliucord-gradle = "2.1.1"
+aliucord-gradle = "9.1.2"
 aliuhook = "1.1.4"
 android-gradle = "8.13.0"
+credentials = "1.5.0"
 discord = "126021"
 dokka = "2.1.0"
 kotlin = "2.2.20"
@@ -15,11 +17,14 @@ appcompat = "1.4.1"
 constraintlayout = "2.1.4"
 #noinspection GradleDependency
 material = "1.5.0"
+shadow = "8.3.8"
 
 [libraries]
 aliuhook = { module = "com.aliucord:Aliuhook", version.ref = "aliuhook" }
 appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
 constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayout" }
+credentials = { module = "androidx.credentials:credentials", version.ref = "credentials" }
+credentials-play = { module = "androidx.credentials:credentials-play-services-auth", version.ref = "credentials" }
 discord = { module = "com.discord:discord", version.ref = "discord" }
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin-stdlib" }
 material = { module = "com.google.android.material:material", version.ref = "material" }
@@ -33,3 +38,4 @@ aliucord-core = { id = "com.aliucord.core", version.ref = "aliucord-gradle" }
 aliucord-injector = { id = "com.aliucord.injector", version.ref = "aliucord-gradle" }
 dokka-html = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 dokka-javadoc = { id = "org.jetbrains.dokka-javadoc", version.ref = "dokka" }
+shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }

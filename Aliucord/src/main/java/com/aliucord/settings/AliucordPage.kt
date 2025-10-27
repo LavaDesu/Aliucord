@@ -11,17 +11,29 @@ import android.view.View
 import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
+import androidx.credentials.*
 import com.aliucord.*
 import com.aliucord.fragments.SettingsPage
+import com.aliucord.utils.RNSuperProperties
+import com.aliucord.utils.RNSuperProperties.superPropertiesBase64
 import com.discord.stores.StoreStream
+import com.discord.utilities.rest.RestAPI.AppHeadersProvider
 import com.discord.views.CheckedSetting
 import com.lytefast.flexinput.R
+import kotlinx.coroutines.*
+import java.util.TimeZone
+
 
 // These keys aren't consistent because they were originally part of different modules
 const val AUTO_DISABLE_ON_CRASH_KEY = "autoDisableCrashingPlugins"
 const val AUTO_UPDATE_PLUGINS_KEY = "AC_plugins_auto_update_enabled"
 const val AUTO_UPDATE_ALIUCORD_KEY = "AC_aliucord_auto_update_enabled"
 const val ALIUCORD_FROM_STORAGE_KEY = "AC_from_storage"
+
+data class Bodyy(
+    val ticket: String,
+    val challenge: String,
+)
 
 class AliucordPage : SettingsPage() {
     override fun onViewBound(view: View) {
@@ -41,6 +53,64 @@ class AliucordPage : SettingsPage() {
         )
         addSwitch(ctx, AUTO_UPDATE_ALIUCORD_KEY, "Automatically update Aliucord", null)
         addSwitch(ctx, AUTO_UPDATE_PLUGINS_KEY, "Automatically update plugins", null)
+        addHeaderButton("hi?", R.e.ic_heart_24dp) {
+            val logger = Logger("auth")
+            logger.infoToast("hi!!")
+            Utils.threadPool.execute {
+                try {
+                    // val login = Http.Request.newDiscordRNRequest("/auth/conditional/start", "POST")
+                    //     .setHeader("Authorization", null)
+
+                    val login = Http.Request("https://discord.com/api/v9/auth/conditional/start", "POST")
+                    val headersProvider = AppHeadersProvider.INSTANCE
+                    login.setHeader("User-Agent", RNSuperProperties.userAgent)
+                        .setHeader("X-Super-Properties", superPropertiesBase64)
+                        .setHeader("Accept-Language", headersProvider.acceptLanguages)
+                        .setHeader("Accept", "*/*")
+                        // .setHeader("Authorization", headersProvider.getAuthToken())
+                        .setHeader("X-Discord-Locale", headersProvider.locale)
+                        .setHeader("X-Discord-Timezone", TimeZone.getDefault().id)
+                    val res = login.execute()
+                    logger.info("${res.statusCode}: ${res.statusMessage}")
+                    // logger.info(res.text())
+                    val j = res.json(Bodyy::class.java)
+                    logger.info(j.toString())
+
+                    val credentialManager = CredentialManager.create(ctx)
+                    logger.info("req: ${j.challenge.substring(13, j.challenge.length - 1)}")
+
+                    val getPublicKeyCredentialOption = GetPublicKeyCredentialOption(
+                        requestJson = j.challenge.substring(13, j.challenge.length - 1)
+                    )
+
+                    val req = GetCredentialRequest(
+                        listOf(getPublicKeyCredentialOption),
+                        origin = "discord.com",
+                    )
+                    CoroutineScope(Dispatchers.Default).launch {
+                        val result = credentialManager.getCredential(
+                            context = Utils.appContext,
+                            request = req
+                        )
+
+                        val c = result.credential
+                        when (c) {
+                            is PublicKeyCredential -> {
+                                val res = c.authenticationResponseJson
+                                logger.info("pk $res")
+                            }
+                            else -> {
+                                logger.warn("idk $c")
+                            }
+                        }
+                    }
+
+                } catch(e: Throwable) {
+                    logger.error("oops", e)
+                }
+            }
+            true
+        }
 
         if (StoreStream.getUserSettings().isDeveloperMode) {
             addDivider(ctx)

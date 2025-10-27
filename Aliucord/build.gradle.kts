@@ -1,3 +1,5 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+
 plugins {
     `maven-publish`
     alias(libs.plugins.aliucord.core)
@@ -5,6 +7,7 @@ plugins {
     alias(libs.plugins.dokka.html)
     alias(libs.plugins.dokka.javadoc)
     alias(libs.plugins.kotlin)
+    alias(libs.plugins.shadow)
 }
 
 group = "com.aliucord"
@@ -56,6 +59,12 @@ kotlin {
         )
     }
 }
+//
+// configurations {
+//     implementation {
+//         exclude(group = "org.jetbrains.kotlin", module = "kotlin-stdlib")
+//     }
+// }
 
 dependencies {
     compileOnly(libs.aliuhook)
@@ -65,6 +74,17 @@ dependencies {
     compileOnly(libs.kotlin.stdlib)
     compileOnly(libs.material)
     compileOnly(project(":Injector")) // Needed to access certain stubs
+
+    implementation(libs.credentials) {
+        exclude(group = "androidx.appcompat", module = "appcompat")
+        exclude(group = "org.jetbrains.kotlin", module = "kotlin-stdlib")
+        exclude(group = "org.jetbrains.kotlin", module = "kotlin-stdlib-common")
+        exclude(group = "org.jetbrains.kotlin", module = "kotlin-stdlib-jdk8")
+        exclude(group = "org.jetbrains.kotlin", module = "kotlin-stdlib-jdk7")
+        exclude(group = "androidx.annotation", module = "annotation")
+    }
+
+    // implementation(libs.credentials.play)
 }
 
 tasks.withType<JavaCompile> {
@@ -72,8 +92,40 @@ tasks.withType<JavaCompile> {
         "-Xlint:deprecation",
     ))
 }
+// val shadowDir = File(buildDir, "intermediates/shadowed")
+//
+// val out = project.layout.buildDirectory.dir("intermediates/copydep")
+// tasks.register<ShadowJar>("relocateJar") {
+//     val task1 = tasks.findByName("compileDebugKotlin")!!
+//     val task2 = tasks.findByName("compileDebugJavaWithJavac")!!
+//     from(task1.outputs, task2.outputs)
+//     val arts = project.configurations.named("implementationArtifacts")
+//     from(arts.map { configuration ->
+//         configuration.incoming
+//             .artifactView {
+//                 attributes.attribute(
+//                     ArtifactTypeDefinition.ARTIFACT_TYPE_ATTRIBUTE,
+//                     ArtifactTypeDefinition.JAR_TYPE)
+//             }
+//             .files
+//     })
+//     duplicatesStrategy = DuplicatesStrategy.WARN
+//     // from(*a)
+//     into(out)
+// }
 
 afterEvaluate {
+    // tasks.findByName("compileDebugKotlin")!!.dependsOn(tasks.getByName("rgen"))
+    // tasks.findByName("compileDebugKotlin")!!.inputs.dir(rout)
+    // tasks.findByName("compileDebugJavaWithJavac")!!.dependsOn(tasks.getByName("rgen"))
+    // tasks.findByName("compileDebugJavaWithJavac")!!.inputs.dir(rout)
+    tasks.findByName("compileDebugJavaWithJavac")!!.outputs.upToDateWhen { false }
+    tasks.findByName("compileDex")!!.outputs.upToDateWhen { false }
+    tasks.compileDex {
+        val copyShadowed = tasks.findByName("copyShadowed")!! as Sync
+        dependsOn(copyShadowed)
+        input.setFrom(shadowDir)
+    }
     publishing {
         publications {
             register<MavenPublication>(project.name) {
@@ -99,4 +151,40 @@ afterEvaluate {
             }
         }
     }
+}
+
+apply {
+    plugin(libs.plugins.shadow.get().pluginId)
+}
+
+val shadowDir = File(buildDir, "intermediates/shadowed")
+
+tasks.register<ShadowJar>("relocateJar") {
+    val task1 = tasks.findByName("compileDebugJavaWithJavac")!!
+    val task = tasks.findByName("compileDebugKotlin")!!
+    from(task1.outputs, task.outputs)
+    val arts = project.configurations.named("implementationArtifacts")
+    from(arts.map { configuration ->
+        configuration.incoming
+            .artifactView {
+                attributes.attribute(
+                    ArtifactTypeDefinition.ARTIFACT_TYPE_ATTRIBUTE,
+                    ArtifactTypeDefinition.JAR_TYPE)
+            }
+            .files
+    })
+    relocate("kotlinx.coroutines", "com.aliucord.shadowed.kotlinx.coroutines")
+    archiveClassifier.set("shadowed")
+    destinationDirectory.set(File(buildDir, "intermediates"))
+    outputs.upToDateWhen { false }
+}
+
+tasks.register<Sync>("copyShadowed") {
+    val reloc = tasks.findByName("relocateJar")!! as ShadowJar
+    dependsOn(reloc)
+    from(zipTree(reloc.archiveFile))
+    into(shadowDir)
+}
+
+project.afterEvaluate {
 }

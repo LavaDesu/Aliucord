@@ -5,4 +5,5 @@ plugins {
     alias(libs.plugins.dokka.html) apply false
     alias(libs.plugins.dokka.javadoc) apply false
     alias(libs.plugins.kotlin) apply false
+    alias(libs.plugins.shadow) apply false
 }
