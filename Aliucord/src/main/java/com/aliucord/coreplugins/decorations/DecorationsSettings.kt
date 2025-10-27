@@ -16,7 +16,6 @@ internal object DecorationsSettings {
     private val enableGuildTagsDelegate = settings.delegate("enableGuildTags", true)
     val enableGuildTags by enableGuildTagsDelegate
 
-    @Suppress("MISSING_DEPENDENCY_CLASS", "MISSING_DEPENDENCY_SUPERCLASS")
     class Sheet : BottomSheet() {
         override fun onViewCreated(view: View, bundle: Bundle?) {
             super.onViewCreated(view, bundle)
