@@ -24,7 +24,8 @@ import com.aliucord.utils.ViewUtils.findViewById
 import com.aliucord.wrappers.users.primaryGuild
 import com.discord.api.user.PrimaryGuild
 import com.discord.databinding.WidgetChannelMembersListItemUserBinding
-import com.discord.stores.*
+import com.discord.stores.StoreLurking
+import com.discord.stores.StoreStream
 import com.discord.utilities.color.ColorCompat
 import com.discord.utilities.error.Error
 import com.discord.utilities.icon.IconUtils
@@ -303,10 +304,9 @@ internal object GuildTags {
             Int::class.javaPrimitiveType!!,
             ChannelListItem::class.java,
         ) { (_, _: Int, item: ChannelListItemPrivate) ->
-            ChannelUtils.getDMRecipient(item.channel)?.let { user ->
-                GuildTagView.findIn(itemView)?.run {
-                    configure(user.primaryGuild)
-                }
+            val user = ChannelUtils.getDMRecipient(item.channel)
+            GuildTagView.findIn(itemView)?.run {
+                configure(user?.primaryGuild)
             }
         }
     }

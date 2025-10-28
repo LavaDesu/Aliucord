@@ -1,13 +1,8 @@
 package com.aliucord.coreplugins.decorations.avatar
 
 import android.content.Context
-import android.view.Gravity
-import android.view.View
-import android.view.ViewGroup
-import android.widget.FrameLayout
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.RelativeLayout
+import android.view.*
+import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.aliucord.api.PatcherAPI
 import com.aliucord.coreplugins.decorations.Decorator
@@ -122,8 +117,11 @@ internal class AvatarDecorator() : Decorator() {
         // Removes padding from layout to make space for deco
         layout.padding -= memberListSpacing.dp
 
+        val decoMargin: Int
+
         // Re-add left padding to avatar view, that was removed above
         avatarView.layoutParams = (avatarView.layoutParams as RelativeLayout.LayoutParams).apply {
+            decoMargin = marginStart
             marginStart += memberListSpacing.dp
         }
 
@@ -131,7 +129,7 @@ internal class AvatarDecorator() : Decorator() {
             layoutParams = RelativeLayout.LayoutParams(0, 0).apply {
                 height = size
                 width = size
-                marginStart = memberListSpacing.dp
+                marginStart = decoMargin
             }
         }
     }
