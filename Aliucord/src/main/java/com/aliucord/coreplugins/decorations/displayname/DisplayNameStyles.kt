@@ -1,8 +1,6 @@
 package com.aliucord.coreplugins.decorations.displayname
 
-import android.graphics.LinearGradient
-import android.graphics.Shader
-import android.graphics.Typeface
+import android.graphics.*
 import android.os.Build
 import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
@@ -189,6 +187,8 @@ internal object DisplayNameStyles {
                     val list = OnLayoutChangeListener { v, left, top, right, bottom, _, _, _, _ ->
                         if (v !is TextView)
                             return@OnLayoutChangeListener
+                        // For some reason the text opacity is 50% in profile header, so set it to a solid colour for 100%
+                        v.setTextColor(Color.BLACK)
                         v.paint.shader = LinearGradient(
                             /* x0 */ 0f,
                             /* y0 */ 0f,
