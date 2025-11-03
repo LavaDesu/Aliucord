@@ -8,10 +8,10 @@ import androidx.appcompat.view.ContextThemeWrapper
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.aliucord.Logger
 import com.aliucord.coreplugins.componentsv2.BotUiComponentV2Entry
-import com.aliucord.coreplugins.componentsv2.ComponentV2Type
 import com.aliucord.coreplugins.componentsv2.models.TextDisplayMessageComponent
 import com.aliucord.utils.DimenUtils.dp
 import com.aliucord.utils.ViewUtils.addTo
+import com.discord.api.botuikit.ComponentType
 import com.discord.stores.StoreStream
 import com.discord.utilities.color.ColorCompat
 import com.discord.utilities.message.MessageUtils
@@ -25,7 +25,7 @@ import com.discord.widgets.chat.list.adapter.*
 import com.lytefast.flexinput.R
 
 class TextDisplayComponentView(ctx: Context) : ConstraintLayout(ctx), ComponentView<TextDisplayMessageComponent> {
-    override fun type() = ComponentV2Type.TEXT_DISPLAY
+    override fun type() = ComponentType.TEXT_DISPLAY
 
     private val textView = LinkifiedTextView(ContextThemeWrapper(ctx, R.i.UiKit_Chat_Text)).addTo(this) {
         layoutParams = LayoutParams(0, WRAP_CONTENT).apply {

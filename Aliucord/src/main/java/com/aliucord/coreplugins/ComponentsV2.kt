@@ -5,7 +5,6 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.aliucord.Utils
-import com.aliucord.coreplugins.componentsv2.ComponentV2Type
 import com.aliucord.coreplugins.componentsv2.models.*
 import com.aliucord.coreplugins.componentsv2.patchMessageItems
 import com.aliucord.coreplugins.componentsv2.views.*
@@ -86,24 +85,24 @@ internal class ComponentsV2 : CorePlugin(Manifest("ComponentsV2")) {
                     ButtonComponentView.Companion!!.inflateComponent(this.context, viewGroup)
                 ComponentType.SELECT ->
                     SelectComponentView.Companion!!.inflateComponent(this.context, viewGroup)
-                ComponentV2Type.USER_SELECT,
-                ComponentV2Type.ROLE_SELECT,
-                ComponentV2Type.MENTIONABLE_SELECT,
-                ComponentV2Type.CHANNEL_SELECT ->
+                ComponentType.USER_SELECT,
+                ComponentType.ROLE_SELECT,
+                ComponentType.MENTIONABLE_SELECT,
+                ComponentType.CHANNEL_SELECT ->
                     SelectV2ComponentView(this.context, type)
-                ComponentV2Type.SECTION ->
+                ComponentType.SECTION ->
                     SectionComponentView(this.context)
-                ComponentV2Type.TEXT_DISPLAY ->
+                ComponentType.TEXT_DISPLAY ->
                     TextDisplayComponentView(this.context)
-                ComponentV2Type.THUMBNAIL ->
+                ComponentType.THUMBNAIL ->
                     ThumbnailComponentView(this.context)
-                ComponentV2Type.MEDIA_GALLERY ->
+                ComponentType.MEDIA_GALLERY ->
                     MediaGalleryComponentView(this.context)
-                ComponentV2Type.FILE ->
+                ComponentType.FILE ->
                     null
-                ComponentV2Type.SEPARATOR ->
+                ComponentType.SEPARATOR ->
                     SeparatorComponentView(this.context)
-                ComponentV2Type.CONTAINER ->
+                ComponentType.CONTAINER ->
                     ContainerComponentView(this.context)
                 else -> null
             }

@@ -4,7 +4,6 @@ package com.aliucord.coreplugins.componentsv2.selectsheet
 
 import androidx.lifecycle.ViewModel
 import com.aliucord.coreplugins.componentsv2.BotUiComponentV2Entry
-import com.aliucord.coreplugins.componentsv2.ComponentV2Type
 import com.aliucord.coreplugins.componentsv2.models.SelectV2MessageComponent
 import com.aliucord.wrappers.ChannelWrapper.Companion.id
 import com.discord.api.botuikit.ComponentType
@@ -49,7 +48,7 @@ internal class SelectSheetViewModel() : ViewModel() {
         var entryCount = 0
         val items = mutableListOf<SelectSheetItem>()
         val users = StoreStream.getUsers().users
-        if (component.type in listOf(ComponentV2Type.USER_SELECT, ComponentV2Type.MENTIONABLE_SELECT)) {
+        if (component.type in listOf(ComponentType.USER_SELECT, ComponentType.MENTIONABLE_SELECT)) {
             for (member in entry.guildMembers.values) {
                 entryCount += 1
                 if (entryCount > ENTRY_LIMIT)
@@ -59,7 +58,7 @@ internal class SelectSheetViewModel() : ViewModel() {
                 items.add(SelectSheetItem.UserSelectItem(user, member, isDefault))
             }
         }
-        if (component.type in listOf(ComponentV2Type.ROLE_SELECT, ComponentV2Type.MENTIONABLE_SELECT)) {
+        if (component.type in listOf(ComponentType.ROLE_SELECT, ComponentType.MENTIONABLE_SELECT)) {
             for (role in entry.guildRoles.values) {
                 entryCount += 1
                 if (entryCount > ENTRY_LIMIT)
@@ -69,7 +68,7 @@ internal class SelectSheetViewModel() : ViewModel() {
             }
         }
         // TODO: is the guildID check needed? as in, can server side allow this component?
-        if (component.type == ComponentV2Type.CHANNEL_SELECT && entry.guildId != null) {
+        if (component.type == ComponentType.CHANNEL_SELECT && entry.guildId != null) {
             val channels = StoreStream.getChannels().getChannelsForGuild(entry.guildId!!)!!
             for (channel in channels.values) {
                 entryCount += 1

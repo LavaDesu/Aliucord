@@ -8,18 +8,18 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.FrameLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.PARENT_ID
-import com.aliucord.coreplugins.componentsv2.ComponentV2Type
 import com.aliucord.coreplugins.componentsv2.models.SectionMessageComponent
 import com.aliucord.utils.DimenUtils.dp
 import com.aliucord.utils.ViewUtils.addTo
 import com.aliucord.widgets.LinearLayout
+import com.discord.api.botuikit.ComponentType
 import com.discord.widgets.botuikit.ComponentProvider
 import com.discord.widgets.botuikit.views.ComponentActionListener
 import com.discord.widgets.botuikit.views.ComponentView
 import com.discord.widgets.chat.list.adapter.WidgetChatListAdapterItemBotComponentRowKt
 
 class SectionComponentView(ctx: Context) : ConstraintLayout(ctx), ComponentView<SectionMessageComponent> {
-    override fun type() = ComponentV2Type.SECTION
+    override fun type() = ComponentType.SECTION
 
     companion object {
         private val accessoryViewId = View.generateViewId()

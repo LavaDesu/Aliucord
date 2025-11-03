@@ -58,13 +58,13 @@ kotlin {
 }
 
 dependencies {
+    compileOnly(project(":Injector")) // Needed to access certain stubs
     compileOnly(libs.aliuhook)
     compileOnly(libs.appcompat)
     compileOnly(libs.constraintlayout)
     compileOnly(libs.discord)
     compileOnly(libs.kotlin.stdlib)
     compileOnly(libs.material)
-    compileOnly(project(":Injector")) // Needed to access certain stubs
 }
 
 tasks.withType<JavaCompile> {

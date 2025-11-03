@@ -9,10 +9,10 @@ import android.widget.FrameLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.aliucord.Logger
 import com.aliucord.coreplugins.componentsv2.BotUiComponentV2Entry
-import com.aliucord.coreplugins.componentsv2.ComponentV2Type
 import com.aliucord.coreplugins.componentsv2.models.ThumbnailMessageComponent
 import com.aliucord.utils.DimenUtils.dp
 import com.aliucord.utils.ViewUtils.addTo
+import com.discord.api.botuikit.ComponentType
 import com.discord.utilities.color.ColorCompat
 import com.discord.utilities.embed.EmbedResourceUtils
 import com.discord.utilities.images.MGImages
@@ -25,7 +25,7 @@ import com.google.android.material.card.MaterialCardView
 import com.lytefast.flexinput.R
 
 class ThumbnailComponentView(ctx: Context) : ConstraintLayout(ctx), ComponentView<ThumbnailMessageComponent> {
-    override fun type() = ComponentV2Type.THUMBNAIL
+    override fun type() = ComponentType.THUMBNAIL
 
     private val embedThumbnailMaxSize = (ctx.resources.getDimension(R.d.embed_thumbnail_max_size) * 1.5).toInt()
 

@@ -10,11 +10,11 @@ import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.PARENT_ID
 import androidx.core.graphics.ColorUtils
 import com.aliucord.Logger
 import com.aliucord.coreplugins.componentsv2.BotUiComponentV2Entry
-import com.aliucord.coreplugins.componentsv2.ComponentV2Type
 import com.aliucord.coreplugins.componentsv2.models.ContainerMessageComponent
 import com.aliucord.utils.DimenUtils.dp
 import com.aliucord.utils.ViewUtils.addTo
 import com.aliucord.widgets.LinearLayout
+import com.discord.api.botuikit.ComponentType
 import com.discord.utilities.color.ColorCompat
 import com.discord.widgets.botuikit.ComponentProvider
 import com.discord.widgets.botuikit.views.ComponentActionListener
@@ -25,7 +25,7 @@ import com.google.android.material.card.MaterialCardView
 import com.lytefast.flexinput.R
 
 class ContainerComponentView(ctx: Context) : ConstraintLayout(ctx), ComponentView<ContainerMessageComponent> {
-    override fun type() = ComponentV2Type.CONTAINER
+    override fun type() = ComponentType.CONTAINER
 
     companion object {
         private val accentDividerId = View.generateViewId()
