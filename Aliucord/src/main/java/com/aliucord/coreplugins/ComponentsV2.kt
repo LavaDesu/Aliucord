@@ -202,8 +202,8 @@ internal class ComponentsV2 : CorePlugin(Manifest("ComponentsV2")) {
             @Suppress("UNCHECKED_CAST")
             val result = (param.result as MutableList<ChatListEntry>)
             result.forEachIndexed { index, entry ->
-                if (entry is BotUiComponentEntry && entry.message.isComponentV2) {
-                    entry.copy(
+                if (entry is BotUiComponentEntry) {
+                    result[index] = entry.copy(
                         state = state,
                         meId = meId,
                         channel = channel,
