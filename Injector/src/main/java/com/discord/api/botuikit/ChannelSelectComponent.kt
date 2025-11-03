@@ -3,7 +3,7 @@ package com.discord.api.botuikit
 data class ChannelSelectComponent(
     private val type: ComponentType,
     override val id: Int,
-    @b.i.d.p.b("custom_id") override val customId: String,
+    override val customId: String,
     override val placeholder: String,
     override val defaultValues: List<SelectV2DefaultValue>?,
     override val minValues: Int,
