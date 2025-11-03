@@ -7,6 +7,7 @@ import android.view.View.VISIBLE
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.aliucord.Utils
 import com.aliucord.utils.DimenUtils.dp
+import com.aliucord.utils.ViewUtils.findViewById
 import com.aliucord.wrappers.ChannelWrapper.Companion.name
 import com.aliucord.wrappers.ChannelWrapper.Companion.type
 import com.aliucord.wrappers.GuildRoleWrapper.Companion.name
@@ -29,12 +30,12 @@ import com.lytefast.flexinput.R
 internal class SelectSheetItemViewHolder(adapter: SelectSheetAdapter)
     : MGRecyclerViewHolder<SelectSheetAdapter, SelectSheetItem>(Utils.getResId("widget_select_component_bottom_sheet_item", "layout"), adapter) {
 
-    private val description = itemView.findViewById<MaterialTextView>(Utils.getResId("select_component_sheet_item_description", "id"))!!
-    private val divider = itemView.findViewById<View>(Utils.getResId("select_component_sheet_item_divider", "id"))!!
-    private val dividerWithIcon = itemView.findViewById<View>(Utils.getResId("select_component_sheet_item_divider_icon", "id"))!!
-    private val icon = itemView.findViewById<SimpleDraweeView>(Utils.getResId("select_component_sheet_item_icon", "id"))!!
-    private val checkbox = itemView.findViewById<MaterialCheckBox>(Utils.getResId("select_component_sheet_item_selected", "id"))!!
-    private val title = itemView.findViewById<MaterialTextView>(Utils.getResId("select_component_sheet_item_title", "id"))!!
+    private val description = itemView.findViewById<MaterialTextView>("select_component_sheet_item_description")
+    private val divider = itemView.findViewById<View>("select_component_sheet_item_divider")
+    private val dividerWithIcon = itemView.findViewById<View>("select_component_sheet_item_divider_icon")
+    private val icon = itemView.findViewById<SimpleDraweeView>("select_component_sheet_item_icon")
+    private val checkbox = itemView.findViewById<MaterialCheckBox>("select_component_sheet_item_selected")
+    private val title = itemView.findViewById<MaterialTextView>("select_component_sheet_item_title")
 
     init {
         (itemView as ConstraintLayout).minHeight = 62.dp
@@ -108,10 +109,7 @@ internal class SelectSheetItemViewHolder(adapter: SelectSheetAdapter)
             null
         )
         title.text = GuildMember.Companion!!.getNickOrUsername(item.member, item.user)
-        val descText = item.user.username + if (item.user.discriminator != 0)
-            UserUtils.INSTANCE.getDiscriminatorWithPadding(item.user)
-        else
-            ""
+        val descText = UserUtils.INSTANCE.getUserNameWithDiscriminator(item.user, null, null)
         if (title.text != descText) {
             title.setPadding(0, 12.dp, 0, 0)
             description.visibility = View.VISIBLE
