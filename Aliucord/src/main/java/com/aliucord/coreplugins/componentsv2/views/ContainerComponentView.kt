@@ -8,8 +8,6 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.PARENT_ID
 import androidx.core.graphics.ColorUtils
-import com.aliucord.Logger
-import com.aliucord.coreplugins.componentsv2.BotUiComponentV2Entry
 import com.aliucord.coreplugins.componentsv2.models.ContainerMessageComponent
 import com.aliucord.utils.DimenUtils.dp
 import com.aliucord.utils.ViewUtils.addTo
@@ -73,10 +71,6 @@ class ContainerComponentView(ctx: Context) : ConstraintLayout(ctx), ComponentVie
     override fun configure(component: ContainerMessageComponent, provider: ComponentProvider, listener: ComponentActionListener) {
         val item = listener as WidgetChatListAdapterItemBotComponentRow
         val entry = item.entry
-        if (entry !is BotUiComponentV2Entry) {
-            Logger("ComponentsV2").warn("configured container with non-v2 entry")
-            return
-        }
 
         val configuredViews = component.components.mapIndexed { index, child ->
             provider.getConfiguredComponentView(listener, child, contentView, index)

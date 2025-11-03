@@ -4,8 +4,6 @@ package com.aliucord.coreplugins.componentsv2.views
 
 import android.content.Context
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.aliucord.Logger
-import com.aliucord.coreplugins.componentsv2.BotUiComponentV2Entry
 import com.aliucord.coreplugins.componentsv2.models.SeparatorMessageComponent
 import com.aliucord.utils.DimenUtils.dp
 import com.aliucord.utils.ViewUtils.addTo
@@ -28,10 +26,6 @@ class SeparatorComponentView(ctx: Context) : ConstraintLayout(ctx), ComponentVie
     override fun configure(component: SeparatorMessageComponent, provider: ComponentProvider, listener: ComponentActionListener) {
         val item = listener as WidgetChatListAdapterItemBotComponentRow
         val entry = item.entry
-        if (entry !is BotUiComponentV2Entry) {
-            Logger("ComponentsV2").warn("configured separator with non-v2 entry")
-            return
-        }
 
         divider.visibility = if (component.divider) VISIBLE else INVISIBLE
         divider.layoutParams = (divider.layoutParams as LayoutParams).apply {

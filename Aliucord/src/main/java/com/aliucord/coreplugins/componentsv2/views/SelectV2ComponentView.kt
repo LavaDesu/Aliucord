@@ -6,8 +6,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.aliucord.Logger
-import com.aliucord.coreplugins.componentsv2.BotUiComponentV2Entry
 import com.aliucord.coreplugins.componentsv2.models.SelectV2MessageComponent
 import com.aliucord.coreplugins.componentsv2.selectsheet.SelectSheet
 import com.aliucord.utils.ViewUtils.addTo
@@ -56,10 +54,6 @@ internal class SelectV2ComponentView(context: Context, private val type: Compone
     ) {
         val item = listener as WidgetChatListAdapterItemBotComponentRow
         val entry = item.entry
-        if (entry !is BotUiComponentV2Entry) {
-            Logger("ComponentsV2").warn("configured v2 select with non-v2 entry")
-            return
-        }
 
         val proxyComponent = component.run {
             SelectMessageComponent(

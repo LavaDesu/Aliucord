@@ -7,13 +7,13 @@ import android.widget.*
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.PARENT_ID
-import com.aliucord.coreplugins.componentsv2.BotUiComponentV2Entry
 import com.aliucord.coreplugins.componentsv2.models.SpoilableMessageComponent
 import com.aliucord.utils.DimenUtils.dp
 import com.aliucord.utils.ViewUtils.addTo
 import com.discord.stores.StoreMessageState
 import com.discord.stores.StoreStream
 import com.discord.utilities.color.ColorCompat
+import com.discord.widgets.chat.list.entries.BotUiComponentEntry
 import com.lytefast.flexinput.R
 
 /**
@@ -88,7 +88,7 @@ internal class SpoilerView(ctx: Context, type: Int) : ConstraintLayout(ctx) {
         }
     }
 
-    fun configure(entry: BotUiComponentV2Entry, component: SpoilableMessageComponent, key: String? = null) {
+    fun configure(entry: BotUiComponentEntry, component: SpoilableMessageComponent, key: String? = null) {
         configure(component.spoiler, entry.state, entry.message.id, Pair(component.id, key))
     }
 

@@ -7,8 +7,6 @@ import android.view.View
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.FrameLayout
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.aliucord.Logger
-import com.aliucord.coreplugins.componentsv2.BotUiComponentV2Entry
 import com.aliucord.coreplugins.componentsv2.models.ThumbnailMessageComponent
 import com.aliucord.utils.DimenUtils.dp
 import com.aliucord.utils.ViewUtils.addTo
@@ -57,10 +55,6 @@ class ThumbnailComponentView(ctx: Context) : ConstraintLayout(ctx), ComponentVie
     override fun configure(component: ThumbnailMessageComponent, provider: ComponentProvider, listener: ComponentActionListener) {
         val item = listener as WidgetChatListAdapterItemBotComponentRow
         val entry = item.entry
-        if (entry !is BotUiComponentV2Entry) {
-            Logger("ComponentsV2").warn("configured thumbnail with non-v2 entry")
-            return
-        }
 
         val (width, height) = EmbedResourceUtils.INSTANCE.calculateScaledSize(
             component.media.width,

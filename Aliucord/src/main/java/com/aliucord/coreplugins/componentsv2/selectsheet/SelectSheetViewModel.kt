@@ -3,12 +3,12 @@
 package com.aliucord.coreplugins.componentsv2.selectsheet
 
 import androidx.lifecycle.ViewModel
-import com.aliucord.coreplugins.componentsv2.BotUiComponentV2Entry
 import com.aliucord.coreplugins.componentsv2.models.SelectV2MessageComponent
 import com.aliucord.wrappers.ChannelWrapper.Companion.id
 import com.discord.api.botuikit.ComponentType
 import com.discord.restapi.RestAPIParams.ComponentInteractionData.SelectComponentInteractionData
 import com.discord.stores.StoreStream
+import com.discord.widgets.chat.list.entries.BotUiComponentEntry
 
 const val ENTRY_LIMIT = 15
 
@@ -44,7 +44,7 @@ internal class SelectSheetViewModel() : ViewModel() {
 
     private var submissionData: SubmissionData? = null
 
-    fun configure(entry: BotUiComponentV2Entry, component: SelectV2MessageComponent) {
+    fun configure(entry: BotUiComponentEntry, component: SelectV2MessageComponent) {
         var entryCount = 0
         val items = mutableListOf<SelectSheetItem>()
         val users = StoreStream.getUsers().users

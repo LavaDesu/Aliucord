@@ -6,8 +6,6 @@ import android.content.Context
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.aliucord.Logger
-import com.aliucord.coreplugins.componentsv2.BotUiComponentV2Entry
 import com.aliucord.coreplugins.componentsv2.models.TextDisplayMessageComponent
 import com.aliucord.utils.DimenUtils.dp
 import com.aliucord.utils.ViewUtils.addTo
@@ -22,6 +20,7 @@ import com.discord.widgets.botuikit.ComponentProvider
 import com.discord.widgets.botuikit.views.ComponentActionListener
 import com.discord.widgets.botuikit.views.ComponentView
 import com.discord.widgets.chat.list.adapter.*
+import com.discord.widgets.chat.list.entries.BotUiComponentEntry
 import com.lytefast.flexinput.R
 
 class TextDisplayComponentView(ctx: Context) : ConstraintLayout(ctx), ComponentView<TextDisplayMessageComponent> {
@@ -37,15 +36,11 @@ class TextDisplayComponentView(ctx: Context) : ConstraintLayout(ctx), ComponentV
     override fun configure(component: TextDisplayMessageComponent, provider: ComponentProvider, listener: ComponentActionListener) {
         val item = listener as WidgetChatListAdapterItemBotComponentRow
         val entry = item.entry
-        if (entry !is BotUiComponentV2Entry) {
-            Logger("ComponentsV2").warn("configured text display with non-v2 entry")
-            return
-        }
 
         render(component.id, component.content, item.adapter, entry)
     }
 
-    private fun render(id: Int, content: String, adapter: WidgetChatListAdapter, entry: BotUiComponentV2Entry) {
+    private fun render(id: Int, content: String, adapter: WidgetChatListAdapter, entry: BotUiComponentEntry) {
         val data = adapter.data
         @Suppress("UNCHECKED_CAST")
         val spoilers = entry.state?.visibleSpoilerEmbedMap?.let {

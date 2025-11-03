@@ -9,8 +9,6 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.FrameLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.PARENT_ID
-import com.aliucord.Logger
-import com.aliucord.coreplugins.componentsv2.BotUiComponentV2Entry
 import com.aliucord.coreplugins.componentsv2.models.MediaGalleryMessageComponent
 import com.aliucord.utils.DimenUtils.dp
 import com.aliucord.utils.ViewUtils.addTo
@@ -65,10 +63,6 @@ class MediaGalleryComponentView(ctx: Context) : ConstraintLayout(ctx), Component
     override fun configure(component: MediaGalleryMessageComponent, provider: ComponentProvider, listener: ComponentActionListener) {
         val item = listener as WidgetChatListAdapterItemBotComponentRow
         val entry = item.entry
-        if (entry !is BotUiComponentV2Entry) {
-            Logger("ComponentsV2").warn("configured media gallery with non-v2 entry")
-            return
-        }
 
         val maxEmbedWidth = calculateMaxWidth(component.markedContained)
         layout.removeAllViews()
