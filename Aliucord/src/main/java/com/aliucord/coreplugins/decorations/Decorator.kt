@@ -12,14 +12,14 @@ import com.discord.widgets.chat.list.entries.MessageEntry
 import com.discord.widgets.user.profile.UserProfileHeaderView
 import com.discord.widgets.user.profile.UserProfileHeaderViewModel
 
-abstract class Decorator {
+internal abstract class Decorator {
     open fun patch(patcher: PatcherAPI) {}
 
-    open fun onDMsInit(
+    open fun onDMsListInit(
         holder: WidgetChannelsListAdapter.ItemChannelPrivate,
         adapter: WidgetChannelsListAdapter
     ) {}
-    open fun onDMsConfigure(
+    open fun onDMsListConfigure(
         holder: WidgetChannelsListAdapter.ItemChannelPrivate,
         item: ChannelListItemPrivate
     ) {}

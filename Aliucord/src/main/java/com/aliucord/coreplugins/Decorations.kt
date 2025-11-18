@@ -160,7 +160,7 @@ internal class Decorations : CorePlugin(Manifest().apply {
             Int::class.javaPrimitiveType!!,
             WidgetChannelsListAdapter::class.java,
         ) { (_, _: Int, adapter: WidgetChannelsListAdapter) ->
-            decorators.forEach { it.onDMsInit(this, adapter) }
+            decorators.forEach { it.onDMsListInit(this, adapter) }
         }
 
         // onDMsConfigure
@@ -169,7 +169,7 @@ internal class Decorations : CorePlugin(Manifest().apply {
             Int::class.javaPrimitiveType!!,
             ChannelListItem::class.java,
         ) { (_, _: Int, item: ChannelListItemPrivate) ->
-            decorators.forEach { it.onDMsConfigure(this, item) }
+            decorators.forEach { it.onDMsListConfigure(this, item) }
         }
 
         // onMembersListInit

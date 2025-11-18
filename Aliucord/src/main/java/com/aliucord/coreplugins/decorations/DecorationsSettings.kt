@@ -41,8 +41,10 @@ internal object DecorationsSettings {
             ).apply {
                 var setting by delegate
                 isChecked = setting
-                setOnCheckedListener { setting = !setting }
-                Utils.promptRestart()
+                setOnCheckedListener {
+                    setting = !setting
+                    Utils.promptRestart()
+                }
             }
         }
     }

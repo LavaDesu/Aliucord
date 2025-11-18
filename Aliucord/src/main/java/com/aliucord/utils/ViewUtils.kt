@@ -168,7 +168,7 @@ object ViewUtils {
     /** Convenient property to get and set start padding (left on ltr, right on rtl) */
     inline var View.startPadding
         get() = paddingStart
-        set(value) = if (getLayoutDirection() == View.LAYOUT_DIRECTION_RTL) {
+        set(value) = if (layoutDirection == View.LAYOUT_DIRECTION_RTL) {
             rightPadding = value
         } else {
             leftPadding = value
@@ -177,7 +177,7 @@ object ViewUtils {
     /** Convenient property to get and set end padding (right on ltr, left on rtl) */
     inline var View.endPadding
         get() = paddingEnd
-        set(value) = if (getLayoutDirection() == View.LAYOUT_DIRECTION_RTL) {
+        set(value) = if (layoutDirection == View.LAYOUT_DIRECTION_RTL) {
             leftPadding = value
         } else {
             rightPadding = value

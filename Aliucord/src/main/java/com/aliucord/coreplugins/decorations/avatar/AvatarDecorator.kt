@@ -47,9 +47,9 @@ private const val memberListSpacing = 3
 private const val messageAuthorSpacing = 4
 private const val profileHeaderSpacing = 8
 
-internal class AvatarDecorator() : Decorator() {
-    private val decoId = View.generateViewId()
+private val decoId = View.generateViewId()
 
+internal class AvatarDecorator() : Decorator() {
     private fun createDecoView(context: Context, animated: Boolean): View {
         return if (animated) {
             StickerView(context, null).apply {
@@ -106,7 +106,7 @@ internal class AvatarDecorator() : Decorator() {
         }
     }
 
-    override fun onDMsInit(
+    override fun onDMsListInit(
         holder: WidgetChannelsListAdapter.ItemChannelPrivate,
         adapter: WidgetChannelsListAdapter
     ) {
@@ -134,7 +134,7 @@ internal class AvatarDecorator() : Decorator() {
         }
     }
 
-    override fun onDMsConfigure(
+    override fun onDMsListConfigure(
         holder: WidgetChannelsListAdapter.ItemChannelPrivate,
         item: ChannelListItemPrivate
     ) {
@@ -198,8 +198,8 @@ internal class AvatarDecorator() : Decorator() {
         // Reduce the container padding to get extra space for decorations
         view.topPadding -= messageAuthorSpacing.dp
 
-        // Expand the avatar height down by 4.dp, then pad it down by 4.dp
-        // Essentially a topMargin, but by doing it this way, the avatar's "top"
+        // Expand the avatar height and width by 4.dp, then pad it down and right by 4.dp
+        // Essentially a topMargin and leftMargin, but by doing it this way, the avatar's "top"
         // stays the same (since padding), and allows us to align our decorations from there
         itemAvatar.run {
             topPadding += messageAuthorSpacing.dp
