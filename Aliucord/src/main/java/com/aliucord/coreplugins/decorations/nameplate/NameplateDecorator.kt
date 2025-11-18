@@ -63,13 +63,13 @@ internal class NameplateDecorator() : Decorator() {
         }
     }
 
-    override fun onDMsInit(
+    override fun onDMsListInit(
         holder: WidgetChannelsListAdapter.ItemChannelPrivate,
         adapter: WidgetChannelsListAdapter
     ) {
     }
 
-    override fun onDMsConfigure(
+    override fun onDMsListConfigure(
         holder: WidgetChannelsListAdapter.ItemChannelPrivate,
         item: ChannelListItemPrivate
     ) {
