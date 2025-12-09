@@ -36,31 +36,21 @@ enum class Palette(val dark: Int, val light: Int) {
                 "lemon" -> Lemon
                 "white" -> White
                 else -> {
-                    Logger("Decorations/Palette").warn("Unknown nameplate colour $color")
+                    Logger("Decorations/Palette").warn("Unknown nameplate color $color")
                     None
                 }
             }
         }
     }
 
-    private infix fun Int.alpha(alpha: Double) = ColorUtils.setAlphaComponent(this, (255 * alpha).toInt())
     fun drawable(): GradientDrawable {
-        val colour = if (StoreStream.getUserSettingsSystem().theme == "light") light else dark
+        val color = if (StoreStream.getUserSettingsSystem().theme == "light") light else dark
 
         return GradientDrawable(
             GradientDrawable.Orientation.LEFT_RIGHT,
             intArrayOf(
-                colour alpha 0.00,
-                colour alpha 0.04,
-                colour alpha 0.08,
-                colour alpha 0.08,
-                colour alpha 0.08,
-                colour alpha 0.08,
-                colour alpha 0.124,
-                colour alpha 0.168,
-                colour alpha 0.212,
-                colour alpha 0.256,
-                colour alpha 0.30,
+                0,
+                ColorUtils.setAlphaComponent(color, 150)
             )
         )
     }

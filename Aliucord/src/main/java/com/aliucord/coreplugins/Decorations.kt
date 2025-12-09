@@ -155,7 +155,7 @@ internal class Decorations : CorePlugin(Manifest().apply {
     }
 
     private fun patchHandlers() {
-        // onDMsInit
+        // onDMsListInit
         patcher.after<WidgetChannelsListAdapter.ItemChannelPrivate>(
             Int::class.javaPrimitiveType!!,
             WidgetChannelsListAdapter::class.java,
