@@ -87,7 +87,7 @@ public class Plugins extends SettingsPage {
         private final Context ctx;
         private final List<Plugin> originalData;
         private List<Plugin> data;
-        public boolean showBuiltIn = false;
+        public boolean showRequired = false;
 
         @SuppressWarnings("unchecked")
         public Adapter(AppFragment fragment, Collection<Plugin> plugins) {
@@ -99,11 +99,12 @@ public class Plugins extends SettingsPage {
             this.originalData = new ArrayList<>(plugins);
             originalData.removeIf(p -> p instanceof CorePlugin && ((CorePlugin)p).isHidden());
             originalData.sort(ComparisonsKt.compareBy(
-                p -> p instanceof CorePlugin, // coreplugins last
+                p -> !(p instanceof CorePlugin && !((CorePlugin)p).isRequired()), // configurable coreplugins first
+                p -> p instanceof CorePlugin, // nonconfigurable coreplugins last
                 Plugin::getName // Natural order by title
             ));
 
-            data = CollectionUtils.filter(originalData, Adapter::filterCorePlugins);
+            data = CollectionUtils.filter(originalData, Adapter::filterRequired);
         }
 
         @Override
@@ -155,12 +156,12 @@ public class Plugins extends SettingsPage {
             protected FilterResults performFiltering(CharSequence constraint) {
                 List<Plugin> resultsList;
                 if (constraint == null || constraint.equals("")) {
-                    if (showBuiltIn) resultsList = originalData;
-                    else resultsList = CollectionUtils.filter(originalData, Adapter::filterCorePlugins);
+                    if (showRequired) resultsList = originalData;
+                    else resultsList = CollectionUtils.filter(originalData, Adapter::filterRequired);
                 } else {
                     String search = constraint.toString().toLowerCase().trim();
                     resultsList = CollectionUtils.filter(originalData, p -> {
-                        if (!showBuiltIn && p instanceof CorePlugin) return false;
+                        if (!showRequired && p instanceof CorePlugin && ((CorePlugin) p).isRequired()) return false;
                         if (p.getName().toLowerCase().contains(search)) return true;
                         Plugin.Manifest manifest = p.getManifest();
                         if (manifest.description.toLowerCase().contains(search)) return true;
@@ -275,8 +276,8 @@ public class Plugins extends SettingsPage {
             dialog.show(fragment.getParentFragmentManager(), "Confirm Plugin Uninstall");
         }
 
-        public static boolean filterCorePlugins(Plugin p) {
-            return !(p instanceof CorePlugin);
+        public static boolean filterRequired(Plugin p) {
+            return !(p instanceof CorePlugin && ((CorePlugin) p).isRequired());
         }
     }
 
@@ -355,12 +356,12 @@ public class Plugins extends SettingsPage {
         });
 
         getHeaderBar().getMenu()
-            .add("Show built-in")
+            .add("Show required")
             .setShowAsActionFlags(MenuItem.SHOW_AS_ACTION_NEVER)
             .setCheckable(true)
             .setOnMenuItemClickListener(item -> {
-                var show = !adapter.showBuiltIn;
-                adapter.showBuiltIn = show;
+                var show = !adapter.showRequired;
+                adapter.showRequired = show;
                 adapter.getFilter().filter(editText.getText());
                 item.setChecked(show);
                 return true;
