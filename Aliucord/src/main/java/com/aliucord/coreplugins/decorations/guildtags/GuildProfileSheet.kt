@@ -3,16 +3,10 @@ package com.aliucord.coreplugins.decorations.guildtags
 import android.graphics.Color
 import android.os.Bundle
 import android.util.TypedValue
-import android.view.Gravity
-import android.view.View
-import android.view.View.GONE
-import android.view.View.VISIBLE
-import android.view.ViewGroup.LayoutParams.MATCH_PARENT
-import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+import android.view.*
 import android.widget.*
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.PARENT_ID
 import androidx.core.graphics.ColorUtils
 import androidx.fragment.app.FragmentManager
 import com.aliucord.*
@@ -40,10 +34,16 @@ import com.lytefast.flexinput.R
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import b.a.k.b as FormatUtils
 
-private val logger = Logger("GuildProfileSheet")
+private const val PARENT_ID = ConstraintLayout.LayoutParams.PARENT_ID
+private const val WRAP_CONTENT = ViewGroup.LayoutParams.WRAP_CONTENT
+private const val MATCH_PARENT = ViewGroup.LayoutParams.MATCH_PARENT
+private const val GONE = View.GONE
+private const val VISIBLE = View.VISIBLE
 
-@Suppress("MISSING_DEPENDENCY_CLASS", "MISSING_DEPENDENCY_SUPERCLASS")
+private val logger = Logger("Decorations/GuildTag")
+
 internal class GuildProfileSheet : BottomSheet() {
     companion object {
         const val BUNDLE_KEY = "com.aliucord.GuildProfileSheet.guildID"
@@ -213,7 +213,6 @@ internal class GuildProfileSheet : BottomSheet() {
         name.text = "Private Server"
         ViewExtensions.setTextAndVisibilityBy(description, "The server has limited who can see this profile.")
         val drawable = DrawableCompat.getThemedDrawableRes(icon, R.b.img_poop)
-        @Suppress("DEPRECATION")
         icon.setImageResource(drawable)
     }
 
@@ -248,14 +247,14 @@ internal class GuildProfileSheet : BottomSheet() {
 
     private fun configureCounts(profile: GuildProfile) {
         val ctx = context ?: return
-        b.a.k.b.n(
+        FormatUtils.n(
             onlineCount,
             R.h.instant_invite_guild_members_online,
             arrayOf(StringUtilsKt.format(profile.onlineCount, ctx)),
             null,
             4,
         )
-        b.a.k.b.n(
+        FormatUtils.n(
             memberCount,
             R.h.instant_invite_guild_members_total,
             arrayOf(
@@ -402,52 +401,55 @@ internal class GuildProfileSheet : BottomSheet() {
     }
 
     private fun configureActionButton(profile: GuildProfile) {
-        actionButton.visibility = VISIBLE
-        val guild = StoreStream.getGuilds().getGuild(profile.id)
-        // User is already in guild
-        if (guild != null) {
-            // User has the guild tag active
-            if (StoreStream.getUsers().me.primaryGuild?.identityGuildId == profile.id) {
-                actionButton.setText(R.h.hub_directory_card_joined_guild_button)
-                actionButton.setOnClickListener {
-                    StoreStream.getGuildSelected().set(profile.id)
-                    dismiss()
+        actionButton.run {
+            visibility = VISIBLE
+            isEnabled = true
+            alpha = 1f
+            val guild = StoreStream.getGuilds().getGuild(profile.id)
+            // User is already in guild
+            if (guild != null) {
+                // User has the guild tag active
+                if (StoreStream.getUsers().me.primaryGuild?.identityGuildId == profile.id) {
+                    setText(R.h.hub_directory_card_joined_guild_button)
+                    setOnClickListener {
+                        StoreStream.getGuildSelected().set(profile.id)
+                        dismiss()
+                    }
+                // User doesn't have the guild tag active
+                } else {
+                    text = "Adopt Tag"
+                    setOnClickListener {
+                        isEnabled = false
+                        GuildTagDecorator.adoptTag(profile.id) {
+                            Utils.mainThread.post { dismiss() }
+                        }
+                    }
                 }
-            // User doesn't have the guild tag active
-            } else {
-                actionButton.text = "Adopt Tag"
-                actionButton.setOnClickListener {
-                    actionButton.isEnabled = false
-                    GuildTags.adoptTag(profile.id) {
+            // Guild is publicly joinable
+            } else if ("DISCOVERABLE" in profile.features) {
+                setText(R.h.join_guild)
+                setOnClickListener {
+                    isEnabled = false
+                    // Lurking is an unfinished feature :( this will NPE upon joining + there is no code
+                    // to handle post-joining
+                    // StoreStream.getLurking().startLurkingAndNavigate(profile.id, null, null)
+
+                    GuildTagDecorator.joinGuild(requireContext(), profile.id) {
+                        StoreStream.getGuildSelected().set(profile.id)
                         Utils.mainThread.post { dismiss() }
                     }
                 }
-            }
-        // Guild is publicly joinable
-        } else if ("DISCOVERABLE" in profile.features) {
-            actionButton.setText(R.h.join_guild)
-            actionButton.setOnClickListener {
-                actionButton.isEnabled = false
-                // Lurking is an unfinished feature :( this will NPE upon joining + there is no code
-                // to handle post-joining
-                // StoreStream.getLurking().startLurkingAndNavigate(profile.id, null, null)
-
-                GuildTags.joinGuild(requireContext(), profile.id) {
-                    StoreStream.getGuildSelected().set(profile.id)
-                    Utils.mainThread.post { dismiss() }
+            // Guild requires application to join
+            } else if ("MEMBER_VERIFICATION_MANUAL_APPROVAL" in profile.features) {
+                setText(R.h.guild_role_subscription_settings_enable_cta)
+                alpha = 0.5f
+                setOnClickListener {
+                    Utils.showToast("Server applications are not yet supported in Aliucord. Please join this server using Desktop or official Discord for now.")
                 }
-                dismiss()
+            // Guild is not publicly joinable
+            } else {
+                visibility = GONE
             }
-        // Guild requires application to join
-        } else if ("MEMBER_VERIFICATION_MANUAL_APPROVAL" in profile.features) {
-            actionButton.setText(R.h.guild_role_subscription_settings_enable_cta)
-            actionButton.alpha = 0.5f
-            actionButton.setOnClickListener {
-                Utils.showToast("Server applications are not yet supported in Aliucord. Please join this server using Desktop or official Discord for now.")
-            }
-        // Guild is not publicly joinable
-        } else {
-            actionButton.visibility = GONE
         }
     }
 }

@@ -7,7 +7,7 @@ import com.aliucord.utils.GsonUtils
 import com.aliucord.utils.SerializedName
 import com.discord.api.commands.Application
 
-private val logger = Logger("GuildProfileStore")
+private val logger = Logger("Decorations/GuildTag")
 
 data class GuildProfile(
     val id: Long,

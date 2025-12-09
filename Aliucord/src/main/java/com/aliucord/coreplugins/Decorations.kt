@@ -5,9 +5,9 @@ import android.util.AttributeSet
 import com.aliucord.coreplugins.decorations.DecorationsSettings
 import com.aliucord.coreplugins.decorations.Decorator
 import com.aliucord.coreplugins.decorations.avatar.AvatarDecorator
-import com.aliucord.coreplugins.decorations.guildtags.GuildTags
 import com.aliucord.coreplugins.decorations.displayname.DisplayNameStyles
 import com.aliucord.coreplugins.decorations.nameplate.NameplateDecorator
+import com.aliucord.coreplugins.decorations.guildtags.GuildTagDecorator
 import com.aliucord.entities.CorePlugin
 import com.aliucord.patcher.*
 import com.aliucord.updater.ManagerBuild
@@ -43,6 +43,7 @@ internal class Decorations : CorePlugin(Manifest().apply {
     @OptIn(ExperimentalStdlibApi::class)
     private val decorators = buildList<Decorator> {
         if (DecorationsSettings.enableAvatarDecoration) add(AvatarDecorator())
+        if (DecorationsSettings.enableGuildTags) add(GuildTagDecorator())
         if (DecorationsSettings.enableNameplates) add(NameplateDecorator())
     }
 
@@ -54,7 +55,6 @@ internal class Decorations : CorePlugin(Manifest().apply {
 
         patchFields()
         DisplayNameStyles.patch(patcher)
-        GuildTags.patch(patcher)
         patchHandlers()
         decorators.forEach { it.patch(patcher) }
     }
