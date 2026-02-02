@@ -301,6 +301,7 @@ object PluginManager {
             AppBarFix(),
             ButtonsAPI(),
             CommandHandler(),
+            ComponentsV2(),
             CoreCommands(),
             Decorations(),
             DefaultStickers(),

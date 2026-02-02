@@ -141,7 +141,7 @@ object RxUtils {
      * @see [ReactiveX operators documentation: CombineLatest](http://reactivex.io/documentation/operators/combinelatest.html)
      */
     @JvmStatic
-    fun <T, R> combineLatest(sources: List<Observable<T>>, combineFunction: FuncN<R>): Observable<R> = Observable.b(sources, combineFunction)
+    fun <T, R> combineLatest(sources: List<Observable<out T>>, combineFunction: FuncN<R>): Observable<R> = Observable.b(sources, combineFunction)
 
     /**
      * Returns an Observable that applies a specified function to each item emitted by the source Observable and
