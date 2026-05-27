@@ -3,6 +3,7 @@ package com.aliucord.patcher
 import com.aliucord.api.PatcherAPI
 import com.aliucord.api.Unpatch
 import de.robv.android.xposed.XC_MethodHook
+import kotlin.reflect.KClass
 import kotlin.reflect.typeOf
 
 private typealias HookCallback<T> = T.(XC_MethodHook.MethodHookParam) -> Unit
@@ -58,7 +59,7 @@ class PatchContext<T, R>(
     @PublishedApi
     @OptIn(ExperimentalStdlibApi::class)
     internal inline fun <reified T> t(): Class<*> {
-        val clazz = T::class as kotlin.reflect.KClass<*>
+        val clazz = T::class as KClass<*>
         return if (!typeOf<T>().isMarkedNullable) {
             clazz.javaPrimitiveType ?: clazz.java
         } else {
@@ -66,26 +67,26 @@ class PatchContext<T, R>(
         }
     }
 
-    inline operator fun invoke(crossinline callback: T.(P) -> R)
-        = patch { callback(this, it) }
-    inline operator fun <reified P1> invoke(crossinline callback: T.(P, Arg1<P1>) -> R)
-        = patch(t<P1>()) { callback(this, it, Arg1(it)) }
-    inline operator fun <reified P1, reified P2> invoke(crossinline callback: T.(P, Arg2<P1, P2>) -> R)
-        = patch(t<P1>(), t<P2>()) { callback(this, it, Arg2(it)) }
-    inline operator fun <reified P1, reified P2, reified P3> invoke(crossinline callback: T.(P, Arg3<P1, P2, P3>) -> R)
-        = patch(t<P1>(), t<P2>(), t<P3>()) { callback(this, it, Arg3(it)) }
-    inline operator fun <reified P1, reified P2, reified P3, reified P4> invoke(crossinline callback: T.(P, Arg4<P1, P2, P3, P4>) -> R)
-        = patch(t<P1>(), t<P2>(), t<P3>(), t<P4>()) { callback(this, it, Arg4(it)) }
-    inline operator fun <reified P1, reified P2, reified P3, reified P4, reified P5> invoke(crossinline callback: T.(P, Arg5<P1, P2, P3, P4, P5>) -> R)
-        = patch(t<P1>(), t<P2>(), t<P3>(), t<P4>(), t<P5>()) { callback(this, it, Arg5(it)) }
-    inline operator fun <reified P1, reified P2, reified P3, reified P4, reified P5, reified P6> invoke(crossinline callback: T.(P, Arg6<P1, P2, P3, P4, P5, P6>) -> R)
-        = patch(t<P1>(), t<P2>(), t<P3>(), t<P4>(), t<P5>(), t<P6>()) { callback(this, it, Arg6(it)) }
-    inline operator fun <reified P1, reified P2, reified P3, reified P4, reified P5, reified P6, reified P7> invoke(crossinline callback: T.(P, Arg7<P1, P2, P3, P4, P5, P6, P7>) -> R)
-        = patch(t<P1>(), t<P2>(), t<P3>(), t<P4>(), t<P5>(), t<P6>(), t<P7>()) { callback(this, it, Arg7(it)) }
-    inline operator fun <reified P1, reified P2, reified P3, reified P4, reified P5, reified P6, reified P7, reified P8> invoke(crossinline callback: T.(P, Arg8<P1, P2, P3, P4, P5, P6, P7, P8>) -> R)
-        = patch(t<P1>(), t<P2>(), t<P3>(), t<P4>(), t<P5>(), t<P6>(), t<P7>(), t<P8>()) { callback(this, it, Arg8(it)) }
-    inline operator fun <reified P1, reified P2, reified P3, reified P4, reified P5, reified P6, reified P7, reified P8, reified P9> invoke(crossinline callback: T.(P, Arg9<P1, P2, P3, P4, P5, P6, P7, P8, P9>) -> R)
-        = patch(t<P1>(), t<P2>(), t<P3>(), t<P4>(), t<P5>(), t<P6>(), t<P7>(), t<P8>(), t<P9>()) { callback(this, it, Arg9(it)) }
+    @JvmName("invoke1") inline operator fun <reified P1> invoke(crossinline callback: T.(P, Arg1<P1>) -> R) = patch(t<P1>()) { callback(this, it, Arg1(it)) }
+    @JvmName("invoke2") inline operator fun <reified P1, reified P2> invoke(crossinline callback: T.(P, Arg2<P1, P2>) -> R) = patch(t<P1>(), t<P2>()) { callback(this, it, Arg2(it)) }
+    @JvmName("invoke3") inline operator fun <reified P1, reified P2, reified P3> invoke(crossinline callback: T.(P, Arg3<P1, P2, P3>) -> R) = patch(t<P1>(), t<P2>(), t<P3>()) { callback(this, it, Arg3(it)) }
+    @JvmName("invoke4") inline operator fun <reified P1, reified P2, reified P3, reified P4> invoke(crossinline callback: T.(P, Arg4<P1, P2, P3, P4>) -> R) = patch(t<P1>(), t<P2>(), t<P3>(), t<P4>()) { callback(this, it, Arg4(it)) }
+    @JvmName("invoke5") inline operator fun <reified P1, reified P2, reified P3, reified P4, reified P5> invoke(crossinline callback: T.(P, Arg5<P1, P2, P3, P4, P5>) -> R) = patch(t<P1>(), t<P2>(), t<P3>(), t<P4>(), t<P5>()) { callback(this, it, Arg5(it)) }
+    @JvmName("invoke6") inline operator fun <reified P1, reified P2, reified P3, reified P4, reified P5, reified P6> invoke(crossinline callback: T.(P, Arg6<P1, P2, P3, P4, P5, P6>) -> R) = patch(t<P1>(), t<P2>(), t<P3>(), t<P4>(), t<P5>(), t<P6>()) { callback(this, it, Arg6(it)) }
+    @JvmName("invoke7") inline operator fun <reified P1, reified P2, reified P3, reified P4, reified P5, reified P6, reified P7> invoke(crossinline callback: T.(P, Arg7<P1, P2, P3, P4, P5, P6, P7>) -> R) = patch(t<P1>(), t<P2>(), t<P3>(), t<P4>(), t<P5>(), t<P6>(), t<P7>()) { callback(this, it, Arg7(it)) }
+    @JvmName("invoke8") inline operator fun <reified P1, reified P2, reified P3, reified P4, reified P5, reified P6, reified P7, reified P8> invoke(crossinline callback: T.(P, Arg8<P1, P2, P3, P4, P5, P6, P7, P8>) -> R) = patch(t<P1>(), t<P2>(), t<P3>(), t<P4>(), t<P5>(), t<P6>(), t<P7>(), t<P8>()) { callback(this, it, Arg8(it)) }
+    @JvmName("invoke9") inline operator fun <reified P1, reified P2, reified P3, reified P4, reified P5, reified P6, reified P7, reified P8, reified P9> invoke(crossinline callback: T.(P, Arg9<P1, P2, P3, P4, P5, P6, P7, P8, P9>) -> R) = patch(t<P1>(), t<P2>(), t<P3>(), t<P4>(), t<P5>(), t<P6>(), t<P7>(), t<P8>(), t<P9>()) { callback(this, it, Arg9(it)) }
+
+    // Shorthands for when arguments aren't necessary
+    @JvmName("invoke1_alt") inline operator fun <reified P1> invoke(crossinline callback: T.(P) -> R) = patch(t<P1>()) { callback(this, it) }
+    @JvmName("invoke2_alt") inline operator fun <reified P1, reified P2> invoke(crossinline callback: T.(P) -> R) = patch(t<P1>(), t<P2>()) { callback(this, it) }
+    @JvmName("invoke3_alt") inline operator fun <reified P1, reified P2, reified P3> invoke(crossinline callback: T.(P) -> R) = patch(t<P1>(), t<P2>(), t<P3>()) { callback(this, it) }
+    @JvmName("invoke4_alt") inline operator fun <reified P1, reified P2, reified P3, reified P4> invoke(crossinline callback: T.(P) -> R) = patch(t<P1>(), t<P2>(), t<P3>(), t<P4>()) { callback(this, it) }
+    @JvmName("invoke5_alt") inline operator fun <reified P1, reified P2, reified P3, reified P4, reified P5> invoke(crossinline callback: T.(P) -> R) = patch(t<P1>(), t<P2>(), t<P3>(), t<P4>(), t<P5>()) { callback(this, it) }
+    @JvmName("invoke6_alt") inline operator fun <reified P1, reified P2, reified P3, reified P4, reified P5, reified P6> invoke(crossinline callback: T.(P) -> R) = patch(t<P1>(), t<P2>(), t<P3>(), t<P4>(), t<P5>(), t<P6>()) { callback(this, it) }
+    @JvmName("invoke7_alt") inline operator fun <reified P1, reified P2, reified P3, reified P4, reified P5, reified P6, reified P7> invoke(crossinline callback: T.(P) -> R) = patch(t<P1>(), t<P2>(), t<P3>(), t<P4>(), t<P5>(), t<P6>(), t<P7>()) { callback(this, it) }
+    @JvmName("invoke8_alt") inline operator fun <reified P1, reified P2, reified P3, reified P4, reified P5, reified P6, reified P7, reified P8> invoke(crossinline callback: T.(P) -> R) = patch(t<P1>(), t<P2>(), t<P3>(), t<P4>(), t<P5>(), t<P6>(), t<P7>(), t<P8>()) { callback(this, it) }
+    @JvmName("invoke9_alt") inline operator fun <reified P1, reified P2, reified P3, reified P4, reified P5, reified P6, reified P7, reified P8, reified P9> invoke(crossinline callback: T.(P) -> R) = patch(t<P1>(), t<P2>(), t<P3>(), t<P4>(), t<P5>(), t<P6>(), t<P7>(), t<P8>(), t<P9>()) { callback(this, it) }
 }
 
 open class Arg1<P1>(val param: P)
